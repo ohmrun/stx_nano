@@ -1,0 +1,20 @@
+{
+    "name": "stx_nano",
+    "license": "MIT",
+    "tags": [
+        "cross",
+        "functional"
+    ],
+    "description": "Functional composition tools. Haxe 3.1.* required.",
+    "contributors": [
+        "0b1kn00b"
+    ],
+    "releasenote": "",
+    "version": "0.1.0",
+    "url": "https",
+    "dependencies": {
+        "hx3compat": "",
+        "stx_pico" : ""
+    },
+    "classPath": "src/main/haxe"
+}

@@ -1,0 +1,6 @@
+-cp src/main/haxe/
+-lib hx3compat
+-lib stx_pico
+-D analyzer-optimize
+-main Main
+--interp
