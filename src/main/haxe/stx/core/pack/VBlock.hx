@@ -1,5 +1,7 @@
 package stx.core.pack;
 
+typedef VBlockDef<T>            = Void -> Void;
+
 @:callable abstract VBlock<T>(VBlockDef<T>) from VBlockDef<T>{
   static public function unit<T>():VBlock<T>{
     return () -> {}

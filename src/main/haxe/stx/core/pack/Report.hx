@@ -54,7 +54,7 @@ private class Constructor{
 private class Destructure{
   public function new(){}
   public function errata<E,EE>(fn:Err<E>->Err<EE>,self:Report<E>):Report<EE>{
-    return new Report(Option._()._.map(fn,self.prj()));
+    return new Report(Option._.map(self.prj(),fn));
   }
   public function prj<E>(self:Report<E>):Option<Err<E>>{
     return self.prj();
