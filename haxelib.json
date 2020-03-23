@@ -5,16 +5,16 @@
         "cross",
         "functional"
     ],
-    "description": "Functional composition tools. Haxe 3.1.* required.",
+    "description": "Compact selection of powertools. No real overlap with common libraries, so safe to use in the global scope",
     "contributors": [
         "0b1kn00b"
     ],
-    "releasenote": "",
+    "releasenote": "steady as she goes",
     "version": "0.1.0",
-    "url": "https",
+    "url": "https://github.com/ohmrun/stx_nano",
     "dependencies": {
-        "hx3compat": "",
-        "stx_pico" : ""
+        "hx3compat": "1.0.3",
+        "stx_pico" : "0.1.0"
     },
     "classPath": "src/main/haxe"
 }
