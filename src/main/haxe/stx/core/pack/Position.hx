@@ -1,7 +1,5 @@
 package stx.core.pack;
 
-import stx.core.pack.position.Constructor;
-
 @:using(stx.core.pack.Position.PositionLift)
 @:forward abstract Position(Pos) from Pos to Pos{
   static public var ZERO(default,never) : Pos = make(null,null,null,null);
@@ -59,10 +57,10 @@ class PositionLift {
   }
   static public function clone(p:Pos){
     return 
-      #if macro 
-        p;
-      #else
+      #if !macro 
         Position.make(p.fileName,p.className,p.methodName,p.lineNumber,p.customParams);
+      #else
+        p;
       #end
   }
   static public function withFragmentName(pos:Pos):String{

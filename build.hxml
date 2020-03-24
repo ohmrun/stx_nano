@@ -1,6 +1,13 @@
--cp src/main/haxe/
--lib hx3compat
--lib stx_pico
--D analyzer-optimize
 -main Main
 --interp
+
+--macro Main.boot()
+-D analyzer-optimize
+
+-lib hx3compat
+-lib stx_pico
+
+-cp src/main/haxe/
+
+
+

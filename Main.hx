@@ -2,6 +2,10 @@ using stx.Nano;
 
 class Main {
 	static function main() {
-		trace("Hello, world!");
+		trace('main');
+	}
+	static macro function boot(){
+		trace('boot');
+		return macro {};
 	}
 }
