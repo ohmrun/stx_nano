@@ -64,4 +64,7 @@ class Err<T>{
       default               : None;
     }
   }
+  public function fault():Fault{
+    return this.pos;
+  }
 }
