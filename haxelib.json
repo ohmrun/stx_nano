@@ -10,7 +10,7 @@
         "0b1kn00b"
     ],
     "releasenote": "steady as she goes",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "url": "https://github.com/ohmrun/stx_nano",
     "dependencies": {
         "hx3compat": "1.0.3",

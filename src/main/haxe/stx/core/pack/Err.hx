@@ -43,6 +43,16 @@ class Err<T>{
       __.option(pos).defv(this.pos)
     );
   }
+  public function last():Err<T>{
+    var self = this;
+    while(self.prev != None){
+      switch(self.prev){
+        case Some(last) : self = last;
+        default: break;
+      }
+    }
+    return self;
+  }
   public function next(that:Err<T>):Err<T>{
     var last  = that.copy();
     var stack : Array<Err<T>> = [];
@@ -64,7 +74,11 @@ class Err<T>{
       default               : None;
     }
   }
+  
   public function fault():Fault{
     return this.pos;
   }
+//  public function iterator(){
+    
+//  }
 }

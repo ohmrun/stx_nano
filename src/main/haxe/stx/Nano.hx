@@ -12,6 +12,7 @@ typedef PosDef =
 typedef Pos                     = PosDef;
 
 typedef CoupleDef<Ti,Tii>       = stx.core.pack.Couple.CoupleDef<Ti,Tii>;
+typedef CoupleCat<Ti,Tii>       = stx.core.pack.Couple.CoupleCat<Ti,Tii>;
 typedef Couple<Ti,Tii>          = stx.core.pack.Couple<Ti,Tii>;
 
 typedef ResSum<T,E>             = OutcomeSum<T,Err<E>>;

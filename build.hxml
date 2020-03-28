@@ -1,5 +1,5 @@
 -main Main
---interp
+
 
 --macro Main.boot()
 -D analyzer-optimize
@@ -9,5 +9,6 @@
 
 -cp src/main/haxe/
 
+--dce no
 
-
+-js nano.js

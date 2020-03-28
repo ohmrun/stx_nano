@@ -1,6 +1,7 @@
 package stx.core.pack;
 
 typedef CoupleDef<Ti,Tii> = (Ti -> Tii -> Void) -> Void;
+typedef CoupleCat<Ti,Tii> = Array<Either<Ti,Tii>>;//[Left(tI),Right(tII)]
 
 @:using(stx.core.pack.Couple.CoupleLift)
 @:callable abstract Couple<Ti,Tii>(CoupleDef<Ti,Tii>) from CoupleDef<Ti,Tii> to CoupleDef<Ti,Tii>{
@@ -56,7 +57,7 @@ class CoupleLift{
     );
     return out;
   }
-  static public function cat<Ti,Tii>(self:Couple<Ti,Tii>):{ a : Ti, b : Tii }{
-    return decouple(self,(l,r) -> { a : l , b : r });
+  static public function cat<Ti,Tii>(self:Couple<Ti,Tii>):Array<Either<Ti,Tii>>{
+    return decouple(self,(l,r) -> [Left(l),Right(r)]);
   }
 }

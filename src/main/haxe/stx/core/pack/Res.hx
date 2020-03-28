@@ -22,7 +22,7 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
 
 }
 class ResLift{
-  static public function errata<T,E,EE>(fn:Err<E>->Err<EE>,self:Res<T,E>):Res<T,EE>{
+  static public function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
     return Outcome.lift(
       self.fold(
         (t) -> Success(t),
@@ -30,7 +30,7 @@ class ResLift{
       )
     );
   }
-  static public function zip<T,TT,E>(that:ResSum<TT,E>,self:ResSum<T,E>):Res<Couple<T,TT>,E>{
+  static public function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
     return switch([self,that]){
       case [Failure(e),Failure(ee)]     : Failure(e.next(ee));
       case [Failure(e),_]               : Failure(e);
