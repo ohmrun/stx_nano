@@ -1,18 +1,18 @@
 # stx_nano
 
-`using stx.Nano` pulls in: `Couple<L,R>, Err<E>, FailCode, Failure, Fault, Position, Primitive, Report, Res, TerminationCode, Unique, VBlock, Wildcard, Y`
+`using stx.Nano` pulls in: `Couple<L,R>, Err<E>, FailCode, Failure, Fault, Position, Primitive, Report, Res, Unique, VBlock, Wildcard, Y`
 
-`Couple<L,R>` is a two-tuple implemented as a function handler.
-`Err<E>` is a flexible error class, can be accessed through `__.fault()`.
-`FailCode` is an enumeration of fails, can be used in a typed Err<E> without effecting the type.
-`Failure<E>` allows `FailCodes` and whatever type `E` is in `Err` to get along.
-`Fault` is a static extension of `Wildcard` that produces an error api, capturing the position information.
-`Primitive` is an enumeration of Primitive haxe scalars.
-`Report<E>` is `Option<Err,E>>` with convenience functions.
-`Res<E>` is `Outcome<Err<E>>`.
-`Unique<T>` allows runtime unique values to be created, using the equality properties of functions under the hood.
-`VBlock<T>` is a carrier for a virtual type, not connected to a value, but useful for various type foo.
-`Y<T>`  is an implementation of the y-combinator
+`Couple<L,R>` is a two-tuple implemented as a function handler.  
+`Err<E>` is a flexible error class, can be accessed through `__.fault()`.  
+`FailCode` is an enumeration of fails, can be used in a typed Err<E> without effecting the type.  
+`Failure<E>` allows `FailCodes` and whatever type `E` is in `Err` to get along.  
+`Fault` is a static extension of `Wildcard` that produces an error api, capturing the position information.  
+`Primitive` is an enumeration of Primitive haxe scalars.  
+`Report<E>` is `Option<Err,E>>` with convenience functions.  
+`Res<E>` is `Outcome<Err<E>>`.  
+`Unique<T>` allows runtime unique values to be created, using the equality properties of functions under the hood.  
+`VBlock<T>` is a carrier for a virtual type, not connected to a value, but useful for various type foo.  
+`Y<T>`  is an implementation of the y-combinator  
 
 
 ## Using Wildcard
