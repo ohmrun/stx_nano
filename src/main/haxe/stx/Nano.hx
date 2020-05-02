@@ -1,3 +1,4 @@
+
 package stx;
 
 #if !stx_core
@@ -15,10 +16,11 @@ typedef CoupleDef<Ti,Tii>       = stx.core.pack.Couple.CoupleDef<Ti,Tii>;
 typedef CoupleCat<Ti,Tii>       = stx.core.pack.Couple.CoupleCat<Ti,Tii>;
 typedef Couple<Ti,Tii>          = stx.core.pack.Couple<Ti,Tii>;
 
-typedef ResSum<T,E>             = OutcomeSum<T,Err<E>>;
+typedef ResSum<T,E>             = stx.core.pack.Res.ResSum<T,E>;
 typedef Res<T,E>                = stx.core.pack.Res<T,E>;
 
 typedef Err<E>                  = stx.core.pack.Err<E>;
+typedef FailureSum<T>           = stx.core.pack.Failure.FailureSum<T>;
 typedef Failure<T>              = stx.core.pack.Failure<T>;
 typedef FailCode                = stx.core.pack.FailCode;
 typedef Fault                   = stx.core.pack.Fault;
@@ -39,6 +41,10 @@ typedef Wildcard                = stx.core.pack.Wildcard;
 
 typedef Report<E>               = stx.core.pack.Report<E>;
 typedef Position                = stx.core.pack.Position;
+typedef PrimitiveDef            = stx.core.pack.Primitive.PrimitiveDef;
+typedef Primitive               = stx.core.pack.Primitive;
+typedef Unique<T>               = stx.core.pack.Unique<T>;
+
 #else
   
 #end

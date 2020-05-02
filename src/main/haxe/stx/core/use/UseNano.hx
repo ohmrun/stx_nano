@@ -1,6 +1,9 @@
 package stx.core.use;
 
 class UseNano{
+  static public function if_else<R>(b:Bool,_if:Void->R,_else:Void->R):R{
+    return b ? _if() : _else();
+  }
   static public function here(wildcard:Wildcard,?pos:Pos):Pos{
     return pos;
   }
@@ -87,4 +90,67 @@ class UseNano{
   @:noUsing static public function fromPos(pos:Pos):Position{
     return Position.fromPos(pos);
   }
+  #if tink_core
+  static public function future<T>(wildcard:Wildcard):Couple<tink.core.Future.FutureTrigger<T>,tink.core.Future<T>>{
+    var trigger = tink.core.Future.trigger();
+    var future  = trigger.asFuture();
+    return __.couple(trigger,future);
+  }
+  #end
+  static public function tracer<T>(v:Wildcard,?pos:Pos):T->T{
+    return function(t:T):T{
+      trace(t,pos);
+      return t;
+    }
+  }
+  static public function traced<T>(v:Wildcard,?pos:Pos):T->Void{
+    #if !macro
+      var infos :haxe.PosInfos = pos;
+    #else
+      var infos = null;
+    #end
+    return function(d:T):Void{
+      haxe.Log.trace(d,infos);
+    }
+  }
+  static public function through<T>(__:Wildcard):T->T{
+    return (v:T) -> v;
+  }
+  static public function command<T>(__:Wildcard,fn:T->Void):T->T{
+    return (v:T) -> {
+      fn(v);
+      return v;
+    }
+  }
+  static public function perform<T>(__:Wildcard,fn:Void->Void):T->T{
+    return (v:T) -> {
+      fn();
+      return v;
+    }
+  }
+  static public function execute<T,E>(__:Wildcard,fn:Void->Option<Err<E>>):T->Res<T,E>{
+    return (v:T) -> switch(fn()){
+      case Some(e)  : __.failure(e);
+      default       : __.success(v);
+    }
+  }
+  static public function left<Ti,Tii>(__:Wildcard,tI:Ti):Either<Ti,Tii>{
+    return Left(tI);
+  }
+  static public function right<Ti,Tii>(__:Wildcard,tII:Tii):Either<Ti,Tii>{
+    return Right(tII);
+  }
+  #if tink_core
+  static public function fudge<T>(future:tink.core.Future<T>):Option<T>{
+    var result    = None;
+    var cancelled = false;
+    future.handle(
+      (x) -> {
+        cancelled = true;
+        result    = Some(x);
+      }
+    );
+    return result;
+  }
+  #end
 }

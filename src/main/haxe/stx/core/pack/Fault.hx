@@ -7,7 +7,7 @@ abstract Fault(Pos) from Pos{
   }
   inline public function empty<E>():Err<E>{
     return new Err(None,None,this);
-}
+  }
   inline public function any<E>(msg:String):Err<E>{
     return new Err(ERR(FailCode.fromString(msg)),null,this);
   }
