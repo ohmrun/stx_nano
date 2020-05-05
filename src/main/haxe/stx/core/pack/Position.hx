@@ -1,5 +1,8 @@
 package stx.core.pack;
-
+  
+/**
+  abstract of `Pos`, the parser will not inject this type if you use it so: `?pos:Position`, use `Pos` and then lift it in the function.
+**/
 @:using(stx.core.pack.Position.PositionLift)
 @:forward abstract Position(Pos) from Pos to Pos{
   static public var ZERO(default,never) : Pos = make(null,null,null,null);
