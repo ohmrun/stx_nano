@@ -78,6 +78,11 @@ class Err<T>{
   public function fault():Fault{
     return this.pos;
   }
+  public function toString(){
+    var p  = Position.lift(pos).toStringClassMethodLine();
+    var e  = Std.string(this.data);
+    return '$e at ($p)';
+  }
 //  public function iterator(){
     
 //  }
