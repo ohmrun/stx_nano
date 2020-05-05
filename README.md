@@ -1,6 +1,6 @@
 # stx_nano
 
-`using stx.Nano` pulls in: `Couple<L,R>, Err<E>, FailCode, Failure, Fault, Position, Primitive, Report, Res, Unique, VBlock, Wildcard, Y`
+`using stx.Nano;` pulls in: `Couple<L,R>, Err<E>, FailCode, Failure<E>, Fault<E>, Pos, adPosition, Primitive, Report, Res, Unique, VBlock, Wildcard, Y`
 
 `Couple<L,R>` is a two-tuple implemented as a function handler.  
 `Err<E>` is a flexible error class, can be accessed through `__.fault()`.  
