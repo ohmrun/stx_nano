@@ -7,9 +7,9 @@ class Err<T>{
   private function get_uuid(){
     return UUID;
   }
-  public function new(data,prev,?pos){
+  public function new(data,?prev,?pos){
     this.data = data;
-    this.prev = prev;
+    this.prev = __.option(prev).defv(None);
     this.pos  = pos;   
   }
   public var prev(default,null)             : Option<Err<T>>;
@@ -83,7 +83,16 @@ class Err<T>{
     var e  = Std.string(this.data);
     return '$e at ($p)';
   }
-//  public function iterator(){
-    
-//  }
+  public function iterator(){
+    var cursor = Some(this);
+
+    return {
+      hasNext : () -> cursor.is_defined(),
+      next    : () -> {
+        var value = cursor.fudge();
+        cursor = value.prev;
+        return value;
+      }
+    }
+  }
 }
