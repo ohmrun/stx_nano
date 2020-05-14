@@ -156,4 +156,13 @@ class UseNano{
   static public inline function raise<E>(wildcard:Wildcard,e:E){
     throw e;
   }
+  static public inline function report<E>(wildcard:Wildcard,report:Report<E>):Void{
+    report.crunch();
+  }
+  static public function definition<T>(wildcard:Wildcard,t:T):Class<T>{
+    return StdType.getClass(t);
+  }
+  static public function vblock<T>(wildcard:Wildcard,t:T):VBlock<T>{
+    return ()->{};
+  }
 }
