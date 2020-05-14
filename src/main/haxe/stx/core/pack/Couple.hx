@@ -15,6 +15,9 @@ typedef CoupleCat<Ti,Tii> = Array<Either<Ti,Tii>>;//[Left(tI),Right(tII)]
       return new ThxTuple(fst(tup),snd(tup));
     }
   #end
+  public function toString(){
+    return CoupleLift.toString(this);
+  }
 }
 class CoupleLift{
   static public function map<Ti,Tii,TT>(self: Couple<Ti,Tii>,fn:Tii->TT): Couple<Ti,TT>{
@@ -59,5 +62,13 @@ class CoupleLift{
   }
   static public function cat<Ti,Tii>(self:Couple<Ti,Tii>):Array<Either<Ti,Tii>>{
     return decouple(self,(l,r) -> [Left(l),Right(r)]);
+  }
+  static public function tup<Ti,Tii>(self:Couple<Ti,Tii>):Tup2<Ti,Tii>{
+    return decouple(self,tuple2);
+  }
+  static public function toString<Ti,Tii>(self:Couple<Ti,Tii>):String{
+    return decouple(self,
+      (l,r) -> '($l $r)'
+    );
   }
 }

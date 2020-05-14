@@ -12,6 +12,9 @@ typedef PosDef =
 
 typedef Pos                     = PosDef;
 
+enum Tup2<L,R>{
+  tuple2(l:L,r:R);
+}
 typedef CoupleDef<Ti,Tii>       = stx.core.pack.Couple.CoupleDef<Ti,Tii>;
 typedef CoupleCat<Ti,Tii>       = stx.core.pack.Couple.CoupleCat<Ti,Tii>;
 typedef Couple<Ti,Tii>          = stx.core.pack.Couple<Ti,Tii>;
