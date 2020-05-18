@@ -22,7 +22,7 @@ package stx.core.pack;
       default         :
     }
   }
-  @:from static public function fromStdOption<E>(opt:Option<Err<E>>):Report<E>{
+  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Err<E>>):Report<E>{
     var opt : Option<Err<E>> = opt;
     return new Report(opt);
   }

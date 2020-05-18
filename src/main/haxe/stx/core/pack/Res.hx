@@ -62,4 +62,10 @@ class ResLift{
       (e) -> Success(e)
     );
   }
+  static public function value<T,E>(self:ResSum<T,E>):Option<T>{
+    return fold(self,
+      Some,
+      (_) -> None  
+    );
+  }
 }
