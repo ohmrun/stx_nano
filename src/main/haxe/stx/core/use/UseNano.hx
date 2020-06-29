@@ -160,7 +160,7 @@ class UseNano{
     report.crunch();
   }
   static public function definition<T>(wildcard:Wildcard,t:T):Class<T>{
-    return StdType.getClass(t);
+    return std.Type.getClass(t);
   }
   static public function vblock<T>(wildcard:Wildcard,t:T):VBlock<T>{
     return ()->{};

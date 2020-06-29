@@ -33,6 +33,9 @@ class ResLift{
       )
     );
   }
+  static public function errate<T,E,EE>(self:Res<T,E>,fn:E->EE):Res<T,EE>{
+    return errata(self,(e) -> e.map(fn));
+  }
   static public function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
     return switch([self,that]){
       case [Failure(e),Failure(ee)]     : Failure(e.next(ee));
@@ -66,6 +69,12 @@ class ResLift{
     return fold(self,
       Some,
       (_) -> None  
+    );
+  }
+  static public function report<T,E>(self:ResSum<T,E>):Report<E>{
+    return fold(self,
+      (_) -> Report.unit(),
+      Report.pure
     );
   }
 }

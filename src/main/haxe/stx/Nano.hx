@@ -46,6 +46,10 @@ typedef Report<E>               = stx.core.pack.Report<E>;
 typedef Position                = stx.core.pack.Position;
 typedef PrimitiveDef            = stx.core.pack.Primitive.PrimitiveDef;
 typedef Primitive               = stx.core.pack.Primitive;
+
+typedef SlotDef<T>              = stx.core.pack.Slot.SlotDef<T>;
+typedef Slot<T>                 = stx.core.pack.Slot<T>;
+
 typedef Unique<T>               = stx.core.pack.Unique<T>;
 
 #else

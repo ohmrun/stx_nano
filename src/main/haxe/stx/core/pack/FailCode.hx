@@ -12,7 +12,6 @@ package stx.core.pack;
   var E_AbstractMethod;
   var E_IndexOutOfBounds;
 
-
   static private function fromString(str:String):FailCode{
     return new FailCode(str);
   }

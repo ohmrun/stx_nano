@@ -6,6 +6,7 @@
 
 -lib hx3compat
 -lib stx_pico
+-lib tink_core
 
 -cp src/main/haxe/
 

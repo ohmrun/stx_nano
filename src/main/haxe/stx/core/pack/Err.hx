@@ -95,4 +95,22 @@ class Err<T>{
       }
     }
   }
+  #if tink_core
+  @:noUsing static public function fromTinkError<E>(err:tink.core.Error):Err<E>{
+    return new Err(ERR(FailCode.fromString(err.message)),null,err.pos);
+  }
+  #end
+  public function value():Option<T>{
+    return this.data.flat_map(
+      (f) -> f.fold(
+        Some,
+        (_) -> None
+      )
+    );
+  }
+  public function elide():Err<Dynamic>{
+    return this.map(
+      (v:T) -> (v:Dynamic)
+    );
+  }
 }

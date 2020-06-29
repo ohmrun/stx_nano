@@ -1,3 +1,4 @@
+
 package stx.core.pack;
 
 
@@ -28,6 +29,12 @@ package stx.core.pack;
   }
   public function prj():Option<Err<E>>{
     return this;
+  }
+  public function value():Option<E>{
+    return this.fold(
+      (err) -> err.value(),
+      () -> None
+    );
   }
   public function defv<E>(error:Err<E>){
     return this.defv(error);
