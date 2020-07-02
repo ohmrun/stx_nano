@@ -1,6 +1,6 @@
 package stx.core.pack;
 
-
+import tink.core.Lazy;
 import tink.core.Future;
 
 enum SlotDef<T>{
@@ -45,6 +45,12 @@ class SlotLift{
     switch(self){
       case Ready(f)   : fn(f());
       case Guard(f)   : f().handle((slot) -> slot.handle(fn));
+    }
+  }
+  static public function toFuture<T>(self:Slot<T>):Future<T>{
+    return switch(self){
+      case Ready(f) : Future.lazy(Lazy.ofFunc(f));
+      case Guard(f) : f().flatMap( slot -> slot.toFuture() );
     }
   }
 }

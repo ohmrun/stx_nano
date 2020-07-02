@@ -153,7 +153,7 @@ class UseNano{
     return result;
   }
   #end
-  static public inline function raise<E>(wildcard:Wildcard,e:E){
+  static public inline function crack<E>(wildcard:Wildcard,e:E){
     throw e;
   }
   static public inline function report<E>(wildcard:Wildcard,report:Report<E>):Void{
