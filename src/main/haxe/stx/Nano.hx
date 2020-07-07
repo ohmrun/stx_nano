@@ -15,9 +15,15 @@ typedef Pos                     = PosDef;
 enum Tup2<L,R>{
   tuple2(l:L,r:R);
 }
+enum Tup3<Ti,Tii,Tiii>{
+  tuple3(tI:Ti,tII:Tii,tIII:Tiii);
+}
 typedef CoupleDef<Ti,Tii>       = stx.core.pack.Couple.CoupleDef<Ti,Tii>;
 typedef CoupleCat<Ti,Tii>       = stx.core.pack.Couple.CoupleCat<Ti,Tii>;
 typedef Couple<Ti,Tii>          = stx.core.pack.Couple<Ti,Tii>;
+
+typedef TripleDef<Ti,Tii,Tiii>  = stx.core.pack.Triple.TripleDef<Ti,Tii,Tiii>;
+typedef Triple<Ti,Tii,Tiii>     = stx.core.pack.Triple<Ti,Tii,Tiii>;
 
 typedef ResSum<T,E>             = stx.core.pack.Res.ResSum<T,E>;
 typedef Res<T,E>                = stx.core.pack.Res<T,E>;
