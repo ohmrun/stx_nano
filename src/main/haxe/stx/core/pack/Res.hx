@@ -23,6 +23,15 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   @:to public function toOutcome():Outcome<T,Err<E>>{
     return Outcome.lift(this);
   }
+  @:noUsing static public function bind_fold<T,E,Z>(arr:Array<T>,fn:T->Z->Res<Z,E>,init:Z):Res<Z,E>{
+    return arr.lfold(
+      (next:T,memo:Res<Z,E>) -> memo.fold(
+        (ok)  -> fn(next,ok),
+        (no)  -> __.failure(no)
+      ),
+      __.success(init)
+    );
+  }
 }
 class ResLift{
   static public function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
