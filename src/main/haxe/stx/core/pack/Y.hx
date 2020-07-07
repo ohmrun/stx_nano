@@ -1,6 +1,6 @@
 package stx.core.pack;
 
-typedef YDef<P,R> = Recursive<P -> R>; 
+typedef YDef<P,R>               = Recursive<P -> R>; 
 
 @:callable abstract Y<P,R>(YDef<P,R>) from YDef<P,R> to YDef<P,R>{
   static public function unit<P,R>():Y<P,R>{
@@ -9,7 +9,7 @@ typedef YDef<P,R> = Recursive<P -> R>;
   @:noUsing static public function pure<P,R>(f:P->R):Y<P,R>{
     return function(fn:Recursive<P->R>) return f;
   }
-  public function new(self){
+  public function new(self:YDef<P,R>){
     this = self;
   }
   public function reply():P -> R{

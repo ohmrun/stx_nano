@@ -12,4 +12,6 @@
 
 --dce no
 
--js nano.js
+#-js nano.js
+#--hl bin/main.hl
+--jvm bin/main.jar
