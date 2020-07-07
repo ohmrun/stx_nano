@@ -165,4 +165,12 @@ class UseNano{
   static public function vblock<T>(wildcard:Wildcard,t:T):VBlock<T>{
     return ()->{};
   }
+  static public function noop<T>(wildcard:Wildcard):T->T{
+    return (t:T) -> (t:T);
+  }
+  static public function nullify<T>(wildcard:Wildcard):T->Void{
+    return (function(t:T){
+
+  });
+  }
 }
