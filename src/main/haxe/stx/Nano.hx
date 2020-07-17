@@ -53,7 +53,7 @@ typedef Position                = stx.core.pack.Position;
 typedef PrimitiveDef            = stx.core.pack.Primitive.PrimitiveDef;
 typedef Primitive               = stx.core.pack.Primitive;
 
-typedef SlotDef<T>              = stx.core.pack.Slot.SlotDef<T>;
+//typedef SlotDef<T>              = stx.core.pack.Slot.SlotDef<T>;
 typedef Slot<T>                 = stx.core.pack.Slot<T>;
 
 typedef Unique<T>               = stx.core.pack.Unique<T>;
@@ -61,3 +61,14 @@ typedef Unique<T>               = stx.core.pack.Unique<T>;
 #else
   
 #end
+
+class LiftFutureToSlot{
+  static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
+    return Slot.Guard(ft,pos);
+  }
+}
+class LiftLazyFutureToSlot{
+  static public inline function toSlot<T>(fn:Void -> tink.core.Future<T>):Slot<T>{
+    return Slot.Guard(fn());
+  }
+}

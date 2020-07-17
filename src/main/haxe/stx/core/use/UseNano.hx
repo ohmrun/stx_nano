@@ -61,6 +61,16 @@ class UseNano{
       tp.decouple(fn);
     }
   }
+  static public function triple<Ti,Tii,Tiii>(wildcard:Wildcard,tI:Ti,tII:Tii,tIII:Tiii):Triple<Ti,Tii,Tiii>{
+    return (fn:Ti->Tii->Tiii->Void) -> {
+      fn(tI,tII,tIII);
+    }
+  }
+  static public function detriple<Ti,Tii,Tiii,Tiv>(wildcard:Wildcard,fn:Ti->Tii->Tiii->Tiv):Triple<Ti,Tii,Tiii> -> Tiv{
+    return (tp:Triple<Ti,Tii,Tiii>) -> {
+      tp.detriple(fn);
+    }
+  }
   static public function toCouple<Ti,Tii>(self:CoupleDef<Ti,Tii>):Couple<Ti,Tii>{
     return self;
   }
@@ -170,7 +180,12 @@ class UseNano{
   }
   static public function nullify<T>(wildcard:Wildcard):T->Void{
     return (function(t:T){
-
-  });
+    });
+  }
+  static public function passthrough<T>(wildcard:Wildcard,fn:T->Void):T->T{
+    return (function(t:T):T{
+      fn(t);
+      return t;
+    });
   }
 }
