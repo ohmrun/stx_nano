@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 abstract Fault(Pos) from Pos{
   public function new(self) this = self;

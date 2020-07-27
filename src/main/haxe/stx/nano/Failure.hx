@@ -1,10 +1,10 @@
-package stx.core.pack;
+package stx.nano;
 
 enum FailureSum<T>{
   ERR_OF(v:T);
   ERR(spec:FailCode);
 }
-@:using(stx.core.pack.Failure.FailureLift)
+@:using(stx.nano.Failure.FailureLift)
 abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
   static public var _(default,never) = FailureLift;
   public function new(self) this = self;

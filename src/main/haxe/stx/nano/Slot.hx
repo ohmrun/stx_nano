@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 import tink.core.Lazy;
 import tink.core.Future;
@@ -29,7 +29,7 @@ private class SlotDef<T>{
     return 'Slot($ready $pos)';
   }
 }
-@:using(stx.core.pack.Slot.SlotLift)
+@:using(stx.nano.Slot.SlotLift)
 @:forward abstract Slot<T>(SlotDef<T>) from SlotDef<T> to SlotDef<T>{
   static public var _(default,never) = SlotLift;
   public function new(self) this = self;

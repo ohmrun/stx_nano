@@ -1,5 +1,5 @@
 
-package stx.core.pack;
+package stx.nano;
 
 
 @:forward(is_defined,fold)abstract Report<E>(Option<Err<E>>) from Option<Err<E>> to Option<Err<E>>{

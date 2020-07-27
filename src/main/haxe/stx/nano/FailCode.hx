@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 @:allow(stx) enum abstract FailCode(String){
   private function new(self){

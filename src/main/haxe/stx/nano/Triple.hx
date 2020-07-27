@@ -1,8 +1,8 @@
-package stx.core.pack;
+package stx.nano;
 
 typedef TripleDef<Ti,Tii,Tiii>   =  (Ti -> Tii -> Tiii -> Void) -> Void;
 
-@:using(stx.core.pack.Triple.TripleLift)
+@:using(stx.nano.Triple.TripleLift)
 @:callable abstract Triple<Ti,Tii,Tiii>(TripleDef<Ti,Tii, Tiii>) from TripleDef<Ti,Tii, Tiii> to TripleDef<Ti,Tii, Tiii>{
   static public var _(default,never) = TripleLift;
   public function toString(){

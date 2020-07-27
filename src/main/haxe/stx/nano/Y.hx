@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 typedef YDef<P,R>               = Recursive<P -> R>; 
 

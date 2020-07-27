@@ -1,6 +1,6 @@
-package stx.core.use;
+package stx.nano.lift;
 
-class UseArrayNano{
+class LiftArrayNano{
   /**
     from thx.core
     It returns the cross product between two arrays.

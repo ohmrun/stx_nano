@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 class Err<T>{
   static public var UUID(default,never):String = "e30e1389-4a72-41fe-ba9f-d7ddf3d1e247";

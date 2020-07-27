@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 enum Wildcard{
   __;

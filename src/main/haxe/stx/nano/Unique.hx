@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 typedef UniqueDef<T> = {
   public var data(default,null) : T;

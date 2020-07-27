@@ -1,9 +1,9 @@
-package stx.core.pack;
+package stx.nano;
 
 typedef CoupleDef<Ti,Tii> = (Ti -> Tii -> Void) -> Void;
 typedef CoupleCat<Ti,Tii> = Array<Either<Ti,Tii>>;//[Left(tI),Right(tII)]
 
-@:using(stx.core.pack.Couple.CoupleLift)
+@:using(stx.nano.Couple.CoupleLift)
 @:callable abstract Couple<Ti,Tii>(CoupleDef<Ti,Tii>) from CoupleDef<Ti,Tii> to CoupleDef<Ti,Tii>{
   static public var _(default,never) = CoupleLift;
   #if thx_core

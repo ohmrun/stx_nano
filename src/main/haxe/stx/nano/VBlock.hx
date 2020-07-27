@@ -1,4 +1,4 @@
-package stx.core.pack;
+package stx.nano;
 
 typedef VBlockDef<T>            = Void -> Void;
 

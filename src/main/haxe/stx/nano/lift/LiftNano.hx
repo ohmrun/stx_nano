@@ -1,6 +1,6 @@
-package stx.core.use;
+package stx.nano.lift;
 
-class UseNano{
+class LiftNano{
   static public function if_else<R>(b:Bool,_if:Void->R,_else:Void->R):R{
     return b ? _if() : _else();
   }
@@ -42,11 +42,11 @@ class UseNano{
       default   : Some(v);
     }
   }
-  static public function success<T,E>(wildcard:Wildcard,t:T):Res<T,E>{
-    return Res.success(t);
+  static public function accept<T,E>(wildcard:Wildcard,t:T):Res<T,E>{
+    return Res.accept(t);
   }
-  static public function failure<T,E>(wildcard:Wildcard,e:Err<E>):Res<T,E>{
-    return Res.failure(e);
+  static public function reject<T,E>(wildcard:Wildcard,e:Err<E>):Res<T,E>{
+    return Res.reject(e);
   }
   static public function fault(wildcard:Wildcard,?pos:Pos):Fault{
     return new Fault(pos);
@@ -140,8 +140,8 @@ class UseNano{
   }
   static public function execute<T,E>(__:Wildcard,fn:Void->Option<Err<E>>):T->Res<T,E>{
     return (v:T) -> switch(fn()){
-      case Some(e)  : __.failure(e);
-      default       : __.success(v);
+      case Some(e)  : __.reject(e);
+      default       : __.accept(v);
     }
   }
   static public function left<Ti,Tii>(__:Wildcard,tI:Ti):Either<Ti,Tii>{
