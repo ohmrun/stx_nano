@@ -6,7 +6,7 @@ package stx.core.pack;
 
   public function new(self) this = self;
   
-  @:noUsing static public function lift<E>(self) return new Report(self);
+  @:noUsing static public function lift<E>(self:Option<Err<E>>):Report<E> return new Report(self);
 
   @:noUsing static public function unit<E>():Report<E>{
     return new Report(None);
@@ -36,7 +36,7 @@ package stx.core.pack;
       () -> None
     );
   }
-  public function defv<E>(error:Err<E>){
+  public function defv(error:Err<E>){
     return this.defv(error);
   }
   public function merge(that:Report<E>):Report<E>{
@@ -45,7 +45,7 @@ package stx.core.pack;
     );
   }
   @:note("error in js")
-  public function errata<E,EE>(fn:Err<E>->Err<EE>):Report<EE>{
+  public function errata<EE>(fn:Err<E>->Err<EE>):Report<EE>{
     return new Report(
       switch(this){
         case Some(v) : fn(v);

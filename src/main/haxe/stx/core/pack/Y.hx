@@ -3,6 +3,9 @@ package stx.core.pack;
 typedef YDef<P,R>               = Recursive<P -> R>; 
 
 @:callable abstract Y<P,R>(YDef<P,R>) from YDef<P,R> to YDef<P,R>{
+  @:noUsing static public function lift<P,R>(self:YDef<P,R>):Y<P,R>{
+    return new Y(self);
+  }
   static public function unit<P,R>():Y<P,R>{
     return function(fn:Recursive<P->R>):P->R return fn(fn);
   }
@@ -14,5 +17,8 @@ typedef YDef<P,R>               = Recursive<P -> R>;
   }
   public function reply():P -> R{
     return this(this);
+  }
+  public function reverse(that:YDef<P,R>){
+    return that(this);
   }
 }
