@@ -158,7 +158,7 @@ class LiftNano{
     return Right(tII);
   }
   #if tink_core
-  static public function fudge<T>(future:tink.core.Future<T>):Option<T>{
+  static public function value<T>(future:tink.core.Future<T>):Option<T>{
     var result    = None;
     var cancelled = false;
     future.handle(
