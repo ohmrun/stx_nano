@@ -48,6 +48,13 @@ class LiftNano{
   static public function reject<T,E>(wildcard:Wildcard,e:Err<E>):Res<T,E>{
     return Res.reject(e);
   }
+  static public function success<T,E>(wildcard:Wildcard,t:T):Outcome<T,E>{
+    return Outcome.success(t);
+  }
+  static public function failure<T,E>(wildcard:Wildcard,e:E):Outcome<T,E>{
+    return Outcome.failure(e);
+  }
+  
   static public function fault(wildcard:Wildcard,?pos:Pos):Fault{
     return new Fault(pos);
   }
