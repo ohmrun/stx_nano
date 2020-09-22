@@ -14,4 +14,7 @@
 
 #-js nano.js
 #--hl bin/main.hl
---jvm bin/main.jar
+#--jvm bin/main.jar
+#--cpp bin/cpp
+
+
