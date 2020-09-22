@@ -1,5 +1,7 @@
 package stx.nano;
 
+import tink.core.Noise;
+
 enum ResSum<T,E>{
   Accept(t:T);
   Reject(e:Err<E>);
@@ -14,6 +16,12 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   @:noUsing static public function accept<T,E>(t:T):Res<T,E>                    return lift(Accept(t));
   @:noUsing static public function reject<T,E>(e:Err<E>):Res<T,E>               return lift(Reject(e));
 
+  @:noUsing static public function fromReport<E>(self:Report<E>):Res<Noise,E>{
+    return lift(self.fold(
+      (ok:Err<E>) -> __.reject(ok),
+      ()   -> __.accept(Noise)
+    ));
+  }
   public function prj():ResSum<T,E> return this;
   private var self(get,never):Res<T,E>;
   
@@ -93,6 +101,33 @@ class ResLift{
     return fold(self,
       (_) -> Report.unit(),
       Report.pure
+    );
+  }
+  static public function rectify<T,E>(self:ResSum<T,E>,fn:Err<E>->ResSum<T,E>):ResSum<T,E>{
+    return fold(
+      self,
+      (ok)  -> __.accept(ok),
+      (no)  -> fn(no)
+    );
+  }
+  static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Err<E>->Void):Res<T,E>{
+    return fold(
+      self,
+      (ok) -> {
+        success(ok);
+        return __.accept(ok);
+      },
+      (e) -> {
+        failure(e);
+        return __.reject(e);
+      }
+    );
+  }
+  static public function ok<T,E>(self:ResSum<T,E>):Bool{
+    return fold(
+      self,
+      (_) -> true,
+      (_) -> false
     );
   }
 }

@@ -8,6 +8,9 @@ package stx.nano;
   
   @:noUsing static public function lift<E>(self:Option<Err<E>>):Report<E> return new Report(self);
 
+  @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{
+    return pure(__.fault(pos).of(data));
+  }
   @:noUsing static public function unit<E>():Report<E>{
     return new Report(None);
   }
@@ -16,6 +19,18 @@ package stx.nano;
   }
   @:noUsing static public function pure<E>(e:Err<E>):Report<E>{
     return new Report(Some(e));
+  }
+  public function effects(success:Void->Void,failure:Void->Void):Report<E>{
+    return this.fold(
+      (e) -> {
+        failure();
+        return pure(e);
+      },
+      () -> {
+        success();
+        return unit();
+      }
+    );
   }
   public inline function crunch(){
     switch(this){
@@ -44,6 +59,12 @@ package stx.nano;
       (lhs,rhs) ->  lhs.next(rhs)
     );
   }
+  public function or(that:Void->Report<E>):Report<E>{
+    return this.fold(
+      (x) -> Report.pure(x),
+      that
+    );
+  }
   @:note("error in js")
   public function errata<EE>(fn:Err<E>->Err<EE>):Report<EE>{
     return new Report(
@@ -58,5 +79,11 @@ package stx.nano;
       case None : true;
       default   : false;
     }
+  }
+  public function populate<T>(fn:Void->T):Res<T,E>{
+    return this.fold(
+      __.reject,
+      () -> __.accept(fn())
+    );
   }
 }
