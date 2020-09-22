@@ -1,7 +1,7 @@
 package stx;
 
 #if !stx_core
-//hat-tip @back2dos haxetink
+//@back2dos haxetink
 typedef PosDef = 
   #if macro
     haxe.macro.Expr.Position;
