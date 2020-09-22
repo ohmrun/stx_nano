@@ -25,12 +25,12 @@ class CoupleLift{
       (ti,tii) -> tp(ti,fn(tii))
     );
   }
-  static public function lmap<Ti,Tii,TT>(self: Couple<Ti,Tii>,fn:Ti->TT):Couple<TT,Tii>{
+  static public function mapl<Ti,Tii,TT>(self: Couple<Ti,Tii>,fn:Ti->TT):Couple<TT,Tii>{
     return (tp) -> self(
       (ti,tii) -> tp(fn(ti),tii)
     );
   }
-  static public function rmap<Ti,Tii,TT>(self: Couple<Ti,Tii>,fn:Tii->TT):Couple<Ti,TT>{
+  static public function mapr<Ti,Tii,TT>(self: Couple<Ti,Tii>,fn:Tii->TT):Couple<Ti,TT>{
     return map(self,fn);
   }
   static public function fst<Ti, Tii>(self : Couple<Ti, Tii>) : Ti{
