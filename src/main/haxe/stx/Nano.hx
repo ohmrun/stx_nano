@@ -57,6 +57,7 @@ typedef Slot<T>                 = stx.nano.Slot<T>;
 
 typedef Unique<T>               = stx.nano.Unique<T>;
 typedef KV<K,V>                 = stx.nano.KV<K,V>;
+typedef Iter<T>                 = stx.nano.Iter<T>;
 #else
   
 #end
