@@ -91,6 +91,19 @@ class PositionLift {
       return '<unknown>';
     #end
   }
+  static public function to_vscode_clickable_link(pos:Pos){
+    #if !macro
+      var f   = pos.fileName;
+      var cls = pos.className;
+      var fn  = pos.methodName;
+      var ln  = pos.lineNumber;
+
+      var class_method = withFragmentName(pos);
+      return '$f:$ln';
+    #else
+      return '<unknown>';
+    #end
+  }
   static public function withCustomParams(p:Pos,v:Dynamic):Pos{
     p = clone(p);
     #if !macro
