@@ -10,12 +10,12 @@
         "0b1kn00b"
     ],
     "releasenote": "steady as she goes",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "url": "https://github.com/ohmrun/stx_nano",
     "dependencies": {
         "tink_core": "",
         "hx3compat": "",
-        "stx_pico" : ""
+        "stx_pico" : "1.0.0"
     },
     "classPath": "src/main/haxe"
 }
