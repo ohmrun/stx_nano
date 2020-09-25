@@ -56,7 +56,7 @@ typedef Primitive               = stx.nano.Primitive;
 typedef Slot<T>                 = stx.nano.Slot<T>;
 
 typedef Unique<T>               = stx.nano.Unique<T>;
-
+typedef KV<K,V>                 = stx.nano.KV<K,V>;
 #else
   
 #end
