@@ -6,7 +6,7 @@ package stx.nano;
 
   public function new(self) this = self;
   
-  @:noUsing static public function lift<E>(self:Option<Err<E>>):Report<E> return new Report(self);
+  @:noUsing static public inline function lift<E>(self:Option<Err<E>>):Report<E> return new Report(self);
 
   @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{
     return pure(__.fault(pos).of(data));

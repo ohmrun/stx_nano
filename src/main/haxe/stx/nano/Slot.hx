@@ -33,7 +33,7 @@ private class SlotDef<T>{
 @:forward abstract Slot<T>(SlotDef<T>) from SlotDef<T> to SlotDef<T>{
   static public var _(default,never) = SlotLift;
   public function new(self) this = self;
-  static public function lift<T>(self:SlotDef<T>):Slot<T> return new Slot(self);
+  static public inline function lift<T>(self:SlotDef<T>):Slot<T> return new Slot(self);
   
 
   public function prj():SlotDef<T> return this;

@@ -2,6 +2,7 @@ package stx.nano;
 
 import tink.core.Noise;
 
+@:using(stx.nano.Res.ResLift)
 enum ResSum<T,E>{
   Accept(t:T);
   Reject(e:Err<E>);
@@ -12,7 +13,7 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   public function new(self) this = self;
   static public var _(default,never) = ResLift;
 
-  @:noUsing static public function lift<T,E>(self:ResSum<T,E>):Res<T,E> return new Res(self);
+  @:noUsing static public inline function lift<T,E>(self:ResSum<T,E>):Res<T,E> return new Res(self);
   @:noUsing static public function accept<T,E>(t:T):Res<T,E>                    return lift(Accept(t));
   @:noUsing static public function reject<T,E>(e:Err<E>):Res<T,E>               return lift(Reject(e));
 
@@ -51,6 +52,13 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   }
 }
 class ResLift{
+  @:nb("toString() isn't called in the normal way.","//T:{ toString : () -> String }")
+  static public function toString<T,E>(self:ResSum<T,E>):String{
+    return self.fold(
+      (x) -> 'Accept(${x})',
+      (e) -> 'Reject(${e.toString()})'
+    );
+  }
   static public function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
     return Res.lift(
       self.fold(

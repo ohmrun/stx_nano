@@ -10,7 +10,7 @@ typedef UniqueDef<T> = {
 **/
 @:forward abstract Unique<T>(UniqueDef<T>){
   private function new(self) this = self;
-  @:noUsing static public function lift<T>(self:UniqueDef<T>):Unique<T> return new Unique(self);
+  @:noUsing static public inline function lift<T>(self:UniqueDef<T>):Unique<T> return new Unique(self);
   @:noUsing static public function pure<T>(data:T):Unique<T> return make(data,()->{});
   @:noUsing static private function make<T>(data:T,rtid:Void->Void){
     return lift({

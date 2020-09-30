@@ -10,7 +10,7 @@
         "0b1kn00b"
     ],
     "releasenote": "steady as she goes",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "url": "https://github.com/ohmrun/stx_nano",
     "dependencies": {
         "tink_core": "",

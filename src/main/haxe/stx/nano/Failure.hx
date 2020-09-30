@@ -8,7 +8,7 @@ enum FailureSum<T>{
 abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
   static public var _(default,never) = FailureLift;
   public function new(self) this = self;
-  static public function lift<T>(self:FailureSum<T>):Failure<T> return new Failure(self);
+  @:noUsing static public inline function lift<T>(self:FailureSum<T>):Failure<T> return new Failure(self);
 
 
   public function prj():FailureSum<T> return this;

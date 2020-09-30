@@ -3,7 +3,7 @@ package stx.nano;
 typedef YDef<P,R>               = Recursive<P -> R>; 
 
 @:callable abstract Y<P,R>(YDef<P,R>) from YDef<P,R> to YDef<P,R>{
-  @:noUsing static public function lift<P,R>(self:YDef<P,R>):Y<P,R>{
+  @:noUsing static public inline function lift<P,R>(self:YDef<P,R>):Y<P,R>{
     return new Y(self);
   }
   static public function unit<P,R>():Y<P,R>{
