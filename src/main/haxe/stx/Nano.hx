@@ -20,6 +20,7 @@ enum Tup3<Ti,Tii,Tiii>{
 typedef CoupleDef<Ti,Tii>       = stx.nano.Couple.CoupleDef<Ti,Tii>;
 typedef CoupleCat<Ti,Tii>       = stx.nano.Couple.CoupleCat<Ti,Tii>;
 typedef Couple<Ti,Tii>          = stx.nano.Couple<Ti,Tii>;
+typedef Twin<T>                 = Couple<T,T>;
 
 typedef TripleDef<Ti,Tii,Tiii>  = stx.nano.Triple.TripleDef<Ti,Tii,Tiii>;
 typedef Triple<Ti,Tii,Tiii>     = stx.nano.Triple<Ti,Tii,Tiii>;
