@@ -9,8 +9,8 @@
     "contributors": [
         "0b1kn00b"
     ],
-    "releasenote": "steady as she goes",
-    "version": "0.1.5",
+    "releasenote": "see CHANGELOG.md",
+    "version": "0.1.6",
     "url": "https://github.com/ohmrun/stx_nano",
     "dependencies": {
         "tink_core": "",

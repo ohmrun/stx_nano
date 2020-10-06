@@ -12,6 +12,7 @@
 
 --dce no
 
+src/main/hxml/hl.hxml
 #-js nano.js
 #--hl bin/main.hl
 #--jvm bin/main.jar
