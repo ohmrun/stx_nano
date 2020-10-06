@@ -15,4 +15,7 @@ package stx.nano;
   static private function fromString(str:String):FailCode{
     return new FailCode(str);
   }
+  public function toString(){
+    return this;
+  }
 }

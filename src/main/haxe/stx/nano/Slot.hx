@@ -26,7 +26,8 @@ private class SlotDef<T>{
   public var  pos(default,null)   : Pos;
 
   public function toString():String{
-    return 'Slot($ready $pos)';
+    var p = Position.lift(pos).to_vscode_clickable_link();
+    return 'Slot($ready $p)';
   }
 }
 @:using(stx.nano.Slot.SlotLift)

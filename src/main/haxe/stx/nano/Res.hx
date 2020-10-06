@@ -3,16 +3,24 @@ package stx.nano;
 import tink.core.Noise;
 
 @:using(stx.nano.Res.ResLift)
+@:using(stx.nano.Res.ResSumLift)
 enum ResSum<T,E>{
   Accept(t:T);
   Reject(e:Err<E>);
 }
-
+class ResSumLift{
+  static public function toString<T,E>(self:ResSum<T,E>):String{
+    return Res._.toString(self);
+  }
+}
 @:using(stx.nano.Res.ResLift)
 abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   public function new(self) this = self;
   static public var _(default,never) = ResLift;
 
+  private var self(get,never):Res<T,E>;
+  private function get_self():Res<T,E> return lift(this);
+  
   @:noUsing static public inline function lift<T,E>(self:ResSum<T,E>):Res<T,E> return new Res(self);
   @:noUsing static public function accept<T,E>(t:T):Res<T,E>                    return lift(Accept(t));
   @:noUsing static public function reject<T,E>(e:Err<E>):Res<T,E>               return lift(Reject(e));
@@ -24,9 +32,6 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
     ));
   }
   public function prj():ResSum<T,E> return this;
-  private var self(get,never):Res<T,E>;
-  
-  private function get_self():Res<T,E> return lift(this);
 
   @:from static public function fromOutcome<T,E>(self:Outcome<T,Err<E>>):Res<T,E>{
     var ocd : ResSum<T,E> = switch(self){
@@ -50,10 +55,15 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
       __.accept(init)
     );
   }
+  @:to public function toStringable():Stringable{
+    return {
+      toString : _.toString.bind(this)
+    }
+  }
 }
 class ResLift{
   @:nb("toString() isn't called in the normal way.","//T:{ toString : () -> String }")
-  static public function toString<T,E>(self:ResSum<T,E>):String{
+  static public function toString<T,E>(self:Res<T,E>):String{
     return self.fold(
       (x) -> 'Accept(${x})',
       (e) -> 'Reject(${e.toString()})'

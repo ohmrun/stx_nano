@@ -1,5 +1,6 @@
 package stx.nano;
 
+@:using(stx.nano.Failure.FailureLift)
 enum FailureSum<T>{
   ERR_OF(v:T);
   ERR(spec:FailCode);
@@ -27,6 +28,12 @@ class FailureLift{
       self,
       Some,
       (_) -> None
+    );
+  }
+  static public function toString<T>(self:Failure<T>):String{
+    return fold(self,
+      (v) -> Std.string(v),
+      (n) -> n.toString()
     );
   }
 }

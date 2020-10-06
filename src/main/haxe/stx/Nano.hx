@@ -61,6 +61,9 @@ typedef Slot<T>                 = stx.nano.Slot<T>;
 typedef Unique<T>               = stx.nano.Unique<T>;
 typedef KV<K,V>                 = stx.nano.KV<K,V>;
 typedef Iter<T>                 = stx.nano.Iter<T>;
+
+typedef StringableDef           = stx.nano.Stringable.StringableDef;
+typedef Stringable              = stx.nano.Stringable;
 #else
   
 #end
@@ -73,5 +76,17 @@ class LiftFutureToSlot{
 class LiftLazyFutureToSlot{
   static public inline function toSlot<T>(fn:Void -> tink.core.Future<T>):Slot<T>{
     return Slot.Guard(fn());
+  }
+}
+class LiftStringableToString{
+  static public function toString(str:Stringable):String{
+    //trace("STRINGABLE");
+    return str.toString();
+  }
+}
+class LiftTToString{
+  static public function toString<T>(self:T):String{
+    //trace("ANYTHING");
+    return Std.string(self);
   }
 }
