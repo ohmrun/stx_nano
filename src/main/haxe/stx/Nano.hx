@@ -37,11 +37,13 @@ typedef Fault                   = stx.nano.Fault;
 typedef VBlockDef<T>            = stx.nano.VBlock.VBlockDef<T>;
 typedef VBlock<T>               = stx.nano.VBlock<T>;
 
+/*
 typedef YDef<P, R>              = stx.nano.Y.YDef<P,R>;
 typedef Y<P, R>                 = stx.nano.Y<P,R>;
 
 typedef RecursiveDef<P>         = RecursiveDef<P> -> P; 
 typedef Recursive<P>            = RecursiveDef<P>;
+*/
 
 typedef LiftOptionNano          = stx.nano.lift.LiftOptionNano;
 typedef LiftArrayNano           = stx.nano.lift.LiftArrayNano;
