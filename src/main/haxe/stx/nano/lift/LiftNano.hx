@@ -195,5 +195,7 @@ class LiftNano{
       return t;
     });
   }
-  
+  static public function not(bool:Bool){
+    return !bool;
+  } 
 }
