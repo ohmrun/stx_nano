@@ -173,6 +173,7 @@ class LiftNano{
   static public inline function crack<E>(wildcard:Wildcard,e:E){
     throw e;
   }
+  @:deprecated
   static public inline function report<E>(wildcard:Wildcard,report:Report<E>):Void{
     report.crunch();
   }

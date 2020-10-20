@@ -55,7 +55,7 @@ typedef Position                = stx.nano.Position;
 typedef PrimitiveDef            = stx.nano.Primitive.PrimitiveDef;
 typedef Primitive               = stx.nano.Primitive;
 
-//typedef SlotDef<T>              = stx.nano.Slot.SlotDef<T>;
+typedef SlotCls<T>              = stx.nano.Slot.SlotCls<T>;
 typedef Slot<T>                 = stx.nano.Slot<T>;
 
 typedef Unique<T>               = stx.nano.Unique<T>;

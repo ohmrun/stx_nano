@@ -3,7 +3,7 @@ package stx.nano;
 import tink.core.Lazy;
 import tink.core.Future;
 
-private class SlotDef<T>{
+class SlotCls<T>{
   public function new(?data:Null<T>,?guard:Null<Future<T>>,?pos:Pos){
     this.data   = data;
     this.ready  = true;
@@ -29,25 +29,28 @@ private class SlotDef<T>{
     var p = Position.lift(pos).to_vscode_clickable_link();
     return 'Slot($ready $p)';
   }
+  public function step():Float{
+    return -1;
+  }
 }
 @:using(stx.nano.Slot.SlotLift)
-@:forward abstract Slot<T>(SlotDef<T>) from SlotDef<T> to SlotDef<T>{
+@:forward abstract Slot<T>(SlotCls<T>) from SlotCls<T> to SlotCls<T>{
   static public var _(default,never) = SlotLift;
   public function new(self) this = self;
-  static public inline function lift<T>(self:SlotDef<T>):Slot<T> return new Slot(self);
+  static public inline function lift<T>(self:SlotCls<T>):Slot<T> return new Slot(self);
   
 
-  public function prj():SlotDef<T> return this;
+  public function prj():SlotCls<T> return this;
   private var self(get,never):Slot<T>;
   private function get_self():Slot<T> return lift(this);
   @:noUsing static public function Ready<T>(v:T,?pos:Pos):Slot<T>{
-    return new SlotDef(v,null,pos);
+    return new SlotCls(v,null,pos);
   }
   @:noUsing static public function Guard<T>(v:Future<T>,?pos:Pos):Slot<T>{
-    return new SlotDef(null,v,pos);
+    return new SlotCls(null,v,pos);
   }
   @:from static public inline function toSlot<T>(ft:tink.core.Future<T>):Slot<T>{
-    return new SlotDef(null,ft);
+    return new SlotCls(null,ft);
   }
   @:noUsing static public function fromFunSinkVoid<O>(fn:(O->Void)->Void):Slot<O>{
     var v         = None;
