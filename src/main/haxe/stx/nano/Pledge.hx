@@ -8,9 +8,14 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   public function new(self) this = self;
   static public function lift<T,E>(self:PledgeDef<T,E>):Pledge<T,E> return new Pledge(self);
 
-  @:noUsing static public function pure<T,E>(ch:Res<T,E>):Pledge<T,E>{
+  @:noUsing static public function make<T,E>(ch:Res<T,E>):Pledge<T,E>{
     return Future.irreversible(
       (f) -> f(ch)
+    ); 
+  }
+  @:noUsing static public function pure<T,E>(ch:T):Pledge<T,E>{
+    return Future.irreversible(
+      (f) -> f(__.accept(ch))
     ); 
   }
   @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,start:Ti,fm:Ti->T->Pledge<Ti,E>):Pledge<Ti,E>{
@@ -19,7 +24,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{
         return memo.fold(
           (v) -> fm(v,next).prj(),
-          (e) -> pure(__.reject(e))
+          (e) -> make(__.reject(e))
         );
       },
       __.accept(start)
@@ -54,7 +59,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   }
 
   @:noUsing static public function err<T,E>(e:Err<E>):Pledge<T,E>{
-    return pure(__.reject(e));
+    return make(__.reject(e));
   }
   @:noUsing static public function fromRes<T,E>(chk:Res<T,E>):Pledge<T,E>{
     return Future.irreversible(
