@@ -1,6 +1,5 @@
 package stx;
 
-#if !stx_core
 //@back2dos haxetink
 typedef PosDef = 
   #if macro
@@ -37,6 +36,9 @@ typedef Fault                   = stx.nano.Fault;
 typedef VBlockDef<T>            = stx.nano.VBlock.VBlockDef<T>;
 typedef VBlock<T>               = stx.nano.VBlock<T>;
 
+
+typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
+
 /*
 typedef YDef<P, R>              = stx.nano.Y.YDef<P,R>;
 typedef Y<P, R>                 = stx.nano.Y<P,R>;
@@ -45,6 +47,11 @@ typedef RecursiveDef<P>         = RecursiveDef<P> -> P;
 typedef Recursive<P>            = RecursiveDef<P>;
 */
 
+class LiftPos{
+  static public function lift(pos:Pos):Position{
+    return new Position(pos);
+  }
+}
 typedef LiftOptionNano          = stx.nano.lift.LiftOptionNano;
 typedef LiftArrayNano           = stx.nano.lift.LiftArrayNano;
 typedef LiftNano                = stx.nano.lift.LiftNano;
@@ -64,9 +71,13 @@ typedef Iter<T>                 = stx.nano.Iter<T>;
 
 typedef StringableDef           = stx.nano.Stringable.StringableDef;
 typedef Stringable              = stx.nano.Stringable;
-#else
-  
-#end
+
+typedef Defect<E>               = stx.nano.Defect<E>;
+typedef Scuttle                 = Defect<tink.core.Noise>;
+typedef Reaction<T>             = Outcome<T,Scuttle>;
+
+typedef Resource                = stx.nano.Resource;
+typedef LiftStringToResource    = stx.nano.lift.LiftStringToResource;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
@@ -78,15 +89,15 @@ class LiftLazyFutureToSlot{
     return Slot.Guard(fn());
   }
 }
-class LiftStringableToString{
-  static public function toString(str:Stringable):String{
-    //trace("STRINGABLE");
-    return str.toString();
-  }
-}
-class LiftTToString{
-  static public function toString<T>(self:T):String{
-    //trace("ANYTHING");
-    return Std.string(self);
-  }
-}
+// class LiftStringableToString{
+//   static public function toString(str:Stringable):String{
+//     //trace("STRINGABLE");
+//     return str.toString();
+//   }
+// }
+// class LiftTToString{
+//   static public function toString<T>(self:T):String{
+//     //trace("ANYTHING");
+//     return Std.string(self);
+//   }
+// }

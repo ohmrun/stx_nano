@@ -10,10 +10,10 @@ package stx.nano;
 
   
   public function new(self:Pos) this = self;
-  static public inline function lift(pos:Pos):Position return fromPos(pos);
+  @:noUsing static public inline function lift(pos:Pos):Position return fromPos(pos);
   
 
-  static public function make(fileName:String,className:String,methodName:String,lineNumber:Null<Int>,?customParams:Array<Dynamic>):Pos{ 
+  @:noUsing static public function make(fileName:String,className:String,methodName:String,lineNumber:Null<Int>,?customParams:Array<Dynamic>):Pos{ 
     return
       #if macro
         (null:haxe.macro.Expr.Position);
@@ -44,6 +44,26 @@ package stx.nano;
   static public function here(?pos:Pos) {
     return pos;
   } 
+  public var fileName(get,never) : String;
+  public function get_fileName(){
+    return #if macro '<macro>' #else this.fileName #end;
+  }
+  public var className(get,never) : String;
+  public function get_className(){
+    return #if macro '<macro>' #else this.className #end;
+  }
+  public var methodName(get,never) : String;
+  public function get_methodName(){
+    return #if macro '<macro>' #else this.methodName #end;
+  }
+  public var lineNummber(get,never) : Int;
+  public function get_lineNummber(){
+    return #if macro -1 #else this.lineNumber #end;
+  }
+  public var customParams(get,never) : Array<Dynamic>;
+  public function get_customParams(){
+    return #if macro [] #else this.customParams #end;
+  }
 }
 class PositionLift {
   static public function toString(pos:Pos){
@@ -55,7 +75,7 @@ class PositionLift {
       var ln  = pos.lineNumber;
       return ':pos (object :file_name $fn :class_name $cls :method_name $fn  :line_number $ln)';
     #else
-      return '<unknown>';
+      return '$pos';
     #end
   }
   static public function clone(p:Pos){
@@ -104,6 +124,16 @@ class PositionLift {
       return '<unknown>';
     #end
   }
+  static public function toString_name_method_line(pos:Pos){
+    #if !macro
+      var name    = pos.lift().identifier().name;
+      var method  = pos.methodName;
+      var line     = pos.lineNumber;
+      return '$name.$method@$line';
+    #else
+      return '<unknown>';
+    #end
+  }
   static public function withCustomParams(p:Pos,v:Dynamic):Pos{
     p = clone(p);
     #if !macro
@@ -113,5 +143,9 @@ class PositionLift {
       p.customParams.push(v);
     #end
     return p;
+  }
+  static public function identifier(self:Pos):Identifier{
+    var valid   = self.toPosition().fileName.split(".").get(0).split(__.sep()).join(".");
+    return new Identifier(valid);
   }
 }

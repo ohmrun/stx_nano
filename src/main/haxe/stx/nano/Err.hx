@@ -1,13 +1,14 @@
 package stx.nano;
 
 class Err<T>{
+  
   static public var UUID(default,never):String = "e30e1389-4a72-41fe-ba9f-d7ddf3d1e247";
 
   public var uuid(get,null) : String;
   private function get_uuid(){
     return UUID;
   }
-  public function new(data,?prev,?pos){
+  public function new(data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Pos){
     this.data = data;
     this.prev = __.option(prev).defv(None);
     this.pos  = pos;   
@@ -16,6 +17,8 @@ class Err<T>{
   public var data(default,null)             : Option<Failure<T>>;
   public var pos(default,null)              : Pos;
 
+  public inline function errate<U>(fn:T->U):Err<U> return map(fn);
+  
   public function map<U>(fn:T->U):Err<U>{
     var next_data = this.data.map(
       function (t:Failure<T>) : Failure<U> {
@@ -111,6 +114,12 @@ class Err<T>{
   public function elide():Err<Dynamic>{
     return this.map(
       (v:T) -> (v:Dynamic)
+    );
+  }
+  @:noUsing static public function grow<E>(arr:Array<E>,?pos:Pos):Err<E>{
+    return arr.tail().lfold(
+      (next:E,memo:Err<E>) -> new Err(__.option(ERR_OF(next)),Some(memo),pos),
+      new Err(arr.head().map(ERR_OF),None,pos)
     );
   }
 }

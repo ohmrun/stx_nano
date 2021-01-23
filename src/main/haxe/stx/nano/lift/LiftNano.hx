@@ -1,9 +1,32 @@
 package stx.nano.lift;
 
+import stx.alias.StdType;
+
 class LiftNano{
+  static public function nano(wildcard:Wildcard):Module{
+    return new stx.nano.Module();
+  }
+  /**
+    shortcut for creating a variadic array: `Array<Dynamic>`
+  **/
+  static public function arrd(wildcard:Wildcard,arr:Array<Dynamic>):Array<Dynamic>{
+    return arr;
+  }
+  /**
+    Useful for all sorts, 
+    ```haxe
+    (true).if_else(
+      () -> {},//if true
+      () -> {}//if false
+    );
+    ```
+  **/
   static public function if_else<R>(b:Bool,_if:Void->R,_else:Void->R):R{
     return b ? _if() : _else();
   }
+  /**
+    Returns the posititon in the code at the site of it's use. 
+  **/
   static public function here(wildcard:Wildcard,?pos:Pos):Pos{
     return pos;
   }
@@ -36,12 +59,18 @@ class LiftNano{
     #end
     return out;
   }
+  /**
+    Most used wildcard, creates an option, often used like: `__.option(value).defv(fallback)`
+  **/
   static public function option<T>(wildcard:Wildcard,v:T):Option<T>{
     return switch(v){
       case null : None;
       default   : Some(v);
     }
   }
+  /**
+    
+  **/
   static public function accept<T,E>(wildcard:Wildcard,t:T):Res<T,E>{
     return Res.accept(t);
   }
@@ -114,9 +143,9 @@ class LiftNano{
     return __.couple(trigger,future);
   }
   #end
-  static public function tracer<T>(v:Wildcard,?pos:Pos):T->T{
+  static public inline function tracer<T>(v:Wildcard,?pos:haxe.PosInfos):T->T{
     return function(t:T):T{
-      trace(t,pos);
+      haxe.Log.trace(t,pos);
       return t;
     }
   }
@@ -180,6 +209,9 @@ class LiftNano{
   static public function definition<T>(wildcard:Wildcard,t:T):Class<T>{
     return std.Type.getClass(t);
   }
+  static public function identifier<T>(self:Class<T>):Identifier{
+    return new Identifier(StdType.getClassName(self));
+  }
   static public function vblock<T>(wildcard:Wildcard,t:T):VBlock<T>{
     return ()->{};
   }
@@ -199,4 +231,7 @@ class LiftNano{
   static public function not(bool:Bool){
     return !bool;
   } 
+  static public function toPosition(pos:Pos):Position{
+    return Position.lift(pos);
+  }
 }

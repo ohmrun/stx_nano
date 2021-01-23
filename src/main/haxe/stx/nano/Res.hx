@@ -69,7 +69,7 @@ class ResLift{
       (e) -> 'Reject(${e.toString()})'
     );
   }
-  static public function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
+  static public inline function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
     return Res.lift(
       self.fold(
         (t) -> __.accept(t),
@@ -77,10 +77,10 @@ class ResLift{
       )
     );
   }
-  static public function errate<T,E,EE>(self:Res<T,E>,fn:E->EE):Res<T,EE>{
+  static public inline function errate<T,E,EE>(self:Res<T,E>,fn:E->EE):Res<T,EE>{
     return errata(self,(e) -> e.map(fn));
   }
-  static public function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
+  static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
     return switch([self,that]){
       case [Reject(e),Reject(ee)]     : Reject(e.next(ee));
       case [Reject(e),_]              : Reject(e);
@@ -88,40 +88,40 @@ class ResLift{
       case [Accept(t),Accept(tt)]     : Accept(__.couple(t,tt));
     }
   }
-  static public function map<T,E,TT>(self:ResSum<T,E>,fn:T->TT):Res<TT,E>{
+  static public inline function map<T,E,TT>(self:ResSum<T,E>,fn:T->TT):Res<TT,E>{
     return flat_map(self,(x) -> Accept(fn(x)));
   }
-  static public function flat_map<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
+  static public inline function flat_map<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
     return Res.lift(fold(self,(t) -> fn(t),(e) -> Reject(e)));
   }
-  static public function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Err<E>->TT):TT{
+  static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Err<E>->TT):TT{
     return switch(self){
       case Accept(t) : fn(t);
       case Reject(e) : er(e);
     }
   }
-  static public function fudge<T,E>(self:ResSum<T,E>):T{
+  static public inline function fudge<T,E>(self:ResSum<T,E>):T{
     return fold(self,(t) -> t,(e) -> throw(e));
   }
-  static public function elide<T,E>(self:ResSum<T,E>):Res<Dynamic,E>{
+  static public inline function elide<T,E>(self:ResSum<T,E>):Res<Dynamic,E>{
     return fold(self,
       (t) -> Reject((t:Dynamic)),
       (e) -> Accept(e)
     );
   }
-  static public function value<T,E>(self:ResSum<T,E>):Option<T>{
+  static public inline function value<T,E>(self:ResSum<T,E>):Option<T>{
     return fold(self,
       Some,
       (_) -> None  
     );
   }
-  static public function report<T,E>(self:ResSum<T,E>):Report<E>{
+  static public inline function report<T,E>(self:ResSum<T,E>):Report<E>{
     return fold(self,
       (_) -> Report.unit(),
       Report.pure
     );
   }
-  static public function rectify<T,E>(self:ResSum<T,E>,fn:Err<E>->ResSum<T,E>):ResSum<T,E>{
+  static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Err<E>->ResSum<T,E>):ResSum<T,E>{
     return fold(
       self,
       (ok)  -> __.accept(ok),
@@ -141,7 +141,7 @@ class ResLift{
       }
     );
   }
-  static public function ok<T,E>(self:ResSum<T,E>):Bool{
+  static public inline function ok<T,E>(self:ResSum<T,E>):Bool{
     return fold(
       self,
       (_) -> true,

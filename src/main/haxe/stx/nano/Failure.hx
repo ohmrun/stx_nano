@@ -19,7 +19,7 @@ abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
 class FailureLift{
   static public function fold<T,Z>(self:Failure<T>,val:T->Z,def:FailCode->Z):Z{
     return switch(self){
-      case ERR_OF(v) : val(v);
+      case ERR_OF(v) :  val(v);
       case ERR(e)    :  def(e);
     }
   }
@@ -31,7 +31,8 @@ class FailureLift{
     );
   }
   static public function toString<T>(self:Failure<T>):String{
-    return fold(self,
+    return fold(
+      self,
       (v) -> Std.string(v),
       (n) -> n.toString()
     );
