@@ -8,18 +8,24 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   public function new(self) this = self;
   static public function lift<T,E>(self:PledgeDef<T,E>):Pledge<T,E> return new Pledge(self);
 
-  @:noUsing static public function pure<T,E>(ch:Res<T,E>):Pledge<T,E>{
-    return Future.irreversible(
-      (f) -> f(ch)
+  @:noUsing static public function make<T,E>(ch:Res<T,E>):Pledge<T,E>{
+    return new Future(
+      (f) -> {
+        f(ch);
+        return null;
+      }
     ); 
   }
-  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,start:Ti,fm:Ti->T->Pledge<Ti,E>):Pledge<Ti,E>{
+  @:noUsing static public inline function accept<T,E>(ch:T):Pledge<T,E>       return make(__.accept(ch));
+  @:noUsing static public inline function reject<T,E>(e:Err<E>):Pledge<T,E>   return make(__.reject(e));
+
+  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
     return new Pledge(__.nano().Ft().bind_fold(
       it,
       function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{
         return memo.fold(
-          (v) -> fm(v,next).prj(),
-          (e) -> pure(__.reject(e))
+          (v) -> fm(next,v).prj(),
+          (e) -> make(__.reject(e))
         );
       },
       __.accept(start)
@@ -54,7 +60,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   }
 
   @:noUsing static public function err<T,E>(e:Err<E>):Pledge<T,E>{
-    return pure(__.reject(e));
+    return make(__.reject(e));
   }
   @:noUsing static public function fromRes<T,E>(chk:Res<T,E>):Pledge<T,E>{
     return Future.irreversible(
@@ -75,6 +81,13 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   public function prj():PledgeDef<T,E> return this;
   private var self(get,never):Pledge<T,E>;
   private function get_self():Pledge<T,E> return lift(this);
+
+  public function map<Ti>(fn:T->Ti):Pledge<Ti,E>{
+    return _.map(this,fn);
+  }
+  public function flat_map<Ti>(fn:T->Pledge<Ti,E>):Pledge<Ti,E>{
+    return _.flat_map(this,fn);
+  }
 }
 class PledgeLift{
   static private function lift<T,E>(self:Future<Res<T,E>>):Pledge<T,E>{
@@ -134,10 +147,12 @@ class PledgeLift{
       )
     );
   }
-  static public function now<T,E>(self:Pledge<T,E>):Res<T,E>{
+  static public function fudge<T,E>(self:Pledge<T,E>):Res<T,E>{
     var out = null;
     self.prj().handle(
-      (v) -> out = v
+      (v) -> {
+        out = v;
+      }
     );
     if(out == null){
       throw __.fault().err(E_ValueNotReady);

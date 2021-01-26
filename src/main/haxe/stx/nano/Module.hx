@@ -19,14 +19,14 @@ private class Ft extends Clazz{
     );
   }
   public function zip<Ti,Tii>(self:Future<Ti>,that:Future<Tii>):Future<Couple<Ti,Tii>>{
-    var done  = false;
-    var left  = None;
-    var right = None;
+    
+    var left    = None;
+    var right   = None;
     var trigger = Future.trigger();
     var on_done = function(){
       switch([left,right]){
-        case [Some(l),Some(r)]:
-        default :
+        case [Some(l),Some(r)]  : trigger.trigger(__.couple(l,r));
+        default                 :
       }
     }
     var l_handler = function(l){
