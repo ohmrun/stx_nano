@@ -13,9 +13,9 @@
     "version": "0.1.6",
     "url": "https://github.com/ohmrun/stx_nano",
     "dependencies": {
-        "tink_core": "",
-        "hx3compat": "",
-        "stx_pico" : "1.0.0"
+        "tink_core"     : "git:https://github.com/haxetink/tink_core.git",
+        "hx3compat"     : "git:https://github.com/HaxeFoundation/hx3compat.git",
+        "stx_pico"      : "git:https://github.com/ohmrun/stx_pico.git"
     },
     "classPath": "src/main/haxe"
 }
