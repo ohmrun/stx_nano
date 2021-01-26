@@ -78,6 +78,7 @@ typedef Reaction<T>             = Outcome<T,Scuttle>;
 
 typedef Resource                = stx.nano.Resource;
 typedef LiftStringToResource    = stx.nano.lift.LiftStringToResource;
+typedef Embed<T>                = stx.nano.Embed<T>;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
