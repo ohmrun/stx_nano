@@ -9,7 +9,6 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   static public function lift<T,E>(self:PledgeDef<T,E>):Pledge<T,E> return new Pledge(self);
 
   @:noUsing static public function make<T,E>(ch:Res<T,E>):Pledge<T,E>{
-  @:noUsing static public function make<T,E>(ch:Res<T,E>):Pledge<T,E>{
     return new Future(
       (f) -> {
         f(ch);
@@ -26,7 +25,6 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{
         return memo.fold(
           (v) -> fm(next,v).prj(),
-          (e) -> make(__.reject(e))
           (e) -> make(__.reject(e))
         );
       },
