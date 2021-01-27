@@ -165,11 +165,16 @@ class PledgeLift{
       (chk) -> chk.errata(fn)
     );
   }
-  static public function each<T,E>(self:Pledge<T,E>,fn:T->Void){
+  static public function each<T,E>(self:Pledge<T,E>,fn:T->Void,?err:Err<E>->Void){
     self.prj().handle(
       (res) -> res.fold(
         fn,
-        (e)  -> __.crack
+        (e)  -> {
+          __.option(err).fold(
+            (f) -> f(e),
+            ()  ->  __.crack(e)
+          );
+        }
       )
     );
   }
