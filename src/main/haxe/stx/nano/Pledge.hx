@@ -90,6 +90,27 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     return _.flat_map(this,fn);
   }
 }
+// @:allow(stx.nano.Pledge) private class PledgeCls<T,E>{
+//   private final forward : Future<Res<T,Err<E>>>;
+
+//   public function new(forward){
+//     this.forward = forward;
+//   }
+//   public function prj():PledgeCls<T,E> return this;
+  
+//   public function map<Ti>(fn:T->Ti):Pledge<Ti,E>{
+//     return _.map(this.forward,fn);
+//   }
+//   public function flat_map<Ti>(fn:T->Pledge<Ti,E>):Pledge<Ti,E>{
+//     return _.flat_map(this.forward,fn);
+//   }
+//   public function zip<Tii>(that:Pledge<Tii,E>):Pledge<Couple<T,Tii>,E>{
+//     return _.zip(this,that);
+//   }
+//   public function fold<Ti,E>(val:T->Ti,ers:Null<Err<E>>->Ti):Future<Ti>{
+//     return _.fold(this,val,ers);
+//   }
+// }
 class PledgeLift{
   static private function lift<T,E>(self:Future<Res<T,E>>):Pledge<T,E>{
     return Pledge.lift(self);

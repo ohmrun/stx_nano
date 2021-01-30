@@ -16,6 +16,8 @@ enum Tup2<L,R>{
 enum Tup3<Ti,Tii,Tiii>{
   tuple3(tI:Ti,tII:Tii,tIII:Tiii);
 }
+typedef StdType                 = std.Type;
+
 typedef CoupleDef<Ti,Tii>       = stx.nano.Couple.CoupleDef<Ti,Tii>;
 typedef CoupleCat<Ti,Tii>       = stx.nano.Couple.CoupleCat<Ti,Tii>;
 typedef Couple<Ti,Tii>          = stx.nano.Couple<Ti,Tii>;
@@ -79,6 +81,14 @@ typedef Reaction<T>             = Outcome<T,Scuttle>;
 typedef Resource                = stx.nano.Resource;
 typedef LiftStringToResource    = stx.nano.lift.LiftStringToResource;
 typedef Embed<T>                = stx.nano.Embed<T>;
+
+typedef ChunkSum<T,E>           = stx.nano.Chunk.ChunkSum<T,E>;
+typedef Chunk<T,E>              = stx.nano.Chunk<T,E>;
+
+typedef ContractDef<T,E>        = stx.nano.Contract.ContractDef<T,E>;
+typedef Contract<T,E>           = stx.nano.Contract<T,E>;
+
+typedef EnumValue               = stx.nano.EnumValue;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{

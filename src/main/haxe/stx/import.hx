@@ -1,5 +1,7 @@
 package stx;
 
+using tink.CoreApi;
+
 import tink.core.Future;
 import tink.core.Promise;
 
