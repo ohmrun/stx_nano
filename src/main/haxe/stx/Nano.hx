@@ -8,6 +8,8 @@ typedef PosDef =
     haxe.PosInfos;
   #end
 
+
+
 typedef Pos                     = PosDef;
 
 enum Tup2<L,R>{
@@ -57,6 +59,16 @@ class LiftPos{
 typedef LiftOptionNano          = stx.nano.lift.LiftOptionNano;
 typedef LiftArrayNano           = stx.nano.lift.LiftArrayNano;
 typedef LiftNano                = stx.nano.lift.LiftNano;
+typedef LiftErrToChunk          = stx.nano.lift.LiftErrToChunk;
+typedef LiftResToChunk          = stx.nano.lift.LiftResToChunk;
+typedef LiftOptionToChunk       = stx.nano.lift.LiftOptionToChunk;
+typedef LiftTinkOutcomeToChunk  = stx.nano.lift.LiftTinkOutcomeToChunk;
+typedef LiftIterableToIter      = stx.nano.lift.LiftIterableToIter;
+typedef LiftArrayToIter         = stx.nano.lift.LiftArrayToIter;
+typedef LiftIteratorToIter      = stx.nano.lift.LiftIteratorToIter;
+typedef LiftMapToIter           = stx.nano.lift.LiftMapToIter;
+typedef LiftStringMapToIter     = stx.nano.lift.LiftStringMapToIter;
+
 typedef Wildcard                = stx.nano.Wildcard;
 
 typedef Report<E>               = stx.nano.Report<E>;

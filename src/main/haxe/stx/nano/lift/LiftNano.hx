@@ -234,4 +234,10 @@ class LiftNano{
   static public function toPosition(pos:Pos):Position{
     return Position.lift(pos);
   }
+  static public function chunk<T>(_:Wildcard,v:Null<T>):Chunk<T,Dynamic>{
+    return switch(v){
+      case null : Tap;
+      default   : Val(v);
+    }
+  }
 }

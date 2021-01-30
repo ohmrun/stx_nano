@@ -4,11 +4,19 @@ package stx.nano;
   @:noUsing static public function unit<E>():Defect<E>{
     return [];
   }
-  @:from static public function pure<E>(e:E):Defect<E>{
+  @:noUsing static public function pure<E>(e:E):Defect<E>{
     return [e];
   }
   @:to public inline function toErr():Err<E>{
     return Err.grow(this);
+  }
+  @:from static public function fromErr<E>(err:Err<E>):Defect<E>{
+    return err.data.flat_map(
+      (x) -> switch(x){
+        case ERR_OF(e)  : Some(e);
+        default         : None;
+      }
+    ).toArray();
   }
   public function elide():Defect<Dynamic>{
     return this;
