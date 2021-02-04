@@ -7,6 +7,7 @@ class Module extends Clazz{
   #if tink_core
   public function Ft() return new Ft();
   #end
+  public function Map() return new Map();
 }
 #if tink_core
 private class Ft extends Clazz{
@@ -45,6 +46,7 @@ private class Ft extends Clazz{
   }
   public function tryAndThenCancelIfNotAvailable<T>(ft:Future<T>):Option<T>{
     var output : Option<T>   = None;
+ 
     var canceller = ft.handle(
       (x) -> output = Some(x)
     );
@@ -55,3 +57,9 @@ private class Ft extends Clazz{
   }
 }
 #end
+
+private class Map extends Clazz{
+  public function String<T>():haxe.ds.Map<String,T>{
+    return new haxe.ds.Map();
+  }
+}

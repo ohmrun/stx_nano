@@ -69,6 +69,7 @@ typedef LiftArrayToIter         = stx.nano.lift.LiftArrayToIter;
 typedef LiftIteratorToIter      = stx.nano.lift.LiftIteratorToIter;
 typedef LiftMapToIter           = stx.nano.lift.LiftMapToIter;
 typedef LiftStringMapToIter     = stx.nano.lift.LiftStringMapToIter;
+typedef LiftPath                = stx.nano.lift.LiftPath;
 
 typedef Wildcard                = stx.nano.Wildcard;
 
@@ -104,6 +105,11 @@ typedef Contract<T,E>           = stx.nano.Contract<T,E>;
 typedef EnumValue               = stx.nano.EnumValue;
 typedef Blob                    = stx.nano.Blob;
 typedef Field<T>                = stx.nano.Field<T>;
+
+typedef OneOrManySum<T>         = stx.nano.OneOrMany.OneOrManySum<T>;
+typedef OneOrMany<T>            = stx.nano.OneOrMany<T>;
+typedef CompilerTarget          = stx.nano.CompilerTarget;
+typedef Enum<T>                 = stx.nano.Enum<T>;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
