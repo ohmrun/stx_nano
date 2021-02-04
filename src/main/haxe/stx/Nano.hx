@@ -103,7 +103,6 @@ typedef Contract<T,E>           = stx.nano.Contract<T,E>;
 typedef EnumValue               = stx.nano.EnumValue;
 typedef Blob                    = stx.nano.Blob;
 typedef Field<T>                = stx.nano.Field<T>;
-typedef IdentDef                = stx.nano.IdentDef;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
