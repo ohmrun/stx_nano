@@ -5,6 +5,9 @@ package stx.nano;
   @:noUsing @:from static public function fromTup<V>(tp:Couple<StdString,V>):Field<V>{
     return new Field({ key : tp.fst(), val : tp.snd()});
   }
+  @:noUsing @:from static public function fromCouple<V>(tp:Couple<StdString,V>):Field<V>{
+    return new Field({ key : tp.fst(), val : tp.snd()});
+  }
   static public function create<V>(key:StdString,val:V){
     return new Field({
       key : key,
@@ -20,4 +23,5 @@ package stx.nano;
   public function toCouple():Couple<StdString,V>{
     return __.couple(this.key,this.val);
   }
+
 }

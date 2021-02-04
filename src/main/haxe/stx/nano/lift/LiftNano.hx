@@ -240,4 +240,7 @@ class LiftNano{
       default   : Val(v);
     }
   }
+  static public function ident(wildcard:Wildcard,str:String):Identifier{
+    return new Identifier(str);
+  }
 }

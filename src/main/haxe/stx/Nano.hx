@@ -56,6 +56,7 @@ class LiftPos{
     return new Position(pos);
   }
 }
+typedef LiftIMapToArrayKV       = stx.nano.lift.LiftIMapToArrayKV;
 typedef LiftOptionNano          = stx.nano.lift.LiftOptionNano;
 typedef LiftArrayNano           = stx.nano.lift.LiftArrayNano;
 typedef LiftNano                = stx.nano.lift.LiftNano;
