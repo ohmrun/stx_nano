@@ -18,6 +18,9 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
   @:noUsing static public function unit<T,E>():Contract<T,E>{
     return Contract.pure(Tap);
   }
+  @:noUsing static public function sync<T,E>(ch:Chunk<T,E>):Contract<T,E>{
+    return lift(Future.sync(ch));
+  } 
   @:noUsing static public function pure<T,E>(ch:Chunk<T,E>):Contract<T,E>{
     return Future.irreversible(
       (f) -> f(ch)
