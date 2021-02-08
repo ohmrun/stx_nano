@@ -26,6 +26,16 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (f) -> f(ch)
     ); 
   }
+  @:noUsing static public function accept<T,E>(ch:T):Contract<T,E>{
+    return Future.irreversible(
+      (f) -> f(Val(ch))
+    ); 
+  }
+  @:noUsing static public function reject<T,E>(ch:Err<E>):Contract<T,E>{
+    return Future.irreversible(
+      (f) -> f(End(ch))
+    ); 
+  }
   @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,start:Ti,fm:Ti->T->Contract<Ti,E>):Contract<Ti,E>{
     return new Contract(__.nano().Ft().bind_fold(
       it,
