@@ -7,7 +7,7 @@ package stx.nano;
 typedef ContractDef<T,E> = Future<Chunk<T,E>>; 
 
 @:using(stx.nano.Contract.ContractLift)
-abstract Contract<T,E>(ContractDef<T,E>) from ContractDef<T,E>{
+@:expose abstract Contract<T,E>(ContractDef<T,E>) from ContractDef<T,E>{
   static public var _(default,never) = ContractLift;
 
   public function new(v:Future<Chunk<T,E>>) this = v;
