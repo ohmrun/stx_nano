@@ -3,6 +3,7 @@
 
 --macro Main.boot()
 -D analyzer-optimize
+-D no-deprecation-warnings
 
 -lib hx3compat
 -lib stx_pico
@@ -12,8 +13,8 @@
 
 --dce no
 
-src/main/hxml/hl.hxml
-#-js nano.js
+#src/main/hxml/hl.hxml
+-js bin/nano.js
 #--hl bin/main.hl
 #--jvm bin/main.jar
 #--cpp bin/cpp

@@ -82,6 +82,20 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     final val = m.fold((x)->Val(x),()->Tap);
     return fromChunk(val);
   }
+  #if js
+  @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>):Contract<T,E>{
+    var t = Future.trigger();
+    self.then(
+      ok -> {
+        t.trigger(Val(ok));
+      },
+      no -> {
+        t.trigger(End(__.fault().any(no)));
+      }
+    );
+    return lift(t.asFuture());
+  }
+  #end
   public function prj():Future<Chunk<T,E>> return this;
 }
 
@@ -89,6 +103,27 @@ class ContractLift extends Clazz{
   static private function lift<T,E>(self:Future<Chunk<T,E>>):Contract<T,E>{
     return Contract.lift(self);
   }
+  #if js
+  static public function toJsPromise<T,E>(self:Contract<T,E>):js.lib.Promise<Res<Option<T>,E>>{
+    var promise = new js.lib.Promise(
+      (resolve,reject) -> {
+        self.fold(
+          (v) -> {
+            resolve(__.accept(Some(v)));
+          },
+          (e) -> {
+            reject(__.reject(e));
+          },
+          ()  -> {
+            //trace('empty');
+            resolve(__.accept(None));
+          }
+        ).handle(_ -> {});
+      }
+    );
+    return promise;
+  }
+  #end
   static public function zip<Ti,Tii,E>(self:Contract<Ti,E>,that:Contract<Tii,E>):Contract<Couple<Ti,Tii>,E>{
     var out = __.nano().Ft().zip(self.prj(),that.prj()).map(
       (tp) -> tp.fst().zip(tp.snd())
