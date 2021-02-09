@@ -70,6 +70,7 @@ typedef LiftIteratorToIter      = stx.nano.lift.LiftIteratorToIter;
 typedef LiftMapToIter           = stx.nano.lift.LiftMapToIter;
 typedef LiftStringMapToIter     = stx.nano.lift.LiftStringMapToIter;
 typedef LiftJsPromiseToContract = stx.nano.lift.LiftJsPromiseToContract;
+typedef LiftContractToJsPromise = stx.nano.lift.LiftContractToJsPromise;
 typedef LiftPath                = stx.nano.lift.LiftPath;
 
 typedef Wildcard                = stx.nano.Wildcard;
