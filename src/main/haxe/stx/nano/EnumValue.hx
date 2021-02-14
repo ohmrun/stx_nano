@@ -8,14 +8,14 @@ abstract EnumValue(StdEnumValue) from StdEnumValue{
   public function params(){
     return StdType.enumParameters(this);
   }
-  public function constructor(){
-    return StdType.enumConstructor(this);
+  public function ctr(){
+    return StdType.enumctr(this);
   }
   public function index(){
     return StdType.enumIndex(this);
   }
   public function alike(that:EnumValue){
-    return constructor() == that.constructor() && index() == that.index();
+    return ctr() == that.ctr() && index() == that.index();
   }
   public function prj():StdEnumValue{
     return this;

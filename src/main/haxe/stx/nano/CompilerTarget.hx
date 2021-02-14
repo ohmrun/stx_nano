@@ -73,6 +73,6 @@ class CompilerTargetLift{
   }
   
   static public function canonical(target:CompilerTarget):String{
-    return new EnumValue(target.prj()).constructor();
+    return new EnumValue(target.prj()).ctr();
   }
 }
