@@ -9,7 +9,7 @@ abstract EnumValue(StdEnumValue) from StdEnumValue{
     return StdType.enumParameters(this);
   }
   public function ctr(){
-    return StdType.enumctr(this);
+    return StdType.enumConstructor(this);
   }
   public function index(){
     return StdType.enumIndex(this);
