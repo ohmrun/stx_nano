@@ -64,6 +64,9 @@ package stx.nano;
   public function get_customParams(){
     return #if macro [] #else this.customParams #end;
   }
+  public function toPos():Pos{
+    return this;
+  }
 }
 class PositionLift {
   static public function toString(pos:Pos){
