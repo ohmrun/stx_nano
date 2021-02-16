@@ -155,7 +155,8 @@ class PositionLift {
     var valid   = self.toPosition().fileName.split(".").get(0).split(__.sep()).join(".");
     return new Identifier(valid);
   }
-  static public inline function toIdentfier(pos:Pos):Identifier{
-    return identifier(pos);
+  static public inline function toIdentfier(self:Pos):Identifier{
+    var valid   = self.toPosition().fileName.split(".").get(0).split(__.sep()).join(".");
+    return new Identifier(valid);
   }
 }
