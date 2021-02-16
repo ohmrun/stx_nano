@@ -85,7 +85,7 @@ class ResLift{
       case [Reject(e),Reject(ee)]     : Reject(e.next(ee));
       case [Reject(e),_]              : Reject(e);
       case [_,Reject(e)]              : Reject(e);
-      case [Accept(t),Accept(tt)]     : Accept(__.couple(t,tt));
+      case [Accept(t),Accept(tt)]     : Accept(Couple.make(t,tt));
     }
   }
   static public inline function map<T,E,TT>(self:ResSum<T,E>,fn:T->TT):Res<TT,E>{
