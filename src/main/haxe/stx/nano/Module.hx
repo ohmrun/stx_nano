@@ -2,6 +2,7 @@ package stx.nano;
 
 #if tink_core
 import tink.core.Future;
+import tink.core.Future;
 #end
 class Module extends Clazz{
   #if tink_core

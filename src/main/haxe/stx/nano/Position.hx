@@ -64,6 +64,9 @@ package stx.nano;
   public function get_customParams(){
     return #if macro [] #else this.customParams #end;
   }
+  public function toIdentDef():IdentDef{
+    return (this:Pos).toIdentifier().toIdentDef();
+  }
   public function toPos():Pos{
     return this;
   }
@@ -129,7 +132,7 @@ class PositionLift {
   }
   static public function toString_name_method_line(pos:Pos){
     #if !macro
-      var name    = pos.lift().identifier().name;
+      var name    = pos.lift().toIdentifier().name;
       var method  = pos.methodName;
       var line     = pos.lineNumber;
       return '$name.$method@$line';
@@ -147,8 +150,12 @@ class PositionLift {
     #end
     return p;
   }
+  @:deprecated
   static public function identifier(self:Pos):Identifier{
     var valid   = self.toPosition().fileName.split(".").get(0).split(__.sep()).join(".");
     return new Identifier(valid);
+  }
+  static public inline function toIdentfier(pos:Pos):Identifier{
+    return identifier(pos);
   }
 }

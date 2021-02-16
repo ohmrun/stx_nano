@@ -212,6 +212,9 @@ class LiftNano{
   static public function identifier<T>(self:Class<T>):Identifier{
     return new Identifier(StdType.getClassName(self));
   }
+  static public function locals<T>(self:Class<T>){
+    return StdType.getInstanceFields(self);
+  }
   static public function vblock<T>(wildcard:Wildcard,t:T):VBlock<T>{
     return ()->{};
   }
@@ -242,5 +245,8 @@ class LiftNano{
   }
   static public function ident(wildcard:Wildcard,str:String):Identifier{
     return new Identifier(str);
+  }
+  static public function toIdentifier(pos:Pos):Identifier{
+    return Identifier.lift(Position.lift(pos).className);
   }
 }
