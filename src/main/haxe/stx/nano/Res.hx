@@ -27,8 +27,8 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
 
   @:noUsing static public function fromReport<E>(self:Report<E>):Res<Noise,E>{
     return lift(self.fold(
-      (ok:Err<E>) -> __.reject(ok),
-      ()   -> __.accept(Noise)
+      (ok:Err<E>) -> reject(ok),
+      ()   -> accept(Noise)
     ));
   }
   public function prj():ResSum<T,E> return this;
@@ -50,9 +50,9 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
     return arr.lfold(
       (next:T,memo:Res<Z,E>) -> memo.fold(
         (ok)  -> fn(next,ok),
-        (no)  -> __.reject(no)
+        (no)  -> reject(no)
       ),
-      __.accept(init)
+      accept(init)
     );
   }
   @:to public function toStringable():Stringable{
@@ -72,8 +72,8 @@ class ResLift{
   static public inline function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
     return Res.lift(
       self.fold(
-        (t) -> __.accept(t),
-        (e) -> __.reject(fn(e))
+        (t) -> Res.accept(t),
+        (e) -> Res.reject(fn(e))
       )
     );
   }
@@ -124,7 +124,7 @@ class ResLift{
   static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Err<E>->ResSum<T,E>):ResSum<T,E>{
     return fold(
       self,
-      (ok)  -> __.accept(ok),
+      (ok)  -> Res.accept(ok),
       (no)  -> fn(no)
     );
   }
@@ -133,11 +133,11 @@ class ResLift{
       self,
       (ok) -> {
         success(ok);
-        return __.accept(ok);
+        return Res.accept(ok);
       },
       (e) -> {
         failure(e);
-        return __.reject(e);
+        return Res.reject(e);
       }
     );
   }
