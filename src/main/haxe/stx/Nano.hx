@@ -112,6 +112,7 @@ typedef OneOrManySum<T>         = stx.nano.OneOrMany.OneOrManySum<T>;
 typedef OneOrMany<T>            = stx.nano.OneOrMany<T>;
 typedef CompilerTarget          = stx.nano.CompilerTarget;
 typedef Enum<T>                 = stx.nano.Enum<T>;
+typedef Introspectable          = stx.nano.Introspectable;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
