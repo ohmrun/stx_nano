@@ -82,6 +82,12 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     final val = m.fold((x)->Val(x),()->Tap);
     return fromChunk(val);
   }
+  @:noUsing @:from static public function fromRes<T,E>(self:Res<T,E>):Contract<T,E>{
+    return pure(self.fold(
+      (ok) -> Val(ok),
+      (no) -> End(no)
+    ));
+  }
   #if js
   @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>):Contract<T,E>{
     var t = Future.trigger();
