@@ -7,7 +7,7 @@ package stx.nano;
 typedef ContractDef<T,E> = Future<Chunk<T,E>>; 
 
 @:using(stx.nano.Contract.ContractLift)
-@:expose abstract Contract<T,E>(ContractDef<T,E>) from ContractDef<T,E>{
+@:expose abstract Contract<T,E>(ContractDef<T,E>) from ContractDef<T,E> to ContractDef<T,E>{
   static public var _(default,never) = ContractLift;
 
   public function new(v:Future<Chunk<T,E>>) this = v;
@@ -124,15 +124,15 @@ class ContractLift extends Clazz{
     return promise;
   }
   #end
-  static public function zip<Ti,Tii,E>(self:Contract<Ti,E>,that:Contract<Tii,E>):Contract<Couple<Ti,Tii>,E>{
-    var out = __.nano().Ft().zip(self.prj(),that.prj()).map(
+  static public function zip<Ti,Tii,E>(self:ContractDef<Ti,E>,that:ContractDef<Tii,E>):Contract<Couple<Ti,Tii>,E>{
+    var out = __.nano().Ft().zip(self,that).map(
       (tp) -> tp.fst().zip(tp.snd())
     );
     return out;
   }
   
-  static public function map<T,Ti,E>(self:Contract<T,E>,fn:T->Ti):Contract<Ti,E>{
-    return lift(self.prj().map(
+  static public function map<T,Ti,E>(self:ContractDef<T,E>,fn:T->Ti):Contract<Ti,E>{
+    return lift(self.map(
       function(x){
         return switch (x){
           case Tap      : Tap;

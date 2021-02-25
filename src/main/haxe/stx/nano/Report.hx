@@ -86,4 +86,7 @@ package stx.nano;
       () -> __.accept(fn())
     );
   }
+  public function promote():Res<Noise,E>{
+    return populate(() -> Noise);
+  }
 }
