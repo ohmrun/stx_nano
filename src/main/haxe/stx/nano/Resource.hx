@@ -12,7 +12,11 @@ abstract Resource(StdString){
   }
   public inline function new(str:String,?pos:Pos){
     if(!exists(str)){
-      __.crack(__.fault(pos).of(E_ResourceNotFound,str));
+      if(pos == null){
+        throw('E_ResourceNotFound($str)');
+      }else{
+        __.crack(__.fault(pos).of(E_ResourceNotFound,str));
+      }
     }
     this = str;
   }
