@@ -102,7 +102,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (e) -> {
         t.trigger(End(__.fault().any(e)));
       }
-    )
+    );
     return lift(t.asFuture());
   }
   #end
