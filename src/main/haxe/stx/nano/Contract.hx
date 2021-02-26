@@ -98,7 +98,11 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       no -> {
         t.trigger(End(__.fault().any(no)));
       }
-    );
+    ).catchError(
+      (e) -> {
+        t.trigger(End(__.fault().any(E)))l
+      }
+    )
     return lift(t.asFuture());
   }
   #end
