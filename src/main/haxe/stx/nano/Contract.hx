@@ -90,11 +90,11 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
   }
   #if js
 
-  @:noUsing public function toTinkSurprise():tink.core.Future.Surprise<T,Err<E>>{
+  @:noUsing public function toTinkSurprise():tink.core.Promise<T>{
     return _.fold(
       this,
       tink.core.Outcome.Success,
-      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e,e.pos)),
+      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.data.defv(null),e.pos)),
       () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
     );
   }
@@ -116,6 +116,10 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
   }
   #end
   public function prj():Future<Chunk<T,E>> return this;
+
+  public function handle(fn){
+    return this.handle(fn);
+  }
 }
 
 class ContractLift extends Clazz{
