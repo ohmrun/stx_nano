@@ -211,9 +211,12 @@ class ContractLift extends Clazz{
     }
     return out;
   }
-  static public function errata<T,E,EE>(fn:Err<E>->Err<EE>,self:Contract<T,E>):Contract<T,EE>{
+  static public function errata<T,E,EE>(self:Contract<T,E>,fn:Err<E>->Err<EE>):Contract<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );
+  }
+  static public inline function errate<T,E,EE>(self:Contract<T,E>,fn:E->EE):Contract<T,EE>{
+    return errata(self,(x) -> x.map(fn));
   }
 }
