@@ -36,13 +36,13 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (f) -> f(End(ch))
     ); 
   }
-  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,fm:Ti->T->Contract<Ti,E>,start:Ti):Contract<Ti,E>{
+  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,fm:T->Ti->Contract<Ti,E>,start:Ti):Contract<Ti,E>{
     return new Contract(__.nano().Ft().bind_fold(
       it,
       function(next:T,memo:Chunk<Ti,E>):Future<Chunk<Ti,E>>{
         return switch (memo){
           case Tap      : unit().prj();
-          case Val(v)   : fm(v,next).prj();
+          case Val(v)   : fm(next,v).prj();
           case End(err) : end(err).prj();
         }
       },
