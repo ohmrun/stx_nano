@@ -120,6 +120,18 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
   public function handle(fn){
     return this.handle(fn);
   }
+
+  @:noUsing static public function all<T,E>(iter:Array<Contract<T,E>>):Contract<Array<T>,E>{
+    return bind_fold(
+      iter,
+      (next:Contract<T,E>,memo:Array<T>) -> 
+        next.map(
+          (a) -> memo.snoc(a)
+        )
+      ,
+      []
+    );
+  }
 }
 
 class ContractLift extends Clazz{
