@@ -142,18 +142,28 @@ class ContractLift extends Clazz{
   static public function toJsPromise<T,E>(self:Contract<T,E>):js.lib.Promise<Res<Option<T>,E>>{
     var promise = new js.lib.Promise(
       (resolve,reject) -> {
-        self.fold(
-          (v) -> {
-            resolve(__.accept(Some(v)));
-          },
-          (e) -> {
-            reject(__.reject(e));
-          },
-          ()  -> {
-            //trace('empty');
-            resolve(__.accept(None));
-          }
-        ).handle(_ -> {});
+        try{
+          self.handle(
+            (res) -> {
+              res.fold(
+                (v) -> {
+                  resolve(__.accept(Some(v)));
+                },
+                (e) -> {
+                  reject(__.reject(e));
+                },
+                ()  -> {
+                  //trace('empty');
+                  resolve(__.accept(None));
+                }
+              );
+            }
+          );
+        }catch(e:Err<Dynamic>){
+          reject(__.reject(e));
+        }catch(e:Dynamic){
+          reject(__.reject(__.fault().any(Std.string(e))));
+        }
       }
     );
     return promise;
@@ -230,5 +240,13 @@ class ContractLift extends Clazz{
   }
   static public inline function errate<T,E,EE>(self:Contract<T,E>,fn:E->EE):Contract<T,EE>{
     return errata(self,(x) -> x.map(fn));
+  }
+  static public function tap<T,E>(self:Contract<T,E>,fn:Chunk<T,E>->Void):Contract<T,E>{
+    return lift(self.prj().map(
+      (x:Chunk<T,E>) -> {
+        trace(x);
+        return x;
+      }
+    ));
   }
 }
