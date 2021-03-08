@@ -51,7 +51,7 @@ package stx.nano;
   public var className(get,never) : String;
   public function get_className(){
     return #if macro '<macro>' #else this.className #end;
-  }
+   }
   public var methodName(get,never) : String;
   public function get_methodName(){
     return #if macro '<macro>' #else this.methodName #end;
