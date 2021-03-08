@@ -15,7 +15,8 @@ abstract Resource(StdString){
       if(pos == null){
         throw('E_ResourceNotFound($str)');
       }else{
-        throw __.fault(pos).of(E_ResourceNotFound,str);
+        var error = __.fault(pos).of(E_ResourceNotFound,str);
+        throw error;
       }
     }
     this = str;

@@ -98,18 +98,18 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
     );
   }
-  @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>):Contract<T,E>{
+  @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>,?pos:Pos):Contract<T,E>{
     var t = Future.trigger();
     self.then(
       ok -> {
         t.trigger(Val(ok));
       },
       no -> {
-        t.trigger(End(__.fault().any(no)));
+        t.trigger(End(__.fault(pos).any(no)));
       }
     ).catchError(
       (e) -> {
-        t.trigger(End(__.fault().any(e)));
+        t.trigger(End(__.fault(pos).any(e)));
       }
     );
     return lift(t.asFuture());
@@ -244,7 +244,7 @@ class ContractLift extends Clazz{
   static public function tap<T,E>(self:Contract<T,E>,fn:Chunk<T,E>->Void):Contract<T,E>{
     return lift(self.prj().map(
       (x:Chunk<T,E>) -> {
-        trace(x);
+        fn(x);
         return x;
       }
     ));
