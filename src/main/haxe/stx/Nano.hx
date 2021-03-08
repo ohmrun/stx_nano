@@ -9,7 +9,7 @@ typedef PosDef =
   #end
 
 
-
+typedef Dyn                     = Dynamic;
 typedef Pos                     = PosDef;
 
 enum Tup2<L,R>{

@@ -36,13 +36,13 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (f) -> f(End(ch))
     ); 
   }
-  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,start:Ti,fm:Ti->T->Contract<Ti,E>):Contract<Ti,E>{
+  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,fm:T->Ti->Contract<Ti,E>,start:Ti):Contract<Ti,E>{
     return new Contract(__.nano().Ft().bind_fold(
       it,
       function(next:T,memo:Chunk<Ti,E>):Future<Chunk<Ti,E>>{
         return switch (memo){
           case Tap      : unit().prj();
-          case Val(v)   : fm(v,next).prj();
+          case Val(v)   : fm(next,v).prj();
           case End(err) : end(err).prj();
         }
       },
@@ -82,7 +82,22 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     final val = m.fold((x)->Val(x),()->Tap);
     return fromChunk(val);
   }
+  @:noUsing @:from static public function fromRes<T,E>(self:Res<T,E>):Contract<T,E>{
+    return pure(self.fold(
+      (ok) -> Val(ok),
+      (no) -> End(no)
+    ));
+  }
   #if js
+
+  @:noUsing public function toTinkSurprise():tink.core.Promise<T>{
+    return _.fold(
+      this,
+      tink.core.Outcome.Success,
+      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.data.defv(null),e.pos)),
+      () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
+    );
+  }
   @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>):Contract<T,E>{
     var t = Future.trigger();
     self.then(
@@ -92,11 +107,31 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       no -> {
         t.trigger(End(__.fault().any(no)));
       }
+    ).catchError(
+      (e) -> {
+        t.trigger(End(__.fault().any(e)));
+      }
     );
     return lift(t.asFuture());
   }
   #end
   public function prj():Future<Chunk<T,E>> return this;
+
+  public function handle(fn){
+    return this.handle(fn);
+  }
+
+  @:noUsing static public function all<T,E>(iter:Array<Contract<T,E>>):Contract<Array<T>,E>{
+    return bind_fold(
+      iter,
+      (next:Contract<T,E>,memo:Array<T>) -> 
+        next.map(
+          (a) -> memo.snoc(a)
+        )
+      ,
+      []
+    );
+  }
 }
 
 class ContractLift extends Clazz{
@@ -107,18 +142,28 @@ class ContractLift extends Clazz{
   static public function toJsPromise<T,E>(self:Contract<T,E>):js.lib.Promise<Res<Option<T>,E>>{
     var promise = new js.lib.Promise(
       (resolve,reject) -> {
-        self.fold(
-          (v) -> {
-            resolve(__.accept(Some(v)));
-          },
-          (e) -> {
-            reject(__.reject(e));
-          },
-          ()  -> {
-            //trace('empty');
-            resolve(__.accept(None));
-          }
-        ).handle(_ -> {});
+        try{
+          self.handle(
+            (res) -> {
+              res.fold(
+                (v) -> {
+                  resolve(__.accept(Some(v)));
+                },
+                (e) -> {
+                  reject(__.reject(e));
+                },
+                ()  -> {
+                  //trace('empty');
+                  resolve(__.accept(None));
+                }
+              );
+            }
+          );
+        }catch(e:Err<Dynamic>){
+          reject(__.reject(e));
+        }catch(e:Dynamic){
+          reject(__.reject(__.fault().any(Std.string(e))));
+        }
       }
     );
     return promise;
@@ -188,9 +233,20 @@ class ContractLift extends Clazz{
     }
     return out;
   }
-  static public function errata<T,E,EE>(fn:Err<E>->Err<EE>,self:Contract<T,E>):Contract<T,EE>{
+  static public function errata<T,E,EE>(self:Contract<T,E>,fn:Err<E>->Err<EE>):Contract<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );
+  }
+  static public inline function errate<T,E,EE>(self:Contract<T,E>,fn:E->EE):Contract<T,EE>{
+    return errata(self,(x) -> x.map(fn));
+  }
+  static public function tap<T,E>(self:Contract<T,E>,fn:Chunk<T,E>->Void):Contract<T,E>{
+    return lift(self.prj().map(
+      (x:Chunk<T,E>) -> {
+        trace(x);
+        return x;
+      }
+    ));
   }
 }

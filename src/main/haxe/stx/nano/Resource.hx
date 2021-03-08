@@ -26,7 +26,7 @@ abstract Resource(StdString){
   public function bytes():Bytes{
     return haxe.Resource.getBytes(this);
   }
-  public function json():Any{
+  public function json():Dyn{
     return Json.parse(string());
   }
 }
