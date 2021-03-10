@@ -241,10 +241,10 @@ class ContractLift extends Clazz{
   static public inline function errate<T,E,EE>(self:Contract<T,E>,fn:E->EE):Contract<T,EE>{
     return errata(self,(x) -> x.map(fn));
   }
-  static public function tap<T,E>(self:Contract<T,E>,fn:Chunk<T,E>->Void):Contract<T,E>{
+  static public function tap<T,E>(self:Contract<T,E>,fn:Chunk<T,E>->?Pos->Void,?pos:Pos):Contract<T,E>{
     return lift(self.prj().map(
       (x:Chunk<T,E>) -> {
-        fn(x);
+        fn(x,pos);
         return x;
       }
     ));
