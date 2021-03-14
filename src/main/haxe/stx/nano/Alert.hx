@@ -2,7 +2,7 @@ package stx.nano;
 
 typedef AlertDef<E> = Future<Report<E>>;
 
-abstract Alert<E>(AlertDef<E>) from AlertDef<E> to AlertDef<E>{
+@:forward abstract Alert<E>(AlertDef<E>) from AlertDef<E> to AlertDef<E>{
   static public function unit<E>():Alert<E>{
     return Future.irreversible( (cb) -> cb(Report.unit()));
   }
