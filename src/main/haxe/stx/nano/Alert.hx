@@ -38,13 +38,13 @@ typedef AlertDef<E> = Future<Report<E>>;
   }
 }
 class AlertLift{
-  static public function fold<E,Z>(self:Alert<E>,pure:Err<E>->Z,unit:Void->Z):Future<Z>{
-    return self.prj().map(
+  static public function fold<E,Z>(self:AlertDef<E>,pure:Err<E>->Z,unit:Void->Z):Future<Z>{
+    return self.map(
       report -> report.fold(pure,unit)
     );
   }
-  static public function execute<E>(self:Alert<E>,fn:Void->Alert<E>):Alert<E>{
-    return self.prj().flatMap(
+  static public function execute<E>(self:AlertDef<E>,fn:Void->Alert<E>):Alert<E>{
+    return self.flatMap(
       report -> report.fold(
         err -> Alert.pure(err),
         ()  -> fn()
