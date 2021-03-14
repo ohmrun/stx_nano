@@ -248,5 +248,5 @@ class ContractLift extends Clazz{
         return x;
       }
     ));
-  }
+  } 
 }
