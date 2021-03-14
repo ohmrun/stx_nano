@@ -3,10 +3,10 @@ package stx.nano;
 typedef AlertDef<E> = Future<Report<E>>;
 
 abstract Alert<E>(AlertDef<E>) from AlertDef<E> to AlertDef<E>{
-  static public function unit<E>():Alert<T>{
+  static public function unit<E>():Alert<E>{
     return Future.irreversible( (cb) -> cb(Report.unit()));
   }
-  static public function pure<E>(e:Err<E>):Alert<T>{
+  static public function pure<E>(e:Err<E>):Alert<E>{
     return Future.irreversible( (cb) -> cb(Report.pure(e)));
   }
   public function new(self) this = self;
