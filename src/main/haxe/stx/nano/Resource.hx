@@ -28,6 +28,10 @@ abstract Resource(StdString){
     return haxe.Resource.getBytes(this);
   }
   public function json():Dyn{
-    return Json.parse(string());
+    return try{
+      Json.parse(string());
+    }catch(e:Dynamic){
+      throw('ERROR parsing $this: $e');
+    }
   }
 }
