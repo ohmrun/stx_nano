@@ -202,9 +202,8 @@ class LiftNano{
   static public inline function crack<E>(wildcard:Wildcard,e:E){
     throw e;
   }
-  @:deprecated
-  static public inline function report<E>(wildcard:Wildcard,report:Report<E>):Void{
-    report.crunch();
+  static public inline function report<E>(wildcard:Wildcard,?e:Failure<E>,?pos:Pos):Report<E>{
+    return e == null ? Report.unit() : Report.make0(e,pos);
   }
   static public function definition<T>(wildcard:Wildcard,t:T):Class<T>{
     return std.Type.getClass(t);

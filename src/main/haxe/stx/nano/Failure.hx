@@ -11,7 +11,12 @@ abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
   public function new(self) this = self;
   @:noUsing static public inline function lift<T>(self:FailureSum<T>):Failure<T> return new Failure(self);
 
-
+  @:from static public function fromFailCode<T>(code:FailCode):Failure<T>{
+    return ERR(code);
+  }
+  @:from static public function fromErrOf<T>(v:T):Failure<T>{
+    return ERR_OF(v);
+  }
   public function prj():FailureSum<T> return this;
   private var self(get,never):Failure<T>;
   private function get_self():Failure<T> return lift(this);

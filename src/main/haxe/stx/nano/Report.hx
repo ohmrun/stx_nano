@@ -11,6 +11,9 @@ package stx.nano;
   @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{
     return pure(__.fault(pos).of(data));
   }
+  @:noUsing static public function make0<E>(data:Failure<E>,?pos:Pos):Report<E>{
+    return pure(__.fault(pos).failure(data));
+  }
   @:noUsing static public function unit<E>():Report<E>{
     return new Report(None);
   }
