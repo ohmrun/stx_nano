@@ -41,6 +41,7 @@ typedef VBlockDef<T>            = stx.nano.VBlock.VBlockDef<T>;
 typedef VBlock<T>               = stx.nano.VBlock<T>;
 
 
+typedef PledgeDef<T,E>          = stx.nano.Pledge.PledgeDef<T,E>;
 typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
 
 /*

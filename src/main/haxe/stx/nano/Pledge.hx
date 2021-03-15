@@ -89,6 +89,25 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   public function flat_map<Ti>(fn:T->Pledge<Ti,E>):Pledge<Ti,E>{
     return _.flat_map(this,fn);
   }
+  #if js
+  @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>,?pos:Pos):Pledge<T,E>{
+    var t = Future.trigger();
+    self.then(
+      ok -> {
+        t.trigger(__.accept(ok));
+      },
+      no -> {
+        t.trigger(__.reject(__.fault(pos).any(no)));
+      }
+    ).catchError(
+      (e) -> {
+        t.trigger(__.reject(__.fault(pos).any(e)));
+      }
+    );
+    return lift(t.asFuture());
+  }
+  #end
+
 }
 // @:allow(stx.nano.Pledge) private class PledgeCls<T,E>{
 //   private final forward : Future<Res<T,Err<E>>>;
@@ -112,6 +131,33 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
 //   }
 // }
 class PledgeLift{
+  #if js
+  static public function toJsPromise<T,E>(self:Pledge<T,E>):js.lib.Promise<Res<T,E>>{
+    var promise = new js.lib.Promise(
+      (resolve,reject) -> {
+        try{
+          self.handle(
+            (res) -> {
+              res.fold(
+                (v) -> {
+                  resolve(__.accept(v));
+                },
+                (e) -> {
+                  reject(__.reject(e));
+                }
+              );
+            }
+          );
+        }catch(e:Err<Dynamic>){
+          reject(__.reject(e));
+        }catch(e:Dynamic){
+          reject(__.reject(__.fault().any(Std.string(e))));
+        }
+      }
+    );
+    return promise;
+  }
+  #end
   static private function lift<T,E>(self:Future<Res<T,E>>):Pledge<T,E>{
     return Pledge.lift(self);
   }
@@ -199,4 +245,12 @@ class PledgeLift{
       )
     );
   }
+  static public function tap<T,E>(self:Pledge<T,E>,fn:Res<T,E>->?Pos->Void,?pos:Pos):Pledge<T,E>{
+    return lift(self.prj().map(
+      (x:Res<T,E>) -> {
+        fn(x,pos);
+        return x;
+      }
+    ));
+  } 
 }

@@ -88,7 +88,6 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (no) -> End(no)
     ));
   }
-  #if js
 
   @:noUsing public function toTinkSurprise():tink.core.Promise<T>{
     return _.fold(
@@ -98,6 +97,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
     );
   }
+  #if js
   @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>,?pos:Pos):Contract<T,E>{
     var t = Future.trigger();
     self.then(
