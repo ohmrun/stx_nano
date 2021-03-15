@@ -122,4 +122,7 @@ class Err<T>{
       new Err(arr.head().map(ERR_OF),None,pos)
     );
   }
+  public function report():Report<T>{
+    return Report.pure(this);
+  }
 }
