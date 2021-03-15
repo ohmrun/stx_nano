@@ -62,4 +62,15 @@ class AlertLift{
       }
     );
   }
+  static public function flat_fold<E,T>(self:AlertDef<E>,ers:Err<E>->Future<T>,nil:Void->Future<T>):Future<T>{
+    return self.flatMap(
+      (report) -> report.fold(
+        ers,
+        nil
+      )
+    );
+  }
+  static public function intoPledge<E,T>(self:AlertDef<E>,val:T):Pledge<T,E>{
+    return Pledge.lift(fold(self,__.reject,() -> __.accept(val)));
+  }
 }
