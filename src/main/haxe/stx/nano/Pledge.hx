@@ -157,6 +157,16 @@ class PledgeLift{
     );
     return promise;
   }
+  static public function toJsPromiseError<T,E>(self:Pledge<T,E>):js.lib.Promise<T>{
+    return toJsPromise(self).then(
+      (res) -> new js.lib.Promise(
+        (resolve,reject) -> res.fold(
+          resolve,
+          reject
+        )
+      ) 
+    );
+  }
   #end
   static private function lift<T,E>(self:Future<Res<T,E>>):Pledge<T,E>{
     return Pledge.lift(self);
