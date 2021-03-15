@@ -51,4 +51,12 @@ class AlertLift{
       )
     );
   }
+  static public function tap<E>(self:AlertDef<E>,fn:Err<E>->?Pos->Void,?pos:Pos):Alert<E>{
+    return self.map(
+      (err) -> {
+        fn(err);
+        return err;
+      }
+    );
+  }
 }
