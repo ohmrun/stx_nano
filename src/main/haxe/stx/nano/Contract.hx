@@ -197,9 +197,7 @@ class ContractLift extends Clazz{
   }
   static public function flat_fold<T,Ti,E>(self:ContractDef<T,E>,val:T->Future<Ti>,ers:Err<E>->Future<Ti>,nil:Void->Future<Ti>):Future<Ti>{
     return self.flatMap(
-      val,
-      ers,
-      nil
+      (chunk:Chunk<T,E>) -> chunk.fold(val,ers,nil)
     );
   }
   static public function fold<T,Ti,E>(self:Contract<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti,nil:Void->Ti):Future<Ti>{
