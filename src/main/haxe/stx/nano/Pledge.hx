@@ -187,6 +187,11 @@ class PledgeLift{
       }
     );
   }
+  static public function flat_fold<T,Ti,E>(self:PledgeDef<T,E>,val:T->Future<Ti>,ers:Err<E>->Future<Ti>):Future<Ti>{
+    return self.flatMap(
+      (res) -> res.fold(val,ers)
+    );
+  }
   static public function fold<T,Ti,E>(self:Pledge<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti):Future<Ti>{
     return self.prj().map(Res._.fold.bind(_,val,ers));
   }
