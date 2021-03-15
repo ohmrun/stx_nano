@@ -249,4 +249,7 @@ class LiftNano{
   static public function toIdentifier(pos:Pos):Identifier{
     return Identifier.lift(Position.lift(pos).className);
   }
+  static public function toAlert<E>(ft:Future<Report<E>>):Alert<E>{
+    return Alert.lift(ft);
+  }
 }
