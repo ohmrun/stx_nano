@@ -31,6 +31,17 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       __.accept(start)
     ));
   }
+  @:noUsing static public function seq<T,E>(iter:Array<Pledge<T,E>>):Pledge<Array<T>,E>{
+    return bind_fold(
+      iter,
+      (next:Pledge<T,E>,memo:Array<T>) -> 
+        next.map(
+          (a) -> memo.snoc(a)
+        )
+      ,
+      []
+    );
+  }
   @:noUsing static public function lazy<T,E>(fn:Void->T):Pledge<T,E>{
     return lift(Future.irreversible(
       (f) -> f(__.accept(fn()))
@@ -107,7 +118,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     return lift(t.asFuture());
   }
   #end
-
+  
 }
 // @:allow(stx.nano.Pledge) private class PledgeCls<T,E>{
 //   private final forward : Future<Res<T,Err<E>>>;
