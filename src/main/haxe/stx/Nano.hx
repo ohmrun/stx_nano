@@ -78,6 +78,7 @@ typedef LiftPath                = stx.nano.lift.LiftPath;
 
 typedef Wildcard                = stx.nano.Wildcard;
 
+typedef ReportSum<E>            = stx.nano.ReportSum<E>;
 typedef Report<E>               = stx.nano.Report<E>;
 typedef Position                = stx.nano.Position;
 typedef PrimitiveDef            = stx.nano.Primitive.PrimitiveDef;

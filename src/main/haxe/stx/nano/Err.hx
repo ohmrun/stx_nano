@@ -56,7 +56,10 @@ class Err<T>{
     }
     return self;
   }
-  public function next(that:Err<T>):Err<T>{
+  @:deprecated public function next(that:Err<T>):Err<T>{
+    return merge(that);
+  }   
+  public function merge(that:Err<T>):Err<T>{
     var last  = that.copy();
     var stack : Array<Err<T>> = [];
     while(last.prev.is_defined()){
