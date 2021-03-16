@@ -253,10 +253,13 @@ class PledgeLift{
     }
     return out;
   }
-  static public function errata<T,E,EE>(fn:Err<E>->Err<EE>,self:Pledge<T,E>):Pledge<T,EE>{
+  static public function errata<T,E,EE>(self:Pledge<T,E>,fn:Err<E>->Err<EE>):Pledge<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );
+  }
+  static public inline function errate<T,E,EE>(self:Pledge<T,E>,fn:E->EE):Pledge<T,EE>{
+    return errata(self,(x) -> x.map(fn));
   }
   static public function each<T,E>(self:Pledge<T,E>,fn:T->Void,?err:Err<E>->Void){
     self.prj().handle(
