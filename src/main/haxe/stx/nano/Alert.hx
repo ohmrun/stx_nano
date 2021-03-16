@@ -11,6 +11,9 @@ typedef AlertDef<E> = Future<Report<E>>;
   static public function pure<E>(e:Err<E>):Alert<E>{
     return Future.irreversible((cb) -> cb(Report.pure(e)));
   }
+  static public function make<E>(self:Report<E>):Alert<E>{
+    return Future.irreversible((cb) -> cb(self));
+  }
   static public function any<E>(arr:Array<Alert<E>>):Alert<E>{
     return lift(__.nano().Ft().bind_fold(
       arr,

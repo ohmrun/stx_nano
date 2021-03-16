@@ -92,4 +92,7 @@ package stx.nano;
   public function promote():Res<Noise,E>{
     return populate(() -> Noise);
   }
+  public function alert():Alert<E>{
+    return Alert.make(this);
+  }
 }

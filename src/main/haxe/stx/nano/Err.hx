@@ -125,4 +125,7 @@ class Err<T>{
   public function report():Report<T>{
     return Report.pure(this);
   }
+  public function alert():Alert<T>{
+    return report().alert();
+  }
 }
