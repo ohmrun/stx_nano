@@ -119,6 +119,9 @@ typedef Enum<T>                 = stx.nano.Enum<T>;
 typedef Introspectable          = stx.nano.Introspectable;
 typedef AlertDef<E>             = stx.nano.Alert.AlertDef<E>;
 typedef Alert<E>                = stx.nano.Alert<E>;
+typedef Signal<T>               = stx.nano.Signal<T>;
+typedef Stream<T,E>             = stx.nano.Stream<T,E>;
+
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{

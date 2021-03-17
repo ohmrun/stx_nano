@@ -47,6 +47,15 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       Reported,
       () -> Happened
     ));
+  }
+  @:from static public function fromOption<E>(opt:Option<Err<E>>):Report<E>{
+    return lift(opt.fold(
+      Reported,
+      () -> Happened
+    ));
+  } 
+  @:from static public function fromErr<E>(self:Err<E>):Report<E>{
+    return lift(pure(self));
   } 
   public function prj():ReportSum<E>{
     return this;

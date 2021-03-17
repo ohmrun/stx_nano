@@ -128,6 +128,13 @@ class ResLift{
       (no)  -> fn(no)
     );
   }
+  static public inline function recover<T,E>(self:ResSum<T,E>,fn:Err<E>->T):T{
+    return fold(
+      self,
+      (v) -> v,
+      (e) -> fn(e)
+    );
+  }
   static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Err<E>->Void):Res<T,E>{
     return fold(
       self,

@@ -57,6 +57,9 @@ private class Ft extends Clazz{
     return output;
   }
 }
+private class Sig{
+  
+}
 #end
 
 private class Map extends Clazz{
