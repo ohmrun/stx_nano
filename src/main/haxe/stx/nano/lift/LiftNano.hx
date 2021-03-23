@@ -251,4 +251,9 @@ class LiftNano{
   static public function toAlert<E>(ft:Future<Report<E>>):Alert<E>{
     return Alert.lift(ft);
   }
+  static public function toString(pos:Pos):String{
+    var id = toIdentifier(pos);
+    var fn = pos.toPosition().methodName;
+    return '${id}.${fn}';
+  }
 }

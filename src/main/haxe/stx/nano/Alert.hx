@@ -90,7 +90,7 @@ class AlertLift{
       )
     );
   }
-  static public function unto<E,T>(self:AlertDef<E>,val:T):Pledge<T,E>{
+  static public function resolve<E,T>(self:AlertDef<E>,val:T):Pledge<T,E>{
     return Pledge.lift(fold(self,__.reject,() -> __.accept(val)));
   }
   static public function ignore<E,T>(self:AlertDef<E>,?fn:Failure<E>->Bool):Alert<E>{

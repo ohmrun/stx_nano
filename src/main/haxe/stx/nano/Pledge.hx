@@ -292,7 +292,7 @@ class PledgeLift{
   }
   static public function command<T,E>(self:Pledge<T,E>,fn:T->Alert<E>):Pledge<T,E>{
     return self.flat_map(
-      (t:T) -> fn(t).unto(t)
+      (t:T) -> fn(t).resolve(t)
     );
   } 
 }

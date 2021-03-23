@@ -93,7 +93,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
     }
   }
   public function promote():Res<Noise,E>{
-    return _.populate(this,() -> Noise);
+    return _.resolve(this,() -> Noise);
   }
   public function alert():Alert<E>{
     return Alert.make(this);
@@ -103,7 +103,7 @@ class ReportLift{
   static function lift<T>(self:ReportSum<T>):Report<T>{
     return Report.lift(self);
   }
-  static public function populate<T,E>(self:ReportSum<E>,fn:Void->T):Res<T,E>{
+  static public function resolve<T,E>(self:ReportSum<E>,fn:Void->T):Res<T,E>{
     return fold(
       self,
       __.reject,
