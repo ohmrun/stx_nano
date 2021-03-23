@@ -223,7 +223,7 @@ class PledgeLift{
       (e) -> fn(e)
     ));
   }
-  static public function attempt<T,Ti,E,U>(self:Pledge<T,E>,fn:T->Res<Ti,E>):Pledge<Ti,E>{
+  static public function adjust<T,Ti,E,U>(self:Pledge<T,E>,fn:T->Res<Ti,E>):Pledge<Ti,E>{
     return lift(fold(
       self,
       (x) -> fn(x),

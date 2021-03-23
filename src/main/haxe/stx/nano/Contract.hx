@@ -211,7 +211,7 @@ class ContractLift extends Clazz{
       ()  -> Tap
     ));
   }
-  static public function attempt<T,Ti,E,U>(self:Contract<T,E>,fn:T->Chunk<Ti,E>):Contract<Ti,E>{
+  static public function adjust<T,Ti,E,U>(self:Contract<T,E>,fn:T->Chunk<Ti,E>):Contract<Ti,E>{
     return lift(fold(
       self,
       (x) -> fn(x),

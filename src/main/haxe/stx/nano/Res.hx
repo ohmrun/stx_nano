@@ -94,6 +94,9 @@ class ResLift{
   static public inline function flat_map<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
     return Res.lift(fold(self,(t) -> fn(t),(e) -> Reject(e)));
   }
+  static public inline function adjust<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
+    return flat_map(self,fn);
+  }
   static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Err<E>->TT):TT{
     return switch(self){
       case Accept(t) : fn(t);
