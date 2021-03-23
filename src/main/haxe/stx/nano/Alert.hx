@@ -90,7 +90,12 @@ class AlertLift{
       )
     );
   }
-  static public function intoPledge<E,T>(self:AlertDef<E>,val:T):Pledge<T,E>{
+  static public function unto<E,T>(self:AlertDef<E>,val:T):Pledge<T,E>{
     return Pledge.lift(fold(self,__.reject,() -> __.accept(val)));
+  }
+  static public function ignore<E,T>(self:AlertDef<E>,?fn:Failure<E>->Bool):Alert<E>{
+    return Alert.lift(self.map(
+      (report:Report<E>) -> report.ignore(fn)
+    ));
   }
 }
