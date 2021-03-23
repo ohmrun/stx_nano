@@ -210,7 +210,7 @@ class PledgeLift{
   }
   static public function flat_fold<T,Ti,E>(self:PledgeDef<T,E>,val:T->Future<Ti>,ers:Err<E>->Future<Ti>):Future<Ti>{
     return self.flatMap(
-      (res) -> res.fold(val,ers)
+      (res:Res<T,E>) -> res.fold(val,ers)
     );
   }
   static public function fold<T,Ti,E>(self:Pledge<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti):Future<Ti>{
@@ -253,6 +253,14 @@ class PledgeLift{
     }
     return out;
   }
+  static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<E>):Alert<E>{
+    return Alert.lift(self.flatMap(
+      (res:Res<T,E>) -> res.fold(
+        (x) -> fn(x).alert(),
+        (e) -> e.alert()
+      )
+    ));
+  }
   static public function errata<T,E,EE>(self:Pledge<T,E>,fn:Err<E>->Err<EE>):Pledge<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
@@ -281,5 +289,10 @@ class PledgeLift{
         return x;
       }
     ));
+  }
+  static public function command<T,E>(self:Pledge<T,E>,fn:T->Alert<E>):Pledge<T,E>{
+    return self.flat_map(
+      (t:T) -> fn(t).unto(t)
+    );
   } 
 }
