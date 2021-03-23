@@ -24,6 +24,18 @@ typedef AlertDef<E> = Future<Report<E>>;
       Report.unit()
     ));
   }
+  static public function seq<T,E>(arr:Array<T>,fn:T->Alert<E>):Alert<E>{
+    return lift(
+      __.nano().Ft().bind_fold(
+        arr,
+        (next:T,memo:Report<E>) -> memo.fold(
+          (err) -> err.report().alert(),
+          ()    -> fn(next)
+        ),
+        Report.unit()
+      )
+    );
+  }
   public function new(self) this = self;
   static public function lift<E>(self:AlertDef<E>):Alert<E> return new Alert(self);
 
@@ -31,10 +43,10 @@ typedef AlertDef<E> = Future<Report<E>>;
   private var self(get,never):Alert<E>;
   private function get_self():Alert<E> return lift(this);
 
-  public function errata<EE>(fn:Err<E>->Err<EE>){
+  public function errata<EE>(fn:Err<E>->Err<EE>):Alert<EE>{
     return this.map(report -> report.errata(fn));
   }
-  public function errate<EE>(fn:E->EE){
+  public function errate<EE>(fn:E->EE):Alert<EE>{
     return errata((err) -> err.map(fn));
   }
   public function handle(fn:Report<E>->Void):CallbackLink{
