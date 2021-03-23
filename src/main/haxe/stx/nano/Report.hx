@@ -145,4 +145,18 @@ class ReportLift{
       () -> false
     );
   }
+  static public function ignore<T>(self:ReportSum<T>,?fn:Failure<T>->Bool){
+    __.option(fn).def(() -> fn = (x) -> true);
+    return fold(
+      self,
+      (err:Err<T>) -> err.data.fold(
+        (failure:Failure<T>) -> fn(failure).if_else(
+          ()  -> __.report(),
+          ()  -> err.report()
+        ),
+        () -> __.report() 
+      ),
+      () -> __.report()
+    );
+  }
 }
