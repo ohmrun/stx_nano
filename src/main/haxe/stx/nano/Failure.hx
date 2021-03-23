@@ -28,6 +28,19 @@ class FailureLift{
       case ERR(e)    :  def(e);
     }
   }
+  static public function fold_filter<T>(self:Failure<T>,val:T->Bool,def:FailCode->Bool):Option<Failure<T>>{
+    return fold(
+      self,
+      (x) -> val(x).if_else(
+        () -> Option.pure(ERR_OF(x)),
+        () -> Option.unit()
+      ),
+      x -> def(x).if_else(
+        () -> Option.pure(ERR(x)),
+        () -> Option.unit()
+      )
+    );
+  }
   static  public function value<T>(self:Failure<T>):Option<T>{
     return fold(
       self,
