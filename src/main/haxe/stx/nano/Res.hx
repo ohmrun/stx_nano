@@ -82,7 +82,7 @@ class ResLift{
   }
   static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
     return switch([self,that]){
-      case [Reject(e),Reject(ee)]     : Reject(e.next(ee));
+      case [Reject(e),Reject(ee)]     : Reject(e.merge(ee));
       case [Reject(e),_]              : Reject(e);
       case [_,Reject(e)]              : Reject(e);
       case [Accept(t),Accept(tt)]     : Accept(Couple.make(t,tt));
