@@ -67,16 +67,20 @@ class AlertLift{
       )
     );
   }
-  static public function tap<E>(self:AlertDef<E>,fn:Err<E>->?Pos->Void,?pos:Pos):Alert<E>{
-    return self.map(
-      (err) -> {
-        err.fold(
-          fn.bind(_,pos),
-          () -> {}
-        );
-        return err;
-      }
+  static public function adjust<E>(self:AlertDef<E>,fn:Report<E>->Alert<E>):Alert<E>{
+    return Alert.lift(
+      self.flatMap(
+        (report) -> fn(report)
+      ) 
     );
+  }
+  static public function tap<E>(self:AlertDef<E>,fn:Report<E>->?Pos->Void,?pos:Pos):Alert<E>{
+    return Alert.lift(self.map(
+      (report) -> {
+        fn(report,pos);
+        return report;
+      }
+    ));
   }
   static public function flat_fold<E,T>(self:AlertDef<E>,ers:Err<E>->Future<T>,nil:Void->Future<T>):Future<T>{
     return self.flatMap(
