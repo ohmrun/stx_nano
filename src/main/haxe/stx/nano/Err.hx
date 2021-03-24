@@ -39,6 +39,9 @@ class Err<T>{
       this.pos
     );
   }
+  // public function app<U>(fn:Failure<T>->Failure<U>):Err<U>{
+  //   return new Err(this.data.map(fn),this.prev,this.pos);
+  // }
   public function copy(?data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Pos):Err<T>{
     return new Err(
       __.option(data).defv(this.data),

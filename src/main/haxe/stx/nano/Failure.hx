@@ -41,6 +41,9 @@ class FailureLift{
       )
     );
   }
+  static public function pick<T>(self:Failure<T>,val:T->Bool,code:FailCode->Bool):Bool{
+    return !(fold_filter(self,val,code).is_defined());
+  }
   static  public function value<T>(self:Failure<T>):Option<T>{
     return fold(
       self,

@@ -107,8 +107,14 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       ok -> {
         t.trigger(__.accept(ok));
       },
-      no -> {
-        t.trigger(__.reject(__.fault(pos).any(no)));
+      (no:Dynamic) -> {
+        switch(std.Type.typeof(no)){
+          case TClass(js.lib.Error) :
+            var e : js.lib.Error = no; 
+            t.trigger(__.reject(__.fault(pos).any(e.message)));
+          default : 
+            t.trigger(__.reject(__.fault(pos).any(no)));
+        }
       }
     ).catchError(
       (e) -> {
@@ -293,6 +299,25 @@ class PledgeLift{
   static public function command<T,E>(self:Pledge<T,E>,fn:T->Alert<E>):Pledge<T,E>{
     return self.flat_map(
       (t:T) -> fn(t).resolve(t)
+    );
+  }
+  static public function execute<T,E>(self:Pledge<T,E>,fn:Void->Alert<E>):Pledge<T,E>{
+    return self.flat_map(
+      (t:T) -> fn().resolve(t)
+    );
+  }
+  static public function anyway<T,E>(self:PledgeDef<T,E>,fn:Report<E>->Alert<E>):Pledge<T,E>{
+    return self.flatMap(
+      (res) -> res.fold(
+        (ok)  -> fn(__.report()).flat_fold(
+          (err) -> __.reject(err),
+          ()    -> __.accept(ok)
+        ),
+        (err) -> fn(err.report()).flat_fold(
+          (err0) -> __.reject(err.merge(err0)),
+          ()     -> __.reject(err)
+        ) 
+      )
     );
   } 
 }

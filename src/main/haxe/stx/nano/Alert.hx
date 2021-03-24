@@ -93,9 +93,14 @@ class AlertLift{
   static public function resolve<E,T>(self:AlertDef<E>,val:T):Pledge<T,E>{
     return Pledge.lift(fold(self,__.reject,() -> __.accept(val)));
   }
-  static public function ignore<E,T>(self:AlertDef<E>,?fn:Failure<E>->Bool):Alert<E>{
+  static public function ignore<E>(self:AlertDef<E>,?fn:Failure<E>->Bool):Alert<E>{
     return Alert.lift(self.map(
       (report:Report<E>) -> report.ignore(fn)
     ));
+  }
+  static public function anyway<E>(self:AlertDef<E>,fn:Report<E>->Alert<E>):Alert<E>{
+    return self.flatMap(
+      (report) -> fn(report).prj()
+    );
   }
 }
