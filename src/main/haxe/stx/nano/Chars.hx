@@ -14,9 +14,6 @@ package stx.nano;
   }
 }
 class CharsLift{
-  static public function ldropn(self:Chars,n:Int):Chars{
-    return self.substring(n);
-  }
   /**
   Returns `true` if `v` is `'true'` or `'1'`, `false` if `'false'` or `'0'` and `d` otherwise.
   **/
@@ -239,5 +236,11 @@ class CharsLift{
   }
   static public function truncate(self:Chars,int:Int):Chars{
     return self.substr(0,int);
+  }
+  static public function rdropn(self:Chars,int:Int):Chars{
+    return self.substr(0,self.length-int);
+  }
+  static public function ldropn(self:Chars,int:Int):Chars{
+    return self.substr(int);
   }
 }

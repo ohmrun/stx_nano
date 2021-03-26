@@ -21,7 +21,7 @@ class Math {
 		return v * ( 180 / StdMath.PI ) ;
 	}
 	@:noUsing static public inline function random(max = 1,min = 0){
-		return Math.random() * (max - min) + min;
+		return StdMath.random() * (max - min) + min;
 	}
 	@:noUsing static inline public function isNaN(fl:Float):Bool{
 		return StdMath.isNaN(fl);
