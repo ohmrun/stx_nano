@@ -65,12 +65,12 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
                   __.option(e).toArray()
                     .concat(__.option(e0).toArray())
                     .lfold(
-                      (nx,mm:Err<E>) -> mm.next(nx),
+                      (nx,mm:Err<E>) -> mm.merge(nx),
                       TapFail
                     );
                 End(err);
             case [End(e),Tap]           : 
-                var err = __.option(e).map(e->e.next(TapFail)).defv(TapFail);
+                var err = __.option(e).map(e->e.merge(TapFail)).defv(TapFail);
                 End(err);
             case [End(e),_]             : End(e);
             case _                      : TapFail == null ? Tap : End(TapFail);
@@ -177,7 +177,7 @@ class ChunkLift{
      case End(err) :
        switch (that){
          case End(err0)  : End(
-           err.next(err0)
+           err.merge(err0)
          );
          default         : Tap;
        }

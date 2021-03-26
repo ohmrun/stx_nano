@@ -121,7 +121,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     return this.handle(fn);
   }
 
-  @:noUsing static public function all<T,E>(iter:Array<Contract<T,E>>):Contract<Array<T>,E>{
+  @:noUsing static public function seq<T,E>(iter:Array<Contract<T,E>>):Contract<Array<T>,E>{
     return bind_fold(
       iter,
       (next:Contract<T,E>,memo:Array<T>) -> 
@@ -211,7 +211,7 @@ class ContractLift extends Clazz{
       ()  -> Tap
     ));
   }
-  static public function attempt<T,Ti,E,U>(self:Contract<T,E>,fn:T->Chunk<Ti,E>):Contract<Ti,E>{
+  static public function adjust<T,Ti,E,U>(self:Contract<T,E>,fn:T->Chunk<Ti,E>):Contract<Ti,E>{
     return lift(fold(
       self,
       (x) -> fn(x),

@@ -39,6 +39,9 @@ class Err<T>{
       this.pos
     );
   }
+  // public function app<U>(fn:Failure<T>->Failure<U>):Err<U>{
+  //   return new Err(this.data.map(fn),this.prev,this.pos);
+  // }
   public function copy(?data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Pos):Err<T>{
     return new Err(
       __.option(data).defv(this.data),
@@ -56,7 +59,10 @@ class Err<T>{
     }
     return self;
   }
-  public function next(that:Err<T>):Err<T>{
+  @:deprecated public function next(that:Err<T>):Err<T>{
+    return merge(that);
+  }   
+  public function merge(that:Err<T>):Err<T>{
     var last  = that.copy();
     var stack : Array<Err<T>> = [];
     while(last.prev.is_defined()){
@@ -121,5 +127,11 @@ class Err<T>{
       (next:E,memo:Err<E>) -> new Err(__.option(ERR_OF(next)),Some(memo),pos),
       new Err(arr.head().map(ERR_OF),None,pos)
     );
+  }
+  public function report():Report<T>{
+    return Report.pure(this);
+  }
+  public function alert():Alert<T>{
+    return report().alert();
   }
 }

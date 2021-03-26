@@ -82,7 +82,7 @@ class ResLift{
   }
   static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
     return switch([self,that]){
-      case [Reject(e),Reject(ee)]     : Reject(e.next(ee));
+      case [Reject(e),Reject(ee)]     : Reject(e.merge(ee));
       case [Reject(e),_]              : Reject(e);
       case [_,Reject(e)]              : Reject(e);
       case [Accept(t),Accept(tt)]     : Accept(Couple.make(t,tt));
@@ -93,6 +93,9 @@ class ResLift{
   }
   static public inline function flat_map<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
     return Res.lift(fold(self,(t) -> fn(t),(e) -> Reject(e)));
+  }
+  static public inline function adjust<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
+    return flat_map(self,fn);
   }
   static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Err<E>->TT):TT{
     return switch(self){
@@ -126,6 +129,13 @@ class ResLift{
       self,
       (ok)  -> Res.accept(ok),
       (no)  -> fn(no)
+    );
+  }
+  static public inline function recover<T,E>(self:ResSum<T,E>,fn:Err<E>->T):T{
+    return fold(
+      self,
+      (v) -> v,
+      (e) -> fn(e)
     );
   }
   static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Err<E>->Void):Res<T,E>{

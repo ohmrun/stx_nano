@@ -1,27 +1,31 @@
-
 package stx.nano;
 
 
-@:forward(is_defined,fold)abstract Report<E>(Option<Err<E>>) from Option<Err<E>> to Option<Err<E>>{
-
+@:using(stx.nano.Report.ReportLift)
+abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
+  static public var _(default,never) = ReportLift;
   public function new(self) this = self;
   
-  @:noUsing static public inline function lift<E>(self:Option<Err<E>>):Report<E> return new Report(self);
+  @:noUsing static public inline function lift<E>(self:ReportSum<E>):Report<E> return new Report(self);
 
   @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{
     return pure(__.fault(pos).of(data));
   }
+  @:noUsing static public function make0<E>(data:Failure<E>,?pos:Pos):Report<E>{
+    return pure(__.fault(pos).failure(data));
+  }
   @:noUsing static public function unit<E>():Report<E>{
-    return new Report(None);
+    return lift(Happened);
   }
   @:noUsing static public function conf<E>(?e:Err<E>):Report<E>{
-    return new Report(__.option(e));
+    return lift(__.option(e).map(Reported).defv(Happened));
   }
   @:noUsing static public function pure<E>(e:Err<E>):Report<E>{
-    return new Report(Some(e));
+    return lift(Reported(e));
   }
   public function effects(success:Void->Void,failure:Void->Void):Report<E>{
-    return this.fold(
+    return _.fold(
+      this,
       (e) -> {
         failure();
         return pure(e);
@@ -34,33 +38,41 @@ package stx.nano;
   }
   public inline function crunch(){
     switch(this){
-      case Some(e)    : throw e;
-      default         :
+      case Reported(e)    : throw e;
+      default             :
     }
   }
   @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Err<E>>):Report<E>{
-    var opt : Option<Err<E>> = opt;
-    return new Report(opt);
+    return lift(opt.fold(
+      Reported,
+      () -> Happened
+    ));
   }
-  public function prj():Option<Err<E>>{
+  @:from static public function fromOption<E>(opt:Option<Err<E>>):Report<E>{
+    return lift(opt.fold(
+      Reported,
+      () -> Happened
+    ));
+  } 
+  @:from static public function fromErr<E>(self:Err<E>):Report<E>{
+    return lift(pure(self));
+  } 
+  public function prj():ReportSum<E>{
     return this;
   }
-  public function value():Option<E>{
-    return this.fold(
-      (err) -> err.value(),
+  public function value():Option<Err<E>>{
+    return _.fold(
+      this,
+      (err) -> Some(err),
       () -> None
     );
   }
   public function defv(error:Err<E>){
     return this.defv(error);
   }
-  public function merge(that:Report<E>):Report<E>{
-    return this.merge(that.prj(),
-      (lhs,rhs) ->  lhs.next(rhs)
-    );
-  }
   public function or(that:Void->Report<E>):Report<E>{
-    return this.fold(
+    return _.fold(
+      this,
       (x) -> Report.pure(x),
       that
     );
@@ -69,24 +81,82 @@ package stx.nano;
   public function errata<EE>(fn:Err<E>->Err<EE>):Report<EE>{
     return new Report(
       switch(this){
-        case Some(v) : fn(v);
-        case None   :  None;
+        case Reported(v) :  Reported(fn(v));
+        case Happened    :  Happened;
       }
     );
   }
   public function ok(){
     return switch(this){
-      case None : true;
-      default   : false;
+      case Happened : true;
+      default       : false;
     }
   }
-  public function populate<T>(fn:Void->T):Res<T,E>{
-    return this.fold(
+  public function promote():Res<Noise,E>{
+    return _.resolve(this,() -> Noise);
+  }
+  public function alert():Alert<E>{
+    return Alert.make(this);
+  }
+}
+class ReportLift{
+  static function lift<T>(self:ReportSum<T>):Report<T>{
+    return Report.lift(self);
+  }
+  static public function resolve<T,E>(self:ReportSum<E>,fn:Void->T):Res<T,E>{
+    return fold(
+      self,
       __.reject,
       () -> __.accept(fn())
     );
   }
-  public function promote():Res<Noise,E>{
-    return populate(() -> Noise);
+  static public function merge<E>(self:Report<E>,that:Report<E>):Report<E>{
+    return switch([self,that]){
+      case [Reported(l),Happened]     : Reported(l);
+      case [Happened,Reported(r)]     : Reported(r); 
+      case [Reported(l),Reported(r)]  : Reported(l.merge(r));
+      default                         : Happened;
+    }
+  }
+  static public function fold<T,Z>(self:ReportSum<T>,val:Err<T>->Z,nil:Void->Z):Z{
+    return switch(self){
+      case Reported(v)  : val(v);
+      case Happened     : nil();
+      case null         : nil();
+    }
+  }
+  static public function def<T>(self:ReportSum<T>,fn:Void->Err<T>):Err<T>{
+    return fold(
+      self,
+      (x) -> x,
+      fn
+    );
+  }
+  static public inline function defv<T>(self:ReportSum<T>,v:Err<T>):Err<T>{
+    return def(
+      self,
+      () -> v
+    );
+  }
+  static public function is_defined<T>(self:ReportSum<T>){
+    return fold(
+      self,
+      (_) -> true,
+      () -> false
+    );
+  }
+  static public function ignore<T>(self:ReportSum<T>,?fn:Failure<T>->Bool){
+    __.option(fn).def(() -> fn = (x) -> true);
+    return fold(
+      self,
+      (err:Err<T>) -> err.data.fold(
+        (failure:Failure<T>) -> fn(failure).if_else(
+          ()  -> __.report(),
+          ()  -> err.report()
+        ),
+        () -> __.report() 
+      ),
+      () -> __.report()
+    );
   }
 }

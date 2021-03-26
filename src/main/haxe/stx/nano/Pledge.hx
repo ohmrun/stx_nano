@@ -31,6 +31,17 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       __.accept(start)
     ));
   }
+  @:noUsing static public function seq<T,E>(iter:Array<Pledge<T,E>>):Pledge<Array<T>,E>{
+    return bind_fold(
+      iter,
+      (next:Pledge<T,E>,memo:Array<T>) -> 
+        next.map(
+          (a) -> memo.snoc(a)
+        )
+      ,
+      []
+    );
+  }
   @:noUsing static public function lazy<T,E>(fn:Void->T):Pledge<T,E>{
     return lift(Future.irreversible(
       (f) -> f(__.accept(fn()))
@@ -96,8 +107,14 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       ok -> {
         t.trigger(__.accept(ok));
       },
-      no -> {
-        t.trigger(__.reject(__.fault(pos).any(no)));
+      (no:Dynamic) -> {
+        switch(std.Type.typeof(no)){
+          case TClass(js.lib.Error) :
+            var e : js.lib.Error = no; 
+            t.trigger(__.reject(__.fault(pos).any(e.message)));
+          default : 
+            t.trigger(__.reject(__.fault(pos).any(no)));
+        }
       }
     ).catchError(
       (e) -> {
@@ -107,7 +124,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     return lift(t.asFuture());
   }
   #end
-
+  
 }
 // @:allow(stx.nano.Pledge) private class PledgeCls<T,E>{
 //   private final forward : Future<Res<T,Err<E>>>;
@@ -199,7 +216,7 @@ class PledgeLift{
   }
   static public function flat_fold<T,Ti,E>(self:PledgeDef<T,E>,val:T->Future<Ti>,ers:Err<E>->Future<Ti>):Future<Ti>{
     return self.flatMap(
-      (res) -> res.fold(val,ers)
+      (res:Res<T,E>) -> res.fold(val,ers)
     );
   }
   static public function fold<T,Ti,E>(self:Pledge<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti):Future<Ti>{
@@ -212,7 +229,7 @@ class PledgeLift{
       (e) -> fn(e)
     ));
   }
-  static public function attempt<T,Ti,E,U>(self:Pledge<T,E>,fn:T->Res<Ti,E>):Pledge<Ti,E>{
+  static public function adjust<T,Ti,E,U>(self:Pledge<T,E>,fn:T->Res<Ti,E>):Pledge<Ti,E>{
     return lift(fold(
       self,
       (x) -> fn(x),
@@ -242,10 +259,21 @@ class PledgeLift{
     }
     return out;
   }
-  static public function errata<T,E,EE>(fn:Err<E>->Err<EE>,self:Pledge<T,E>):Pledge<T,EE>{
+  static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<E>):Alert<E>{
+    return Alert.lift(self.flatMap(
+      (res:Res<T,E>) -> res.fold(
+        (x) -> fn(x).alert(),
+        (e) -> e.alert()
+      )
+    ));
+  }
+  static public function errata<T,E,EE>(self:Pledge<T,E>,fn:Err<E>->Err<EE>):Pledge<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );
+  }
+  static public inline function errate<T,E,EE>(self:Pledge<T,E>,fn:E->EE):Pledge<T,EE>{
+    return errata(self,(x) -> x.map(fn));
   }
   static public function each<T,E>(self:Pledge<T,E>,fn:T->Void,?err:Err<E>->Void){
     self.prj().handle(
@@ -267,5 +295,29 @@ class PledgeLift{
         return x;
       }
     ));
+  }
+  static public function command<T,E>(self:Pledge<T,E>,fn:T->Alert<E>):Pledge<T,E>{
+    return self.flat_map(
+      (t:T) -> fn(t).resolve(t)
+    );
+  }
+  static public function execute<T,E>(self:Pledge<T,E>,fn:Void->Alert<E>):Pledge<T,E>{
+    return self.flat_map(
+      (t:T) -> fn().resolve(t)
+    );
+  }
+  static public function anyway<T,E>(self:PledgeDef<T,E>,fn:Report<E>->Alert<E>):Pledge<T,E>{
+    return self.flatMap(
+      (res) -> res.fold(
+        (ok)  -> fn(__.report()).flat_fold(
+          (err) -> __.reject(err),
+          ()    -> __.accept(ok)
+        ),
+        (err) -> fn(err.report()).flat_fold(
+          (err0) -> __.reject(err.merge(err0)),
+          ()     -> __.reject(err)
+        ) 
+      )
+    );
   } 
 }

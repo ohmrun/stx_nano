@@ -73,10 +73,17 @@ typedef LiftMapToIter           = stx.nano.lift.LiftMapToIter;
 typedef LiftStringMapToIter     = stx.nano.lift.LiftStringMapToIter;
 typedef LiftJsPromiseToContract = stx.nano.lift.LiftJsPromiseToContract;
 typedef LiftContractToJsPromise = stx.nano.lift.LiftContractToJsPromise;
+typedef LiftJsPromiseToPledge   = stx.nano.lift.LiftJsPromiseToPledge;
+class LiftArrayClassWithUnderscore{
+  static public function graft(clazz:Class<Array<Dynamic>>){
+    return stx.lift.ArrayLift;
+  }
+}
 typedef LiftPath                = stx.nano.lift.LiftPath;
 
 typedef Wildcard                = stx.nano.Wildcard;
 
+typedef ReportSum<E>            = stx.nano.ReportSum<E>;
 typedef Report<E>               = stx.nano.Report<E>;
 typedef Position                = stx.nano.Position;
 typedef PrimitiveDef            = stx.nano.Primitive.PrimitiveDef;
@@ -117,6 +124,9 @@ typedef Enum<T>                 = stx.nano.Enum<T>;
 typedef Introspectable          = stx.nano.Introspectable;
 typedef AlertDef<E>             = stx.nano.Alert.AlertDef<E>;
 typedef Alert<E>                = stx.nano.Alert<E>;
+typedef Signal<T>               = stx.nano.Signal<T>;
+typedef Stream<T,E>             = stx.nano.Stream<T,E>;
+
 
 typedef Char                    = stx.nano.Char;
 typedef Chars                   = stx.nano.Chars;
