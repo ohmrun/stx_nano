@@ -19,6 +19,7 @@ enum Tup3<Ti,Tii,Tiii>{
   tuple3(tI:Ti,tII:Tii,tIII:Tiii);
 }
 typedef StdType                 = std.Type;
+typedef StdMath                 = std.Math;
 
 typedef CoupleDef<Ti,Tii>       = stx.nano.Couple.CoupleDef<Ti,Tii>;
 typedef CoupleCat<Ti,Tii>       = stx.nano.Couple.CoupleCat<Ti,Tii>;
@@ -126,6 +127,12 @@ typedef Alert<E>                = stx.nano.Alert<E>;
 typedef Signal<T>               = stx.nano.Signal<T>;
 typedef Stream<T,E>             = stx.nano.Stream<T,E>;
 
+
+typedef Char                    = stx.nano.Char;
+typedef Chars                   = stx.nano.Chars;
+typedef Ints                    = stx.nano.Ints;
+typedef Floats                  = stx.nano.Floats;
+typedef Math                    = stx.nano.Math;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
