@@ -92,6 +92,9 @@ class LiftNano{
       fn(tI,tII);
     }
   }
+  static public function pair<Ti,Tii>(wildcard:Wildcard,tI:Ti,tII:Tii):Pair<Ti,Tii>{
+    return new tink.core.Pair(tI,tII);
+  }
   static public function decouple<Ti,Tii,Tiii>(wildcard:Wildcard,fn:Ti->Tii->Tiii):Couple<Ti,Tii> -> Tiii{
     return (tp:Couple<Ti,Tii>) -> {
       tp.decouple(fn);
