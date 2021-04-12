@@ -74,7 +74,7 @@ typedef LiftStringMapToIter     = stx.nano.lift.LiftStringMapToIter;
 typedef LiftJsPromiseToContract = stx.nano.lift.LiftJsPromiseToContract;
 typedef LiftContractToJsPromise = stx.nano.lift.LiftContractToJsPromise;
 typedef LiftJsPromiseToPledge   = stx.nano.lift.LiftJsPromiseToPledge;
-typedef LiftFutureResToPledge   = stx.nano.ligt.LiftFutureResToPledge;
+typedef LiftFutureResToPledge   = stx.nano.lift.LiftFutureResToPledge;
 
 class LiftArrayClassWithUnderscore{
   static public function graft(clazz:Class<Array<Dynamic>>){
