@@ -15,10 +15,10 @@ class LiftOptionNano{
       case null     : throw err;
     }
   }
-  static public function resolve<T,E>(self:Option<T>,err:E,?pos:Pos){
+  static public function resolve<T,E>(self:Option<T>,err:Failure<E>,?pos:Pos){
     return self.fold(
       __.accept,
-      () -> __.reject(__.fault(pos).of(err))
+      () -> __.reject(__.fault(pos).failure(err))
     );
   }
 }
