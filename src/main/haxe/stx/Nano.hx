@@ -135,6 +135,7 @@ typedef Chars                   = stx.nano.Chars;
 typedef Ints                    = stx.nano.Ints;
 typedef Floats                  = stx.nano.Floats;
 typedef Math                    = stx.nano.Math;
+typedef Bools                   = stx.nano.Bools;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
