@@ -5,7 +5,6 @@ package stx.nano;
 abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   static public var _(default,never) = ReportLift;
   public function new(self) this = self;
-  
   @:noUsing static public inline function lift<E>(self:ReportSum<E>):Report<E> return new Report(self);
 
   @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{

@@ -26,4 +26,11 @@ class Math {
 	@:noUsing static inline public function isNaN(fl:Float):Bool{
 		return StdMath.isNaN(fl);
 	}
+	@:noUsing static public function unique_unordered_pair(x:Int, y:Int):Int{
+    return if (x < y){
+      x * (y - 1) + StdMath.floor(StdMath.pow(y - x - 2,2) / 4);
+    }else{
+      (x - 1) * y + StdMath.floor(StdMath.pow(x - y - 2,2) / 4);
+    }
+  }
 }
