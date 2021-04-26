@@ -1,6 +1,8 @@
 package stx.nano;
 
+@:using(stx.nano.Defect.DefectLift)
 @:forward abstract Defect<E>(Array<E>) from Array<E> to Array<E>{
+  static public var _(default,never) = DefectLift;
   @:noUsing static public function unit<E>():Defect<E>{
     return [];
   }
@@ -24,7 +26,9 @@ package stx.nano;
   public function entype<E>():Defect<E>{
     return cast this;
   }
-  public function concat(that:Defect<E>):Defect<E>{
-    return this.concat(that);
+}
+class DefectLift{
+  static public function concat<E>(self:Defect<E>,that:Defect<E>):Defect<E>{
+    return self.concat(that);
   }
 }

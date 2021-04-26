@@ -137,6 +137,8 @@ typedef Floats                  = stx.nano.Floats;
 typedef Math                    = stx.nano.Math;
 typedef Bools                   = stx.nano.Bools;
 
+typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
+
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
     return Slot.Guard(ft,pos);
