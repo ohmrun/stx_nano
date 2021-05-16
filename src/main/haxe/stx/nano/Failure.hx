@@ -17,6 +17,9 @@ abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
   static public function fromErrOf<T>(v:T):Failure<T>{
     return ERR_OF(v);
   }
+  public function report(?pos:Pos):Report<T>{
+    return Report.pure(__.fault(pos).failure(this));
+  }
   public function prj():FailureSum<T> return this;
   private var self(get,never):Failure<T>;
   private function get_self():Failure<T> return lift(this);

@@ -16,7 +16,7 @@ class ResSumLift{
 @:using(stx.nano.Res.ResLift)
 abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   public function new(self) this = self;
-  static public var _(default,never) = ResLift;
+static public var _(default,never) = ResLift;
 
   private var self(get,never):Res<T,E>;
   private function get_self():Res<T,E> return lift(this);

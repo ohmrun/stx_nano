@@ -260,10 +260,11 @@ class PledgeLift{
     return out;
   }
   static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<E>):Alert<E>{
-    return Alert.lift(self.flatMap(
-      (res:Res<T,E>) -> res.fold(
-        (x) -> fn(x).alert(),
-        (e) -> e.alert()
+    return Alert.lift(
+      self.map(
+        (res:Res<T,E>) -> res.fold(
+          (x) -> fn(x),
+          (e) -> e.report()
       )
     ));
   }
