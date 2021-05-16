@@ -152,7 +152,7 @@ class LiftNano{
       return t;
     }
   }
-  static public function traced<T>(v:Wildcard,?pos:Pos):T->Void{
+  static public function trace<T>(v:Wildcard,?pos:Pos):T->Void{
     #if !macro
       var infos :haxe.PosInfos = pos;
     #else
