@@ -53,9 +53,6 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       () -> Happened
     ));
   } 
-  @:from static public function fromErr<E>(self:Err<E>):Report<E>{
-    return lift(pure(self));
-  } 
   public function prj():ReportSum<E>{
     return this;
   }

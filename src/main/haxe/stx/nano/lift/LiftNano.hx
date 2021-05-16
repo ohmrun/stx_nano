@@ -189,6 +189,12 @@ class LiftNano{
   static public function right<Ti,Tii>(__:Wildcard,tII:Tii):Either<Ti,Tii>{
     return Right(tII);
   }
+  static public function either<T>(either:Either<T,T>):T{
+    return either.fold(
+      l -> l,
+      r -> r 
+    );
+  }
   #if tink_core
   static public function value<T>(future:tink.core.Future<T>):Option<T>{
     var result    = None;

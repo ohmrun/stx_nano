@@ -158,4 +158,7 @@ class ResLift{
       (_) -> false
     );
   }
+  static public function toPledge<T,E>(self:ResSum<T,E>):Pledge<T,E>{
+    return Pledge.fromRes(self);
+  }
 }
