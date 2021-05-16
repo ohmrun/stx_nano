@@ -215,6 +215,7 @@ class LiftNano{
   static public inline function report<E>(wildcard:Wildcard,?e:Failure<E>,?pos:Pos):Report<E>{
     return e == null ? Report.unit() : Report.make0(e,pos);
   }
+  
   // static public inline function pos<P,R>(fn:Binary<P,Null<Pos>,R>,?pos:Pos):Unary<P,R>{
   //   return fn.bind(_,pos);
   // }
