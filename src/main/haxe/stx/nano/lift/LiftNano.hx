@@ -81,6 +81,7 @@ class LiftNano{
     return Outcome.success(t);
   }
   static public function failure<T,E>(wildcard:Wildcard,e:E):Outcome<T,E>{
+    trace(e);
     return Outcome.failure(e);
   }
   

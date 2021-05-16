@@ -14,7 +14,7 @@ abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
   @:from static public function fromFailCode<T>(code:FailCode):Failure<T>{
     return ERR(code);
   }
-  @:from static public function fromErrOf<T>(v:T):Failure<T>{
+  static public function fromErrOf<T>(v:T):Failure<T>{
     return ERR_OF(v);
   }
   public function prj():FailureSum<T> return this;
