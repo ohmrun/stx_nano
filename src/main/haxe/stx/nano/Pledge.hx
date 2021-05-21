@@ -63,6 +63,9 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       )
     );
   }
+  @:noUsing static public inline function fromTinkFuture<T,E>(future:Future<T>):Pledge<T,E>{
+    return lift(future.map(__.accept));
+  }
   #end
   @:noUsing static public function fromLazyRes<T,E>(fn:Void->Res<T,E>):Pledge<T,E>{
     return Future.irreversible(
