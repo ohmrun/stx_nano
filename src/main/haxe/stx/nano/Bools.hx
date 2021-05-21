@@ -11,4 +11,11 @@ class Bools{
       default       : true; 
     }
   }
+  static public function existishness(str:Null<String>):Bool{
+    return switch(str){
+      case ""     : false;
+      case null   : false;
+      default     : true;
+    }
+  }
 }

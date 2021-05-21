@@ -12,8 +12,22 @@ typedef PosDef =
 typedef Dyn                     = Dynamic;
 typedef Pos                     = PosDef;
 
+@:using(stx.Nano.Tup2Lift)
 enum Tup2<L,R>{
   tuple2(l:L,r:R);
+}
+class Tup2Lift{
+  static public inline function cat<L,R,Z>(self:Tup2<L,R>,fn:L->R->Z):Z{
+    return switch(self){
+      case tuple2(l,r) : fn(l,r);
+    }
+  }
+  static public inline function fst<L,R>(self:Tup2<L,R>):L{
+    return cat(self,(l,_) -> l);
+  }
+  static public inline function snd<L,R>(self:Tup2<L,R>):R{
+    return cat(self,(_,r) -> r);
+  }
 }
 enum Tup3<Ti,Tii,Tiii>{
   tuple3(tI:Ti,tII:Tii,tIII:Tiii);
