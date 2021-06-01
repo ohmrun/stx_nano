@@ -2,6 +2,9 @@ package stx.nano;
 
 @:using(stx.nano.Chars.CharsLift)
 @:forward abstract Chars(StdString) from StdString to StdString{
+  static public function lift(self:StdString){
+    return new Chars(self);
+  }
   static public var _(default,never) = CharsLift;
   private function new(self) this = self;
 

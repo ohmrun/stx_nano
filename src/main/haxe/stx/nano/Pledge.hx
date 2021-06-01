@@ -121,7 +121,8 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       }
     ).catchError(
       (e) -> {
-        t.trigger(__.reject(__.fault(pos).any(e)));
+        var e1 : js.lib.Error = e; 
+            t.trigger(__.reject(__.fault(pos).any(e1.message)));
       }
     );
     return lift(t.asFuture());
@@ -237,6 +238,11 @@ class PledgeLift{
       self,
       (x) -> fn(x),
       (v) -> __.reject(v)
+    ));
+  }
+  static public function rectify<T,Ti,E,U>(self:Pledge<T,E>,fn:Err<E>->Res<T,E>):Pledge<T,E>{
+    return lift(self.prj().map(
+      (res:Res<T,E>) -> res.rectify(fn)
     ));
   }
   static public function receive<T,E>(self:Pledge<T,E>,fn:T->Void):Future<Option<Err<E>>>{
