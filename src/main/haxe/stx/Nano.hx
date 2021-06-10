@@ -1,5 +1,8 @@
 package stx;
 
+class Nano{
+  static public var _(default,never) = LiftNano;
+}
 //@back2dos haxetink
 typedef PosDef = 
   #if macro
@@ -183,13 +186,15 @@ abstract FPath(Chars){
     return new FPath(str);
   }
   public function into(str:String):FPath{
-    return lift(has_end_slash().if_else(
+    return lift(Nano._.if_else(
+      has_end_slash(),
       () -> '$this$str',
       () -> '$this/$str'
     ));
   }
   public function trim_end_slash(){
-    return has_end_slash().if_else(
+    return Nano._.if_else(
+      has_end_slash(),
       () -> lift(this.rdropn(1)),
       () -> lift(this)
     );

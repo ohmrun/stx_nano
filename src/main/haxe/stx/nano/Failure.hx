@@ -18,7 +18,7 @@ abstract Failure<T>(FailureSum<T>) from FailureSum<T> to FailureSum<T>{
     return ERR_OF(v);
   }
   public function report(?pos:Pos):Report<T>{
-    return Report.pure(__.fault(pos).failure(this));
+    return Report.pure(Nano._.fault(__,pos).failure(this));
   }
   public function prj():FailureSum<T> return this;
   private var self(get,never):Failure<T>;
@@ -34,11 +34,13 @@ class FailureLift{
   static public function fold_filter<T>(self:Failure<T>,val:T->Bool,def:FailCode->Bool):Option<Failure<T>>{
     return fold(
       self,
-      (x) -> val(x).if_else(
+      (x) -> Nano._.if_else(
+        val(x),
         () -> Option.pure(ERR_OF(x)),
         () -> Option.unit()
       ),
-      x -> def(x).if_else(
+      x -> Nano._.if_else(
+        def(x),
         () -> Option.pure(ERR(x)),
         () -> Option.unit()
       )
