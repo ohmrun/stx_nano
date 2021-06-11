@@ -1,4 +1,4 @@
-package stx.async;
+package stx.nano;
 
 import haxe.Timer;
 
