@@ -122,6 +122,6 @@ class SignalLift{
     );
   }
   static public function next<T>(self:Signal<T>):Future<T>{
-    return self.prj().nextTime(`);
+    return self.prj().nextTime();
   }
 }
