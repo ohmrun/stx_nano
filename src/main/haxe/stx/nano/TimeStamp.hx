@@ -6,7 +6,7 @@ abstract TimeStamp({
   index : Int
 }){
   private function new(self) this = self;
-  @:allow(stx.async.LogicalClock) static private function pure(v){
+  @:allow(stx.nano.LogicalClock) static private function pure(v){
     return new TimeStamp(v);
   }
   public var realm(get,never):Float;
