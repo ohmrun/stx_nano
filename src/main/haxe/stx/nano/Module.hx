@@ -56,6 +56,19 @@ private class Ft extends Clazz{
     }
     return output;
   }
+  public function value<T>(ft:Future<T>):Option<T>{
+    var output    : Option<T>   = None;
+    var finished  : Bool        = false;
+    ft.handle(
+      (x) -> {
+        if (!finished) {
+          output = Some(x);
+        }
+      }
+    );
+    finished = true;
+    return output;
+  }
 }
 private class Sig{
   
