@@ -23,10 +23,12 @@ abstract TimeStamp({
   }
   @:op(A<B)
   public function lt(that:TimeStamp){
-    return this.exact < that.exact;
-  }
-  @:op(A==B)
-  public function eq(that:TimeStamp){
-    return this.realm == that.realm;
+    return if(this.realm > that.realm){ 
+      1;
+    }else if(this.realm == that.realm){
+      this.exact > that.exact ? 1 : -1;
+    }else{
+      -1;
+    }
   }
 }
