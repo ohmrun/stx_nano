@@ -76,6 +76,9 @@ import tink.core.Signal in TinkSignal;
       }
     );
   }
+  public function prj():TinkSignal<T>{
+    return this;
+  }
 }
 class SignalLift{
   static function lift<T>(self:TinkSignal<T>){
@@ -117,5 +120,8 @@ class SignalLift{
     return self.map(
       (t:T) -> unit = fn(t,unit)
     );
+  }
+  static public function next<T>(self:Signal<T>):Future<T>{
+    return self.prj().nextTime();
   }
 }

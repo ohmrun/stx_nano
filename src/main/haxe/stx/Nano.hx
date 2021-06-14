@@ -153,6 +153,8 @@ typedef Ints                    = stx.nano.Ints;
 typedef Floats                  = stx.nano.Floats;
 typedef Math                    = stx.nano.Math;
 typedef Bools                   = stx.nano.Bools;
+typedef TimeStamp               = stx.nano.TimeStamp;
+typedef LogicalClock            = stx.nano.LogicalClock;
 
 typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
 

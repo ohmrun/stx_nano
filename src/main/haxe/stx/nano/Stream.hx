@@ -152,4 +152,7 @@ class StreamLift{
       )
     );
   }
+  static public function next<T,E>(self:Stream<T,E>):Future<Chunk<T,E>>{
+    return self.prj().nextTime();
+  }
 }
