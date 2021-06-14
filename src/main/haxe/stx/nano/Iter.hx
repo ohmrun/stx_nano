@@ -157,19 +157,31 @@ class IterLift{
     eff();
     return data;
   }
-  static public function foldl<T,Z>(iter:Iter<T>,fn:T->Z->Z,init:Z):Z{
-    var data      = init;
-    var iterator  = iter.iterator();
+  // static public function lfold<T,Z>(iter:Iter<T>,fn:T->Z->Z,init:Z):Z{
+  //   var data      = init;
+  //   var iterator  = iter.iterator();
 
-    function eff():Void{
-      if(iterator.hasNext()){
-        var next = iterator.next();
-            data = fn(next,data);
-            eff();
-      }
-    }
-    eff();
-    return data;
+  //   function eff():Void{
+  //     if(iterator.hasNext()){
+  //       var next = iterator.next();
+  //           data = fn(next,data);
+  //           eff();
+  //     }
+  //   }
+  //   eff();
+  //   return data;
+  // }
+  static public function search<T>(iter:Iter<T>,fn:T->Bool):Option<T>{
+    return lfold(
+      iter,
+      (next:T,memo:Option<T>) -> memo.fold(
+        Some,
+        () -> fn(next).if_else(
+          () -> Some(next),
+          () -> None
+        )
+      ),
+      None
+    );
   }
-
 }

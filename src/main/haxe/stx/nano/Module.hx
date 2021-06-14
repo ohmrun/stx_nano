@@ -79,4 +79,5 @@ private class Map extends Clazz{
   public function String<T>():haxe.ds.Map<String,T>{
     return new haxe.ds.Map();
   }
+  
 }
