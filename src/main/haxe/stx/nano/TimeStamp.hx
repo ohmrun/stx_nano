@@ -22,7 +22,7 @@ abstract TimeStamp({
     return this.exact;
   }
   @:op(A<B)
-  public function lt(that:TimeStamp){
+  public function compare_to(that:TimeStamp){
     return if(this.realm > that.realm){ 
       1;
     }else if(this.realm == that.realm){
