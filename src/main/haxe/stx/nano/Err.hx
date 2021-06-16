@@ -134,4 +134,7 @@ class Err<T>{
   public function alert():Alert<T>{
     return report().alert();
   }
+  public function toTinkError(code=500):tink.core.Error{
+    return tink.core.Error.withData(code, 'TINK_ERROR', this.data, this.pos);
+  }
 }
