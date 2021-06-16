@@ -6,20 +6,20 @@ typedef ClusterDef<T> = ClusterCls<T>;
 private class ClusterCls<T>{
   public var length(get, never):Int;
   function get_length(){
-    return delegate.length;
+    return entries.length;
   }
-  private final delegate  : Array<T>;
-  public function new(delegate:Array<T>){
-    this.delegate = delegate;
+  private final entries  : Array<T>;
+  public function new(entries:Array<T>){
+    this.entries = entries;
   }
   public function fmap<TT>(fn:Array<T>->Array<TT>):Cluster<TT>{
-    return new ClusterCls(fn(this.delegate));
+    return new ClusterCls(fn(this.entries));
   }
   public function accs<TT>(fn:Array<T>->TT):TT{
-    return fn(this.delegate);
+    return fn(this.entries);
   }
   public function iterator():Iterator<T>{
-    return this.delegate.iterator();
+    return this.entries.iterator();
   }
 }
 
