@@ -103,4 +103,11 @@ class AlertLift{
       (report) -> fn(report).prj()
     );
   }
+  static public function toTinkPromise<E>(self:AlertDef<E>):tink.core.Promise<Noise>{
+    return fold(
+      self,
+      er -> tink.core.Outcome.Failure(er.toTinkError()),
+      () -> tink.core.Outcome.Success(Noise)
+    );
+  }
 }

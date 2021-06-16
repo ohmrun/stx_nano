@@ -329,5 +329,14 @@ class PledgeLift{
         ) 
       )
     );
-  } 
+  }
+  #if tink_core
+  static public function toTinkPromise<T,E>(self:Pledge<T,E>):tink.core.Promise<T>{
+    return fold(
+      self,
+      ok -> tink.core.Outcome.Success(ok),
+      no -> tink.core.Outcome.Failure(no.toTinkError())
+    );
+  }
+  #end 
 }
