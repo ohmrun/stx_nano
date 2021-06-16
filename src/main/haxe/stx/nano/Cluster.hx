@@ -3,8 +3,8 @@ package stx.nano;
 import haxe.Constraints.IMap;
 
 typedef ClusterDef<T> = ClusterCls<T>;
-class ClusterCls<T>{
-  private final delegate : Array<T>;
+private class ClusterCls<T>{
+  var delegate : Array<T>;
   public function new(delegate:Array<T>){
     this.delegate = delegate;
   }
