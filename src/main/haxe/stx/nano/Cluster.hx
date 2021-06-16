@@ -2,15 +2,29 @@ package stx.nano;
 
 import haxe.Constraints.IMap;
 
-typedef ClusterDef<T> = Array<T>; 
+typedef ClusterDef<T> = ClusterCls<T>;
+class ClusterCls<T>{
+  private final delegate : Array<T>;
+  public function new(delegate:Array<T>){
+    this.delegate = delegate;
+  }
+  public function fmap<TT>(fn:Array<T>->Array<TT>):Cluster<TT>{
+    return new ClusterCls(fn(this.delegate));
+  }
+  public function accs<TT>(fn:Array<T>->TT):TT{
+    return fn(this.delegate);
+  }
+}
 
 @:using(stx.nano.Cluster.ClusterLift)
-abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T> to ClusterDef<T>{
+@:forward abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T> to ClusterDef<T>{
   public function new(self) this = self;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
-
+  @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
+    return lift(new ClusterCls(self));
+  }
   static public function unit<T>():Cluster<T>{
-    return lift([]);
+    return lift(new ClusterCls([]));
   } 
   public function prj():ClusterDef<T> return this;
   private var self(get,never):Cluster<T>;
@@ -18,66 +32,68 @@ abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T> to ClusterDef<T>{
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;
-  static public inline function lift<T>(self:Array<T>):Cluster<T> return Cluster.lift(self); 
-  
-  static public function flatten<T>(self:Array<Array<T>>):Cluster<T>                                                      return lift(_.flatten(self));
-  static public function interleave<T>(self: StdArray<StdArray<T>>):Cluster<T>                                            return lift(_.interleave(self));
-  static public inline function is_defined<T>(self:StdArray<T>):Bool                                                      return      _.is_defined(self);
-  static public function cons<T>(self:StdArray<T>,t:T):Cluster<T>                                                         return lift(_.cons(self,t));
-  static public function snoc<T>(self:StdArray<T>,t:T):Cluster<T>                                                         return lift(_.snoc(self,t));
-  static public inline function set<T>(self:StdArray<T>,i:Int,v:T):Cluster<T>                                             return lift(_.set(self,i,v));
-  static public inline function get<T>(self:StdArray<T>,i:Int):T                                                          return      _.get(self,i);
-  static public function head<T>(self:StdArray<T>):Option<T>                                                              return      _.head(self);
-  static public function tail<T>(self:StdArray<T>):Cluster<T>                                                             return lift(_.tail(self));
-  static public function last<T>(self:StdArray<T>):Option<T>                                                              return      _.last(self);
-  static public function copy<T>(self:StdArray<T>):Cluster<T>                                                             return lift(_.copy(self));
-  static public function concat<T>(self:StdArray<T>,that:Iterable<T>):Cluster<T>                                          return lift(_.concat(self,that));
-  static public function bind_fold<T,Ti,TT>(self:StdArray<T>,pure:Ti->TT,init:Ti,bind:TT->(Ti->TT)->TT,fold:T->Ti->Ti):TT return      _.bind_fold(self,pure,init,bind,fold);
-  static public function reduce<T,TT>(self:StdArray<T>,unit:Void->TT,pure:T->TT,plus:TT->TT->TT):TT                       return      _.reduce(self,unit,pure,plus);
-  static public function map<T,TT>(self:StdArray<T>,fn:T->TT):Cluster<TT>                                                 return lift(_.map(self,fn));
-  static public function mapi<T,TT>(self:StdArray<T>,fn:Int->T->TT):Cluster<TT>                                           return lift(_.mapi(self,fn));
-  static public function flat_map<T,TT>(self:StdArray<T>,fn:T->Iterable<TT>):Cluster<TT>                                  return lift(_.flat_map(self,fn));
-  static public function lfold<T,TT>(self:StdArray<T>,fn:T->TT->TT,memo:TT):TT                                            return      _.lfold(self,fn,memo);
-  static public function lfold1<T>(self:StdArray<T>,fn:T->T->T):Option<T>                                                 return      _.lfold1(self,fn);
-  static public function rfold<T,TT>(self:StdArray<T>,fn:T->TT->TT,z:TT):TT                                               return      _.rfold(self,fn,z);
-  static public function rfold1<T>(self:StdArray<T>,fn:T->T->T):Option<T>                                                 return      _.rfold1(self,fn);
-  static public function lscan<T>(self:StdArray<T>,f: T -> T -> T,init: T):Cluster<T>                                     return lift(_.lscan(self,f,init));
-  static public function lscan1<T>(self:StdArray<T>,f: T -> T -> T):Cluster<T>                                            return lift(_.lscan1(self,f));
-  static public function rscan<T>(self:StdArray<T>,init: T, f: T -> T -> T):Cluster<T>                                    return lift(_.rscan(self,init,f));
-  static public function rscan1<T>(self:StdArray<T>,fn: T -> T -> T):Cluster<T>                                           return lift(_.rscan1(self,fn));
-  static public function filter<T>(self:StdArray<T>,fn:T->Bool):Cluster<T>                                                return lift(_.filter(self,fn));
-  static public function map_filter<T,TT>(self:StdArray<T>,fn:T->Option<TT>):Cluster<TT>                                  return lift(_.map_filter(self,fn));
-  static public function whilst<T>(self:StdArray<T>,fn:T->Bool):Cluster<T>                                                return lift(_.whilst(self,fn));
+  static public inline function lift<T>(self:Cluster<T>):Cluster<T> return Cluster.lift(self); 
+  static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return Cluster.lift(self.fmap(fn)); 
+  static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return self.accs(fn); 
 
-  static public function ltaken<T>(self:StdArray<T>,n):Cluster<T>                                                         return lift(_.ltaken(self,n));
-  static public function ldropn<T>(self:StdArray<T>,n):Cluster<T>                                                         return lift(_.ldropn(self,n));
-  static public function rdropn<T>(self:StdArray<T>,n:Int):Cluster<T>                                                     return lift(_.rdropn(self,n));
-  static public inline function ldrop<T>(self: StdArray<T>, p: T -> Bool):Cluster<T>                                      return lift(_.ldrop(self,p));
-  static public function search<T>(self:StdArray<T>,fn:T->Bool):Option<T>                                                 return      _.search(self,fn);
-  static public function all<T>(self:StdArray<T>,fn:T->Bool):Bool                                                         return      _.all(self,fn);
-  static public function any<T>(self:StdArray<T>,fn:T->Bool): Bool                                                        return      _.any(self,fn);
-  static public function zip_with<T,Ti,TT>(self:StdArray<T>,that:StdArray<Ti>,fn:T->Ti->TT):Cluster<TT>                   return lift(_.zip_with(self,that,fn));
-  static public function cross_with<T,Ti,TT>(self :Array<T>, that :Array<Ti>,fn : T -> Ti -> TT):Cluster<TT>              return lift(_.cross_with(self,that,fn));
-  static public function difference_with<T>(self:Array<T>, that:Array<T>,eq:T->T->Bool)                                   return lift(_.difference_with(self,that,eq));
-  static public inline function union_with<T>(self:Array<T>, that:Array<T>,eq:T->T->Bool)                                 return lift(_.union_with(self,that,eq));
-  static public function unique_with<T>(self:StdArray<T>,eq:T->T->Bool):Cluster<T>                                        return lift(_.unique_with(self,eq));
-  static public function nub_with<T>(self:StdArray<T>,f: T -> T -> Bool):Cluster<T>                                       return lift(_.nub_with(self,f));
-  static public inline function intersect_with<T>(self: StdArray<T>, that: StdArray<T>,f: T -> T -> Bool):Cluster<T>      return lift(_.intersect_with(self,that,f));
-  static public inline function reversed<T>(self: StdArray<T>):Cluster<T>                                                 return lift(_.reversed(self));
-  static public inline function count<T>(self: StdArray<T>, fn: T -> Bool): Int                                           return      _.count(self,fn);
-  static public inline function size<T>(self: StdArray<T>): Int                                                           return      _.size(self);
-  static public inline function index_of<T>(self: StdArray<T>, t: T->Bool): Int                                           return      _.index_of(self,t);
-  static public inline function has<T>(self: StdArray<T>,obj:T): Option<Int>                                              return      _.has(self,obj);
-  static public inline function partition<T>(self: StdArray<T>,f: T -> Bool): { a : StdArray<T>, b :  StdArray<T> }       return      _.partition(self,f);
-  static public function chunk<T>(self : StdArray<T>, size : StdArray<Int>) :Array<Array<T>>                              return lift(_.chunk(self,size));
-  static public function pad<T>(self:StdArray<T>,len:Int,?val:T):Cluster<T>                                               return lift(_.pad(self,len,val));
-  static public inline function fill<T>(self:StdArray<T>,def:T):Cluster<T>                                                return lift(_.fill(self,def));
-  static public function toIterable<T>(self:StdArray<T>):Iterable<T>                                                      return      _.toIterable(self);
-  static public inline function toMap<T>(self:StdArray<Void -> { a : String, b : T }>):Map<String,T>                      return      _.toMap(self);
-  static public function random<T>(self:StdArray<T>):Null<T>                                                              return      _.random(self);
-  static public function shuffle<T>(self: StdArray<T>):Cluster<T>                                                         return      _.shuffle(self);
-  static public function and_with<T>(self:Array<T>,that:Array<T>,eq:T->T->Bool):Bool                                      return      _.and_with(self,that,eq);
-  static public function rotate<T>(self:Array<T>,i:Int):Cluster<T>                                                        return lift(_.rotate(self,i));
-  static public function iterator<T>(self:StdArray<T>):Iterator<T>                                                        return      _.iterator(self);
-  static public function elide<T>(self:StdArray<T>):Cluster<Dynamic>                                                      return map(self,(v) -> (v:Dynamic));
+  static public function flatten<T>(self:Cluster<Array<T>>):Cluster<T>                                                    return fmap(self,_.flatten);
+  static public function interleave<T>(self:Cluster<Array<T>>):Cluster<T>                                                 return fmap(self,_.interleave);
+  static public inline function is_defined<T>(self:Cluster<T>):Bool                                                       return accs(self,_.is_defined);
+  static public function cons<T>(self:Cluster<T>,t:T):Cluster<T>                                                          return fmap(self,_.cons.bind(_,t));
+  static public function snoc<T>(self:Cluster<T>,t:T):Cluster<T>                                                          return fmap(self,_.snoc.bind(_,t));
+  static public inline function set<T>(self:Cluster<T>,i:Int,v:T):Cluster<T>                                              return fmap(self,_.set.bind(_,i,v));
+  static public inline function get<T>(self:Cluster<T>,i:Int):T                                                           return accs(self,_.get.bind(_,i));
+  static public function head<T>(self:Cluster<T>):Option<T>                                                               return accs(self,_.head);
+  static public function tail<T>(self:Cluster<T>):Cluster<T>                                                              return fmap(self,_.tail);
+  static public function last<T>(self:Cluster<T>):Option<T>                                                               return accs(self,_.last);
+  static public function copy<T>(self:Cluster<T>):Cluster<T>                                                              return fmap(self,_.copy);
+  static public function concat<T>(self:Cluster<T>,that:Iterable<T>):Cluster<T>                                           return fmap(self,_.concat.bind(_,that));
+  static public function bind_fold<T,Ti,TT>(self:Cluster<T>,pure:Ti->TT,init:Ti,bind:TT->(Ti->TT)->TT,fold:T->Ti->Ti):TT  return accs(self,_.bind_fold.bind(_,pure,init,bind,fold));
+  static public function reduce<T,TT>(self:Cluster<T>,unit:Void->TT,pure:T->TT,plus:TT->TT->TT):TT                        return accs(self,_.reduce.bind(_,unit,pure,plus));
+  static public function map<T,TT>(self:Cluster<T>,fn:T->TT):Cluster<TT>                                                  return fmap(self,_.map.bind(_,fn));
+  static public function mapi<T,TT>(self:Cluster<T>,fn:Int->T->TT):Cluster<TT>                                            return fmap(self,_.mapi.bind(_,fn));
+  static public function flat_map<T,TT>(self:Cluster<T>,fn:T->Iterable<TT>):Cluster<TT>                                   return fmap(self,_.flat_map.bind(_,fn));
+  static public function lfold<T,TT>(self:Cluster<T>,fn:T->TT->TT,memo:TT):TT                                             return accs(self,_.lfold.bind(_,fn,memo));
+  static public function lfold1<T>(self:Cluster<T>,fn:T->T->T):Option<T>                                                  return accs(self,_.lfold1.bind(_,fn));
+  static public function rfold<T,TT>(self:Cluster<T>,fn:T->TT->TT,z:TT):TT                                                return accs(self,_.rfold.bind(_,fn,z));
+  static public function rfold1<T>(self:Cluster<T>,fn:T->T->T):Option<T>                                                  return accs(self,_.rfold1.bind(_,fn));
+  static public function lscan<T>(self:Cluster<T>,f: T -> T -> T,init: T):Cluster<T>                                      return fmap(self,_.lscan.bind(_,f,init));
+  static public function lscan1<T>(self:Cluster<T>,f: T -> T -> T):Cluster<T>                                             return fmap(self,_.lscan1.bind(_,f));
+  static public function rscan<T>(self:Cluster<T>,init: T, f: T -> T -> T):Cluster<T>                                     return fmap(self,_.rscan.bind(_,init,f));
+  static public function rscan1<T>(self:Cluster<T>,fn: T -> T -> T):Cluster<T>                                            return fmap(self,_.rscan1.bind(_,fn));
+  static public function filter<T>(self:Cluster<T>,fn:T->Bool):Cluster<T>                                                 return fmap(self,_.filter.bind(_,fn));
+  static public function map_filter<T,TT>(self:Cluster<T>,fn:T->Option<TT>):Cluster<TT>                                   return fmap(self,_.map_filter.bind(_,fn));
+  static public function whilst<T>(self:Cluster<T>,fn:T->Bool):Cluster<T>                                                 return fmap(self,_.whilst.bind(_,fn));
+
+  static public function ltaken<T>(self:Cluster<T>,n):Cluster<T>                                                          return fmap(self,_.ltaken.bind(_,n));
+  static public function ldropn<T>(self:Cluster<T>,n):Cluster<T>                                                          return fmap(self,_.ldropn.bind(_,n));
+  static public function rdropn<T>(self:Cluster<T>,n:Int):Cluster<T>                                                      return fmap(self,_.rdropn.bind(_,n));
+  static public inline function ldrop<T>(self:Cluster<T>, p: T -> Bool):Cluster<T>                                        return fmap(self,_.ldrop.bind(_,p));
+  static public function search<T>(self:Cluster<T>,fn:T->Bool):Option<T>                                                  return accs(self,_.search.bind(_,fn));
+  static public function all<T>(self:Cluster<T>,fn:T->Bool):Bool                                                          return accs(self,_.all.bind(_,fn));
+  static public function any<T>(self:Cluster<T>,fn:T->Bool): Bool                                                         return accs(self,_.any.bind(_,fn));
+  static public function zip_with<T,Ti,TT>(self:Cluster<T>,that:Array<Ti>,fn:T->Ti->TT):Cluster<TT>                       return fmap(self,_.zip_with.bind(_,that,fn));
+  static public function cross_with<T,Ti,TT>(self :Array<T>, that :Array<Ti>,fn : T -> Ti -> TT):Cluster<TT>              return fmap(self,_.cross_with.bind(_,that,fn));
+  static public function difference_with<T>(self:Cluster<T>, that:Array<T>,eq:T->T->Bool)                                 return fmap(self,_.difference_with.bind(_,that,eq));
+  static public inline function union_with<T>(self:Cluster<T>, that:Array<T>,eq:T->T->Bool)                               return fmap(self,_.union_with.bind(_,that,eq));
+  static public function unique_with<T>(self:Cluster<T>,eq:T->T->Bool):Cluster<T>                                         return fmap(self,_.unique_with.bind(_,eq));
+  static public function nub_with<T>(self:Cluster<T>,f: T -> T -> Bool):Cluster<T>                                        return fmap(self,_.nub_with.bind(_,f));
+  static public inline function intersect_with<T>(self:Cluster<T>, that: Array<T>,f: T -> T -> Bool):Cluster<T>           return fmap(self,_.intersect_with.bind(_,that,f));
+  static public inline function reversed<T>(self:Cluster<T>):Cluster<T>                                                   return fmap(self,_.reversed);
+  static public inline function count<T>(self:Cluster<T>, fn: T -> Bool): Int                                             return accs(self,_.count.bind(_,fn));
+  static public inline function size<T>(self:Cluster<T>): Int                                                             return accs(self,_.size);
+  static public inline function index_of<T>(self:Cluster<T>, t: T->Bool): Int                                             return accs(self,_.index_of.bind(_,t));
+  static public inline function has<T>(self:Cluster<T>,obj:T): Option<Int>                                                return accs(self,_.has.bind(_,obj));
+  static public inline function partition<T>(self:Cluster<T>,f: T -> Bool): { a : Array<T>, b :  Array<T> }               return accs(self,_.partition.bind(_,f));
+  //static public function chunk<T>(self : Array<T>, size : Array<Int>) :Array<Array<T>>                                    return fmap(self,_.chunk.bind(_,size));
+  static public function pad<T>(self:Cluster<T>,len:Int,?val:T):Cluster<T>                                                return fmap(self,_.pad.bind(_,len,val));
+  static public inline function fill<T>(self:Cluster<T>,def:T):Cluster<T>                                                 return fmap(self,_.fill.bind(_,def));
+  static public function toIterable<T>(self:Cluster<T>):Iterable<T>                                                       return accs(self,_.toIterable);
+  static public inline function toMap<T>(self:Cluster<Void -> { a : String, b : T }>):Map<String,T>                       return accs(self,_.toMap);
+  static public function random<T>(self:Cluster<T>):Null<T>                                                               return accs(self,_.random);
+  static public function shuffle<T>(self:Cluster<T>):Cluster<T>                                                           return accs(self,_.shuffle);
+  static public function and_with<T>(self:Cluster<T>,that:Array<T>,eq:T->T->Bool):Bool                                    return accs(self,_.and_with.bind(_,that,eq));
+  static public function rotate<T>(self:Cluster<T>,i:Int):Cluster<T>                                                      return fmap(self,_.rotate.bind(_,i));
+  static public function iterator<T>(self:Cluster<T>):Iterator<T>                                                         return accs(self,_.iterator);
+  static public function elide<T>(self:Cluster<T>):Cluster<Dynamic>                                                       return map(self,(v) -> (v:Dynamic));
 }
