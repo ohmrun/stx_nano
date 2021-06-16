@@ -24,7 +24,7 @@ private class ClusterCls<T>{
 }
 
 //@:using(stx.nano.Cluster.ClusterLift)
-@:forward(fmap,accs,iterator) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
+@:pure @:forward(fmap,accs,iterator) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
   static public var _(default,never) = ClusterLift;
   public function new(self) this = self;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
