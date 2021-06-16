@@ -20,7 +20,7 @@ private class ClusterCls<T>{
 }
 
 @:using(stx.nano.Cluster.ClusterLift)
-@:forward abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T> to ClusterDef<T>{
+@:forward abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
   public function new(self) this = self;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
   @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
