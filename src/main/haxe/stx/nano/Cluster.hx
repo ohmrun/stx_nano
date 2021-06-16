@@ -9,6 +9,9 @@ abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T> to ClusterDef<T>{
   public function new(self) this = self;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
 
+  static public function unit<T>():Cluster<T>{
+    return lift([]);
+  } 
   public function prj():ClusterDef<T> return this;
   private var self(get,never):Cluster<T>;
   private function get_self():Cluster<T> return lift(this);
