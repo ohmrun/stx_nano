@@ -14,6 +14,9 @@ class ClusterCls<T>{
   public function accs<TT>(fn:Array<T>->TT):TT{
     return fn(this.delegate);
   }
+  public function iterator(){
+    return this.delegate.iterator();
+  }
 }
 
 @:using(stx.nano.Cluster.ClusterLift)
