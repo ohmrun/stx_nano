@@ -18,8 +18,6 @@ typedef ClusterDef<T> = Array<T>;
   @:to public function toIterable():Iterable<T>{
     return this;
   }
-<<<<<<< Updated upstream
-=======
   public function concat(that:Cluster<T>){
     return lift(this.concat(Std.downcast(that,Array)));
   }
