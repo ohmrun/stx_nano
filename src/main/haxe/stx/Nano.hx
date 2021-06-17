@@ -156,6 +156,7 @@ typedef Bools                   = stx.nano.Bools;
 typedef TimeStamp               = stx.nano.TimeStamp;
 typedef LogicalClock            = stx.nano.LogicalClock;
 typedef Cluster<T>              = stx.nano.Cluster<T>;
+typedef Catalog<T>              = stx.nano.Catalog<T>;
 
 typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
 
