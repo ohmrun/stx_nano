@@ -11,9 +11,6 @@ typedef ClusterDef<T> = Array<T>;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
   @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
     return lift(self);
-=======
-    return lift(self.copy());
->>>>>>> Stashed changes
   }
   static public function unit<T>():Cluster<T>{
     return lift([]);  
