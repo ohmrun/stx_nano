@@ -2,57 +2,26 @@ package stx.nano;
 
 import haxe.Constraints.IMap;
 
-typedef ClusterDef<T> = ClusterCls<T>;
-private class ClusterCls<T>{
-  public var length(get, never):Int;
-  function get_length(){
-    return entries.length;
-  }
-  private final entries  : Array<T>;
-  public function new(entries:Array<T>){
-    this.entries = entries;
-  }
-  public function fmap<TT>(fn:Array<T>->Array<TT>):Cluster<TT>{
-    return new ClusterCls(fn(this.entries));
-  }
-  public function accs<TT>(fn:Array<T>->TT):TT{
-    return fn(this.entries);
-  }
-  public function iterator():Iterator<T>{
-    return this.entries.iterator();
-  }
-}
+typedef ClusterDef<T> = Array<T>;
 
-//@:using(stx.nano.Cluster.ClusterLift)
+@:using(stx.nano.Cluster.ClusterLift)
 @:pure @:forward(fmap,accs,iterator) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
   static public var _(default,never) = ClusterLift;
   public function new(self) this = self;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
   @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
-<<<<<<< Updated upstream
-    return lift(new ClusterCls(self));
+    return lift(self);
 =======
     return lift(self.copy());
 >>>>>>> Stashed changes
   }
   static public function unit<T>():Cluster<T>{
-    return lift(new ClusterCls([]));
+    return lift([]);  
   } 
   @:to public function toIterable():Iterable<T>{
     return this;
   }
 <<<<<<< Updated upstream
-  public function concat(that){
-    return _.concat(lift(this),that);
-  }
-  public function copy(){
-    return _.copy(this);
-  }
-  public function snoc(v){
-    return _.snoc(this,v);
-  }
-  public function cons(v){
-    return _.cons(this,v);
 =======
   public function concat(that:Cluster<T>){
     return lift(this.concat(Std.downcast(that,Array)));
@@ -60,14 +29,12 @@ private class ClusterCls<T>{
   public function copy(){
     return lift(this.copy());
 >>>>>>> Stashed changes
-  }
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;
   static public inline function lift<T>(self:ClusterDef<T>):Cluster<T> return Cluster.lift(self); 
-<<<<<<< Updated upstream
-  static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return self.fmap(fn); 
-  static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return self.accs(fn); 
+  static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return lift(fn(Std.downcast(self,Array))); 
+  static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return fn(Std.downcast(self,Array)); 
 =======
   static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return lift(fn(Std.downcast(self,Array))); 
   static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return fn(Std.downcast(self,Array)); 
