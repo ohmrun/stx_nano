@@ -23,17 +23,13 @@ typedef ClusterDef<T> = Array<T>;
   }
   public function copy(){
     return lift(this.copy());
->>>>>>> Stashed changes
+  }
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;
   static public inline function lift<T>(self:ClusterDef<T>):Cluster<T> return Cluster.lift(self); 
   static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return lift(fn(Std.downcast(self,Array))); 
   static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return fn(Std.downcast(self,Array)); 
-=======
-  static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return lift(fn(Std.downcast(self,Array))); 
-  static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return fn(Std.downcast(self,Array)); 
->>>>>>> Stashed changes
 
   static public function flatten<T>(self:Cluster<Array<T>>):Cluster<T>                                                    return fmap(self,_.flatten);
   static public function interleave<T>(self:Cluster<Array<T>>):Cluster<T>                                                 return fmap(self,_.interleave);
