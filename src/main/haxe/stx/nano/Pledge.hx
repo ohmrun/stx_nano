@@ -105,27 +105,22 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   }
   #if js
   @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>,?pos:Pos):Pledge<T,E>{
-    var t = Future.trigger();
-    self.then(
-      ok -> {
-        t.trigger(__.accept(ok));
-      },
-      (no:Dynamic) -> {
-        switch(std.Type.typeof(no)){
-          case TClass(js.lib.Error) :
-            var e : js.lib.Error = no; 
-            t.trigger(__.reject(__.fault(pos).any(e.message)));
-          default : 
-            t.trigger(__.reject(__.fault(pos).any(no)));
+    return Pledge.lift(Future.ofJsPromise(self).map(
+      (outcome : tink.core.Outcome<T,tink.core.Error>) -> {
+        return switch(outcome){
+          case tink.core.Outcome.Success(v) : 
+            __.accept(v);
+          case tink.core.Outcome.Failure(e) :  
+            switch(std.Type.typeof(e.data)){
+              case TClass(js.lib.Error) :
+                var er : js.lib.Error = e.data; 
+                __.reject(__.fault(pos).any(er.message));
+              default : 
+                __.reject(__.fault(pos).any(e.data));
+            }
         }
       }
-    ).catchError(
-      (e) -> {
-        var e1 : js.lib.Error = e; 
-            t.trigger(__.reject(__.fault(pos).any(e1.message)));
-      }
-    );
-    return lift(t.asFuture());
+    ));
   }
   #end
   
@@ -211,6 +206,7 @@ class PledgeLift{
     var ft : Future<Res<T,E>> = self.prj();
     return ft.flatMap(
       function(x:Res<T,E>):PledgeDef<Ti,E>{
+        // /trace(x);
         return x.fold(
           (v)   -> fn(v).prj(),
           (err) -> Pledge.fromRes(__.reject(err)).prj()

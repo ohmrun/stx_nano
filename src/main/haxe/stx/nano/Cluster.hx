@@ -29,7 +29,11 @@ private class ClusterCls<T>{
   public function new(self) this = self;
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
   @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
+<<<<<<< Updated upstream
     return lift(new ClusterCls(self));
+=======
+    return lift(self.copy());
+>>>>>>> Stashed changes
   }
   static public function unit<T>():Cluster<T>{
     return lift(new ClusterCls([]));
@@ -37,6 +41,7 @@ private class ClusterCls<T>{
   @:to public function toIterable():Iterable<T>{
     return this;
   }
+<<<<<<< Updated upstream
   public function concat(that){
     return _.concat(lift(this),that);
   }
@@ -48,13 +53,25 @@ private class ClusterCls<T>{
   }
   public function cons(v){
     return _.cons(this,v);
+=======
+  public function concat(that:Cluster<T>){
+    return lift(this.concat(Std.downcast(that,Array)));
+  }
+  public function copy(){
+    return lift(this.copy());
+>>>>>>> Stashed changes
   }
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;
   static public inline function lift<T>(self:ClusterDef<T>):Cluster<T> return Cluster.lift(self); 
+<<<<<<< Updated upstream
   static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return self.fmap(fn); 
   static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return self.accs(fn); 
+=======
+  static public inline function fmap<T,TT>(self:Cluster<T>,fn:Array<T>->Array<TT>):Cluster<TT> return lift(fn(Std.downcast(self,Array))); 
+  static public inline function accs<T,TT>(self:Cluster<T>,fn:Array<T>->TT):TT return fn(Std.downcast(self,Array)); 
+>>>>>>> Stashed changes
 
   static public function flatten<T>(self:Cluster<Array<T>>):Cluster<T>                                                    return fmap(self,_.flatten);
   static public function interleave<T>(self:Cluster<Array<T>>):Cluster<T>                                                 return fmap(self,_.interleave);
