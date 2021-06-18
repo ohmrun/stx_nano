@@ -19,7 +19,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   @:noUsing static public inline function accept<T,E>(ch:T):Pledge<T,E>       return make(__.accept(ch));
   @:noUsing static public inline function reject<T,E>(e:Err<E>):Pledge<T,E>   return make(__.reject(e));
 
-  @:noUsing static public function bind_fold<T,Ti,E>(it:Array<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
+  @:noUsing static public function bind_fold<T,Ti,E>(it:Cluster<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
     return new Pledge(__.nano().Ft().bind_fold(
       it,
       function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{

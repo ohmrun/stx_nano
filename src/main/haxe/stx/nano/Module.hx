@@ -12,7 +12,7 @@ class Module extends Clazz{
 }
 #if tink_core
 private class Ft extends Clazz{
-  public function bind_fold<T,TT>(arr:Array<T>,fn:T->TT->Future<TT>,init:TT):Future<TT>{
+  public function bind_fold<T,TT>(arr:Cluster<T>,fn:T->TT->Future<TT>,init:TT):Future<TT>{
     return arr.lfold(
       (next,memo:Future<TT>) -> memo.flatMap(
         (tt) -> fn(next,tt)

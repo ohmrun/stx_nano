@@ -7,7 +7,7 @@ typedef ClusterDef<T> = Array<T>;
 @:using(stx.nano.Cluster.ClusterLift)
 @:pure @:forward(fmap,accs,iterator) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
   static public var _(default,never) = ClusterLift;
-  public function new(self) this = self;
+  public function new(?self) this = __.option(self).defv([]);
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
   @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
     return lift(self);
@@ -27,6 +27,10 @@ typedef ClusterDef<T> = Array<T>;
   }
   public function copy(){
     return lift(this.copy());
+  }
+  public var length(get,never):Int;
+  private function get_length():Int{
+    return this.length;
   }
 }
 class ClusterLift{
