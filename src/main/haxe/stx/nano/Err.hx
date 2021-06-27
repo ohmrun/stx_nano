@@ -2,9 +2,9 @@ package stx.nano;
 
 class Err<T>{
   
-  static public var UUID(default,never):String = "e30e1389-4a72-41fe-ba9f-d7ddf3d1e247";
+  static public final UUID:String = "e30e1389-4a72-41fe-ba9f-d7ddf3d1e247";
 
-  public var uuid(get,null) : String;
+  public var uuid(get,never) : String;
   private function get_uuid(){
     return UUID;
   }
@@ -13,9 +13,9 @@ class Err<T>{
     this.prev = __.option(prev).defv(None);
     this.pos  = pos;   
   }
-  public var prev(default,null)             : Option<Err<T>>;
-  public var data(default,null)             : Option<Failure<T>>;
-  public var pos(default,null)              : Pos;
+  public final prev             : Option<Err<T>>;
+  public final data             : Option<Failure<T>>;
+  public final pos              : Pos;
 
   public inline function errate<U>(fn:T->U):Err<U> return map(fn);
   

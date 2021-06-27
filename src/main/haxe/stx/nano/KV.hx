@@ -1,6 +1,10 @@
 package stx.nano;
 
-@:forward abstract KV<K,V>({ key : K,val : V }){
+typedef KVDef<K,V> = {
+  final key : K;
+  final val : V;
+}
+@:forward abstract KV<K,V>(KVDef<K,V>){
   public function new(self) this = self;
   public function map<U>(fn:V->U):KV<K,U>{
     return {
@@ -8,8 +12,8 @@ package stx.nano;
       val : fn(this.val)
     };
   }
-  @:from static public function fromObj<K,V>(v:{key : K,val : V}):KV<K,V>{
-    return new KV(v);
+  @:from static public function fromObj<K,V>(self:KVDef<K,V>):KV<K,V>{
+    return new KV(self);
   }
   @:from static public function fromTup<K,V>(tp:Couple<K,V>):KV<K,V>{
     return new KV({ key : tp.fst(), val : tp.snd()});

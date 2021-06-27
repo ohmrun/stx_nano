@@ -4,7 +4,7 @@ class Nano{
   static public var _(default,never) = LiftNano;
 }
 //@back2dos haxetink
-typedef PosDef = 
+@:pure typedef PosDef = 
   #if macro
     haxe.macro.Expr.Position;
   #else
@@ -113,6 +113,7 @@ typedef Slot<T>                 = stx.nano.Slot<T>;
 
 typedef Unique<T>               = stx.nano.Unique<T>;
 typedef KV<K,V>                 = stx.nano.KV<K,V>;
+typedef KVDef<K,V>              = stx.nano.KV.KVDef<K,V>;
 typedef Iter<T>                 = stx.nano.Iter<T>;
 
 typedef StringableDef           = stx.nano.Stringable.StringableDef;
