@@ -154,6 +154,7 @@ typedef Floats                  = stx.nano.Floats;
 typedef Math                    = stx.nano.Math;
 typedef Bools                   = stx.nano.Bools;
 typedef TimeStamp               = stx.nano.TimeStamp;
+typedef TimeStampDef            = stx.nano.TimeStamp.TimeStampDef;
 typedef LogicalClock            = stx.nano.LogicalClock;
 typedef Cluster<T>              = stx.nano.Cluster<T>;
 typedef Catalog<T>              = stx.nano.Catalog<T>;
