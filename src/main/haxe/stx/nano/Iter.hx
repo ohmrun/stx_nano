@@ -146,6 +146,9 @@ class IterLift{
     }
     return arr;
   }
+  static public function toCluster<T>(self:Iter<T>):Cluster<T>{
+    return Cluster.lift(toArray(self));
+  }
   static public function foldr<T,Z>(iter:Iter<T>,fn:T->Z->Z,init:Z):Z{
     var data      = init;
     var iterator  = iter.iterator();
