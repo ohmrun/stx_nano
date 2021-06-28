@@ -6,6 +6,9 @@ import haxe.Constraints;
 @:forward abstract Iter<T>(Iterable<T>) from Iterable<T> to Iterable<T>{
   static public var _(default,never) = IterLift;
 
+  static public function lift<T>(self:Iterable<T>):Iter<T>{
+    return new Iter(self);
+  }
   public function new(self) this = self;
   public function prj():Iterable<T>{
     return this;
