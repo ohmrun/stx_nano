@@ -159,7 +159,7 @@ typedef TimeStampDef            = stx.nano.TimeStamp.TimeStampDef;
 typedef LogicalClock            = stx.nano.LogicalClock;
 typedef Cluster<T>              = stx.nano.Cluster<T>;
 typedef Catalog<T>              = stx.nano.Catalog<T>;
-typedef Unfold<T,R>             = stx.nanoe.Unfold<T,R>;
+typedef Unfold<T,R>             = stx.nano.Unfold<T,R>;
 
 typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
 
