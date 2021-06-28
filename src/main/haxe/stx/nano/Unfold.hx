@@ -8,7 +8,7 @@ package stx.nano;
   public inline function new( v : T->Iterable<R> ) {
     this = v;
   }
-  @:noUsing static inline function unfold<T, R>(initial: T, unfolder: T -> Option<Couple<T, R>>): Iterable<R> {
+  @:noUsing static public inline function unfold<T, R>(initial: T, unfolder: T -> Option<Couple<T, R>>): Iterable<R> {
     return {
       iterator: function(): Iterator<R> {
         var _next: Option<R> = None;
