@@ -133,7 +133,7 @@ class CharsLift{
   /**
     Split `st` at `sep`.
   **/
-  static public function split(self:Chars,sep:Chars):Array<Chars>{
+  static public function split(self:Chars,sep:Chars):Cluster<Chars>{
     return self.split(sep);
   }
   /**
