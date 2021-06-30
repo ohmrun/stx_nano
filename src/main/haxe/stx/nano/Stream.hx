@@ -80,22 +80,28 @@ class StreamLift{
               end -> __.option(end).fold(
                 err -> cb(End(err)),
                 ()  -> {
-                  cbII = that.handle(
-                    (chunk) -> chunk.fold(
-                      (val) -> {
-                        if(!ended){
-                          cb(Val(val));
-                        }else{
-                          cb(End(__.fault().any("already ended")));
+                  var event = null;
+                      event = haxe.MainLoop.add(
+                        () -> {
+                          event.stop();
+                          cbII = that.handle(
+                            (chunk) -> chunk.fold(
+                              (val) -> {
+                                if(!ended){
+                                  cb(Val(val));
+                                }else{
+                                  cb(End(__.fault().any("already ended")));
+                                }
+                              },
+                              (end) -> {
+                                ended = true;
+                                cb(End(end));
+                              },
+                              ()    -> {}
+                            )
+                          );
                         }
-                      },
-                      (end) -> {
-                        ended = true;
-                        cb(End(end));
-                      },
-                      ()    -> {}
-                    )
-                  );
+                      );
                 }
               ),
               () -> {}
