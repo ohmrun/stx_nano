@@ -91,12 +91,12 @@ class SignalLift{
         var links     = [];
         links.push(self.handle(
           (t:T) -> {
-            trace(t);
+            //trace(t);
             if(!cancelled){
               var sI    = fn(t);
               links.push(sI.handle(
                   (tI:Ti) -> {
-                    trace(tI);
+                    //trace(tI);
                     cb(tI);
                   }
               ));

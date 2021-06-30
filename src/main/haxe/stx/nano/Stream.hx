@@ -43,6 +43,17 @@ typedef StreamDef<T,E> = Signal<Chunk<T,E>>;
       )
     );
   }
+  static public function effect<T,E>(self:Void->Void):Stream<T,E>{
+    return lift(
+      Signal.make(
+        cb -> {
+          self();
+          cb(End());
+          return () -> {};
+        }
+      )
+    );
+  }
   static public function unit<T,E>():Stream<T,E>{
     return lift(
       Signal.make(
