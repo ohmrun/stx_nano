@@ -15,7 +15,7 @@ abstract Resource(StdString){
       if(pos == null){
         throw('E_Undefined($str)');
       }else{
-        var error = __.fault(pos).of(E_Undefined,str);
+        var error = __.fault(pos).code(E_Undefined);
         throw error;
       }
     }
