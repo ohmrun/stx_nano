@@ -2,7 +2,7 @@ package stx.nano;
 
 abstract Fault(Pos) from Pos{
   public function new(self) this = self;
-  inline public function of<E>(data:E, ?code):Err<E>{
+  inline public function of<E>(data:E):Err<E>{
     return new Err(__.option(ERR_OF(data)),None,this);
   }
   inline public function empty<E>():Err<E>{
@@ -13,6 +13,10 @@ abstract Fault(Pos) from Pos{
   }
   inline public function failure<E>(failure:Failure<Dynamic>):Err<E>{
     return new Err(Some(failure),null,this);
+  }
+  @:deprecated
+  inline public function code<E>(code:FailCode):Err<E>{
+    return new Err(Some(ERR(code)),null,this);
   }
   inline public function err<E>(code:FailCode):Err<E>{
     return new Err(Some(ERR(code)),null,this);
