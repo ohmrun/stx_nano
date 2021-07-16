@@ -236,3 +236,4 @@ abstract FPath(Chars){
     return this;
   }
 }
+typedef Unspecified = stx.nano.Unspecified;
