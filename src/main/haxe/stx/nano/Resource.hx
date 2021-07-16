@@ -13,9 +13,9 @@ abstract Resource(StdString){
   public inline function new(str:String,?pos:Pos){
     if(!exists(str)){
       if(pos == null){
-        throw('E_ResourceNotFound($str)');
+        throw('E_Undefined($str)');
       }else{
-        var error = __.fault(pos).of(E_ResourceNotFound,str);
+        var error = __.fault(pos).of(E_Undefined,str);
         throw error;
       }
     }
