@@ -181,7 +181,7 @@ class CharsLift{
             return if (index < self.length) {
                 self.substr(index++, 1);
             } else {
-              throw __.fault().of(E_Undefined);
+              throw __.fault().err(E_Undefined);
             }
         }
     };
