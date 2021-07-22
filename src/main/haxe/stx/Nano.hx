@@ -237,3 +237,4 @@ abstract FPath(Chars){
   }
 }
 typedef Unspecified = stx.nano.Unspecified;
+typedef Timer       = stx.nano.Timer;
