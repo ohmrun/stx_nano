@@ -4,13 +4,12 @@ typedef KVDef<K,V> = {
   final key : K;
   final val : V;
 }
-@:forward abstract KV<K,V>(KVDef<K,V>){
-  public function new(self) this = self;
-  public function map<U>(fn:V->U):KV<K,U>{
-    return {
-      key : this.key,
-      val : fn(this.val)
-    };
+@:using(stx.nano.KV.KVLift)
+@:forward abstract KV<K,V>(KVDef<K,V>) from KVDef<K,V> to KVDef<K,V>{
+  static public var _(default,never) = KVLift;
+  public function new(self:KVDef<K,V>) this = self;
+  @:noUsing static public function lift<K,V>(self:KVDef<K,V>):KV<K,V>{
+    return new KV(self);
   }
   @:from static public function fromObj<K,V>(self:KVDef<K,V>):KV<K,V>{
     return new KV(self);
@@ -18,16 +17,24 @@ typedef KVDef<K,V> = {
   @:from static public function fromTup<K,V>(tp:Couple<K,V>):KV<K,V>{
     return new KV({ key : tp.fst(), val : tp.snd()});
   }
-  public function fst():K{
-    return this.key;
+}
+class KVLift{
+  static public function map<K,V,U>(self:KVDef<K,V>,fn:V->U):KV<K,U>{
+    return {
+      key : self.key,
+      val : fn(self.val)
+    };
   }
-  public function snd():V{
-    return this.val;
+  static public function fst<K,V>(self:KVDef<K,V>):K{
+    return self.key;
   }
-  public function into<Z>(fn:K->V->Z):Z{
-    return fn(this.key,this.val);
+  static public function snd<K,V>(self:KVDef<K,V>):V{
+    return self.val;
   }
-  public function decouple<Z>(fn:K->V->Z):Z{
-    return fn(this.key,this.val);
+  static public function into<K,V,Z>(self:KVDef<K,V>,fn:K->V->Z):Z{
+    return fn(self.key,self.val);
+  }
+  static public function decouple<K,V,Z>(self:KVDef<K,V>,fn:K->V->Z):Z{
+    return fn(self.key,self.val);
   }
 }
