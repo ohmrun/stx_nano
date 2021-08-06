@@ -14,7 +14,6 @@ abstract Fault(Pos) from Pos{
   inline public function failure<E>(failure:Failure<Dynamic>):Err<E>{
     return new Err(Some(failure),null,this);
   }
-  @:deprecated
   inline public function code<E>(code:FailCode):Err<E>{
     return new Err(Some(ERR(code)),null,this);
   }

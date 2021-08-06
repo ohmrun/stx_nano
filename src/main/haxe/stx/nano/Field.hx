@@ -4,6 +4,7 @@ package stx.nano;
 @:forward abstract Field<V>(KVDef<StdString,V>) from KVDef<StdString,V> to KVDef<StdString,V>{
   public function new(self:KVDef<StdString,V>) this = self;
   @:noUsing static public function lift<V>(self:KVDef<std.String,V>):Field<V>{
+
     return new Field(self);
   }
   @:noUsing @:from static public function fromTup<V>(tp:Couple<StdString,V>):Field<V>{
