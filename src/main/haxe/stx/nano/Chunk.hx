@@ -114,7 +114,7 @@ class ChunkLift{
      case Tap         : t;
    }
  }
- static public function fold<T,E,Ti>(chk:Chunk<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti,tap:Void->Ti):Ti{
+ static inline public function fold<T,E,Ti>(chk:Chunk<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti,tap:Void->Ti):Ti{
    return switch (chk) {
      case Val(v) : val(v);
      case End(e) : ers(e);

@@ -155,6 +155,7 @@ class ReportLift{
       () -> __.report()
     );
   }
+  //TODO naming issue here
   static public function and<T>(self:ReportSum<T>,fn:Void->Report<T>):Report<T>{
     return fold(
       self,
