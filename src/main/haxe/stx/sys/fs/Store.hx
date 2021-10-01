@@ -23,7 +23,7 @@ class Store<E> extends Clazz{
       e   -> e.report() 
     );
   }
-  public function put(key:String,val:String){
+  public function set(key:String,val:String){
     return new Clump(
       node,
       key
