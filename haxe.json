@@ -5,6 +5,10 @@
     "hashlink" : {
       "-main" : "Main",
       "-hl"   : "build/test/hl/main.hl" 
+    },
+    "interp"  : {
+      "-main"     : "Main",
+      "--interp"  : null
     }
   },
   "run" : {

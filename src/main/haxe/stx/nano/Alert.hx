@@ -15,7 +15,7 @@ typedef AlertDef<E> = Future<Report<E>>;
     return Future.irreversible((cb) -> cb(self));
   }
   //TODO not sure about this
-  static public function any<E>(arr:Array<Alert<E>>):Alert<E>{
+  static public function any<E>(arr:Cluster<Alert<E>>):Alert<E>{
     return lift(__.nano().Ft().bind_fold(
       arr,
       (next:Alert<E>,memo:Report<E>) -> next.prj().map(
@@ -24,7 +24,7 @@ typedef AlertDef<E> = Future<Report<E>>;
       Report.unit()
     ));
   }
-  static public function seq<T,E>(arr:Array<T>,fn:T->Alert<E>):Alert<E>{
+  static public function seq<T,E>(arr:Cluster<T>,fn:T->Alert<E>):Alert<E>{
     return lift(
       __.nano().Ft().bind_fold(
         arr,

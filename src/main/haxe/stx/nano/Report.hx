@@ -156,6 +156,14 @@ class ReportLift{
     );
   }
   //TODO naming issue here
+  static public function so<T>(self:ReportSum<T>,fn:Void->Report<T>):Report<T>{
+    return fold(
+      self,
+      e   -> e.report(),
+      ()  -> fn()
+    );
+  }
+  @:deprecated
   static public function and<T>(self:ReportSum<T>,fn:Void->Report<T>):Report<T>{
     return fold(
       self,
