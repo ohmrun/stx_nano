@@ -1,17 +1,9 @@
 package stx.sys.fs;
 
-class Clump<E> extends Clazz{
-  public final root : Res<String,E>;
-  public final file : String;
+class Clump<E> extends Register{
 
-  public var   node(get,null) : Res<String,E>;
-  private function get_node(){
-    return root.map(fld -> '${fld}${__.sep()}${file}');
-  }
   public function new(root,file){
-    super();
-    this.root = root;
-    this.file = file;
+    super(root,file);
   }
   public function put(data:String):Alert<E>{
     return init().so(
