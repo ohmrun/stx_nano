@@ -54,7 +54,7 @@ class LiftNano{
   **/
   static public function sep(_:Wildcard):String{
     #if sys
-      var out = new haxe.io.Path(Sys.getCwd()).backslash ? "\\" : "/";
+      var out = new haxe.io.Path(std.Sys.getCwd()).backslash ? "\\" : "/";
     #else
       var out = "/";
     #end

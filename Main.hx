@@ -1,7 +1,9 @@
 using stx.Nano;
 
 
+#if sys
 using stx.Sys;
+#end
 
 using tink.CoreApi;
 

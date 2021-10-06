@@ -64,9 +64,11 @@ package stx.nano;
   public function get_customParams(){
     return #if macro [] #else this.customParams #end;
   }
+  #if stx_nano
   public function toIdentDef():IdentDef{
     return (this:Pos).toIdentifier().toIdentDef();
   }
+  #end
   public function toPos():Pos{
     return this;
   }

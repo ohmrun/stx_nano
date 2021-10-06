@@ -160,7 +160,7 @@ typedef TimeStampDef            = stx.nano.TimeStamp.TimeStampDef;
 typedef LogicalClock            = stx.nano.LogicalClock;
 typedef Cluster<T>              = stx.nano.Cluster<T>;
 typedef ClusterDef<T>           = stx.nano.Cluster.ClusterDef<T>;
-typedef Catalog<T>              = stx.nano.Catalog<T>;
+typedef Register<T>             = stx.nano.Register<T>;
 typedef Unfold<T,R>             = stx.nano.Unfold<T,R>;
 typedef Counter                 = stx.nano.Counter;
 
@@ -241,3 +241,6 @@ abstract FPath(Chars){
 typedef Unspecified = stx.nano.Unspecified;
 typedef Timer       = stx.nano.Timer;
 
+typedef IdentDef    = stx.nano.Ident.IdentDef;
+typedef Ident       = stx.nano.Ident;
+typedef Way         = stx.nano.Way;
