@@ -7,6 +7,9 @@ abstract Way(Cluster<String>) from Cluster<String> to Cluster<String>{
   @:noUsing static public function unit():Way{
     return lift(Cluster.unit());
   }
+  @:noUsing static public function fromString(self:String){
+    return lift(self.split(__.sep()));
+  }
   public function prj():Cluster<String> return this;
   private var self(get,never):Way;
   private function get_self():Way return lift(this);
