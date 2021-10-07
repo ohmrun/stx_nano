@@ -11,13 +11,31 @@ class Sys{
   static public function sys(wildcard:Wildcard){
     return new Module();
   }
-  static public function env(key:String):Option<String>{
-    return __.option(std.Sys.getEnv(key));
-  }
 }
 private class Module extends Clazz{
   public function fs() return new Fs();
   public function dir() return new Dir();
+  public function env(key:String):Option<String>{
+    return __.option(std.Sys.getEnv(key));
+  }
+  public function args(){
+    return std.Sys.args();
+  }
+  public function cwd(){
+    return {
+       get : ()           -> std.Sys.getCwd(),
+       put : (str:String) -> { std.Sys.setCwd(str); }
+    }
+  }
+  public inline function println(str:String){
+    return std.Sys.println(str);
+  }
+  public inline function print(str:String){
+    return std.Sys.print(str);
+  }
+  public inline function exit(code){
+    std.Sys.exit(code);
+  }
 }
 private class Fs extends Clazz{
   public function exists(str:String):Bool{

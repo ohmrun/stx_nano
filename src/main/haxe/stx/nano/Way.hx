@@ -1,9 +1,10 @@
 package stx.nano;
 
-
-abstract Way(Cluster<String>) from Cluster<String> to Cluster<String>{
+@:forward(length,join,tail,head,concat) abstract Way(Cluster<String>) from Cluster<String> to Cluster<String>{
   public function new(self) this = self;
   static public function lift(self:Cluster<String>):Way return new Way(self);
+
+  @:op([]) static function array_access(self:Way, idx:Int):String;
   @:noUsing static public function unit():Way{
     return lift(Cluster.unit());
   }
@@ -17,10 +18,17 @@ abstract Way(Cluster<String>) from Cluster<String> to Cluster<String>{
   public function snoc(that:String):Way{
     return lift(this.snoc(that));
   }
-  public function concat(that:String):Way{
-    return lift(this.snoc(that));
+  public function concat(that:Array<String>):Way{
+    return lift(this.concat(that));
   }
   public function toOsString():String{
     return (Std.downcast(this,Array)).join(__.sep()); 
+  }
+  @:arrayAccess
+  public inline function get(i:Int){
+    return this[i];
+  }
+  @:to public function toArray():Array<String>{
+    return Std.downcast(this,Array);
   }
 }

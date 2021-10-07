@@ -5,23 +5,24 @@ import haxe.Constraints.IMap;
 typedef ClusterDef<T> = Array<T>;
 
 @:using(stx.nano.Cluster.ClusterLift)
-@:pure @:forward(fmap,accs,iterator) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
+@:pure @:forward(fmap,accs,iterator,join) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
+  @:op([]) static public function array_access<T>(self:Cluster<T>, idx:Int):T;
+  
   static public var _(default,never) = ClusterLift;
-  public function new(?self) this = __.option(self).defv([]);
+  public function new(?self:Array<T>) this = __.option(self).defv([]);
+
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
-  @:from static public function fromArray<T>(self:Array<T>):Cluster<T>{
-    return lift(self);
-  }
+
   static public function unit<T>():Cluster<T>{
     return lift([]);  
   } 
   @:to public function toIterable():Iterable<T>{
     return this;
   }
-  @:arrayAccess
-  public function get(int:Int):Null<T>{
-    return this[0];
-  }
+  // @:arrayAccess
+  // public function get(int:Int):Null<T>{
+  //   return this[0];
+  // }
   public function concat(that:Cluster<T>){
     return lift(this.concat(Std.downcast(that,Array)));
   }

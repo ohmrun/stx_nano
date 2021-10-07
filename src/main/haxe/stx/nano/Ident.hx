@@ -19,4 +19,19 @@ typedef IdentDef = {
       () -> this.pack.snoc(this.name) 
     );
   }
+  static public function fromIdentifier(self:Identifier):stx.nano.Ident{
+    var n = self.name;
+    var p = self.pack;
+    return {
+      name : n,
+      pack : stx.nano.Way.lift(p)
+    }
+  }
+  public function toIdentifier(){
+    return switch(this){
+      case { name : n, pack : null }   : Identifier.lift(n);
+      case { name : n, pack : []   }   : Identifier.lift(n);
+      case { name : n, pack : p    }   : Identifier.lift(p.snoc(n).join("."));    
+    }
+  }
 }
