@@ -1,6 +1,6 @@
 {
   "build" : {
-  "-lib" : ["tink_core","hx3compat","stx_pico"],
+    "-lib" : ["tink_core","hx3compat","stx_pico"],
     "-cp"  : ["src/main/haxe"],
     "hashlink" : {
       "-main" : "Main",
@@ -8,7 +8,7 @@
     },
     "interp"  : {
       "-main"     : "Main",
-      "--interp"  : null
+      "--interp"  : true
     }
   },
   "run" : {
