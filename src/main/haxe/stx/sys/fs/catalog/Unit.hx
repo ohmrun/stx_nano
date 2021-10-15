@@ -1,6 +1,6 @@
 package stx.sys.fs.catalog;
 
-private class Unit extends Catalog<String>{
+class Unit extends Catalog<String>{
   public function encode(t:String):String{
     return t;
   }

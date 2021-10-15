@@ -8,6 +8,18 @@ typedef TripleDef<Ti,Tii,Tiii>   =  (Ti -> Tii -> Tiii -> Void) -> Void;
   public function toString(){
     return TripleLift.toString(this);
   }
+  public var _0(get,never) : Ti;
+  private function get__0(){
+    return _.fst(this);
+  }
+  public var _1(get,never) : Tii;
+  private function get__1(){
+    return _.snd(this);
+  }
+  public var _2(get,never) : Tiii;
+  private function get__2(){
+    return _.thd(this);
+  }
 }
 class TripleLift{
   static public function map<Ti,Tii,Tiii,TT>(self: TripleDef<Ti,Tii,Tiii>,fn:Tiii->TT): Triple<Ti,Tii,TT>{

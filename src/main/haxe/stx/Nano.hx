@@ -163,7 +163,7 @@ typedef ClusterDef<T>           = stx.nano.Cluster.ClusterDef<T>;
 typedef Register<T>             = stx.nano.Register<T>;
 typedef Unfold<T,R>             = stx.nano.Unfold<T,R>;
 typedef Counter                 = stx.nano.Counter;
-
+typedef Json                    = stx.nano.Json;
 typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
 
 class LiftFutureToSlot{
