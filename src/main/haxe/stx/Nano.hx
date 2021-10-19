@@ -171,10 +171,10 @@ typedef ReceiptDef<T,E>         = stx.nano.Receipt.ReceiptDef<T,E>;
 typedef Accrual<T,E>            = stx.nano.Accrual<T,E>;
 typedef AccrualDef<T,E>         = stx.nano.Accrual.AccrualDef<T,E>;
 
-typedef Ledger<T,E>            = stx.nano.Ledger<T,E>;
-typedef LedgerDef<T,E>         = stx.nano.Ledger.LedgerDef<T,E>;
-typedef Equity<T,E>            = stx.nano.Equity<T,E>;
-typedef EquityDef<T,E>         = stx.nano.Equity.EquityDef<T,E>;
+typedef Ledger<I,O,E>           = stx.nano.Ledger<I,O,E>;
+typedef LedgerDef<I,O,E>        = stx.nano.Ledger.LedgerDef<I,O,E>;
+typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;
+typedef EquityDef<I,O,E>        = stx.nano.Equity.EquityDef<I,O,E>;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{

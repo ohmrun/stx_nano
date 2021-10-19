@@ -54,13 +54,10 @@ class ReceiptLift extends Clazz{
       self.error
     );
   }
-  //static public function adjust<T,Ti,E>(self:Receipt<T,E>,fn:T->Res<)
   static public function is_defined<T,E>(self:ReceiptDef<T,E>){
     return self.value != null;
   }
   static public function has_errors<T,E>(self:ReceiptDef<T,E>){
     return self.error.is_defined();
   }
-  //static public function chunk()
-  //static public function res()
 }
