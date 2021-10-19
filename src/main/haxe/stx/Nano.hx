@@ -166,6 +166,10 @@ typedef Counter                 = stx.nano.Counter;
 typedef Json                    = stx.nano.Json;
 typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
 
+typedef Receipt<T,E>            = stx.nano.Receipt<T,E>;
+typedef ReceiptDef<T,E>         = stx.nano.Receipt.ReceiptDef<T,E>;
+typedef Accrual<T,E>            = stx.nano.Accrual<T,E>;
+typedef AccrualDef<T,E>         = stx.nano.Accrual.AccrualDef<T,E>;
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
     return Slot.Guard(ft,pos);

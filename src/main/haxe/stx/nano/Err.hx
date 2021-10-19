@@ -70,6 +70,7 @@ class Err<T>{
       last = last.prev.fudge();
     }
     var next = Lambda.fold(stack,
+
       (next:Err<T>,memo:Err<T>) -> next.copy(null,
         memo),
       this
@@ -122,7 +123,7 @@ class Err<T>{
       (v:T) -> (v:Dynamic)
     );
   }
-  @:noUsing static public function grow<E>(arr:Array<E>,?pos:Pos):Err<E>{
+  @:noUsing static public function grow<E>(arr:Cluster<E>,?pos:Pos):Err<E>{
     return arr.tail().lfold(
       (next:E,memo:Err<E>) -> new Err(__.option(ERR_OF(next)),Some(memo),pos),
       new Err(arr.head().map(ERR_OF),None,pos)

@@ -190,4 +190,17 @@ class IterLift{
       None
     );
   }
+  /**
+	 * Call `f` on each element in `self`, returning an `Array` where the result is `Some(tt:TT)`
+	**/
+  static public function map_filter<T,TT>(self:Iter<T>,fn:T->Option<TT>):Iter<TT>{
+    return lfold(
+      self,
+      (next,memo:Array<TT>) -> switch(fn(next)){
+        case Some(v)  : memo.snoc(v);
+        default       : memo;
+      },
+      []
+    );
+  }
 }
