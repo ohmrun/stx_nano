@@ -1,7 +1,10 @@
 package stx.nano;
 
-abstract Fault(Pos) from Pos{
+abstract Fault(Null<Pos>) from Null<Pos>{
   public function new(self) this = self;
+  @:noUsing static public function lift(self:Null<Pos>){
+    return new Fault(self);
+  }
   inline public function of<E>(data:E):Err<E>{
     return new Err(__.option(ERR_OF(data)),None,this);
   }

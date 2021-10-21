@@ -93,7 +93,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     return _.fold(
       this,
       tink.core.Outcome.Success,
-      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.data.defv(null),e.pos)),
+      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.data.defv(null),e.pos.defv(null))),
       () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
     );
   }

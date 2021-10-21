@@ -3,17 +3,9 @@ package stx;
 class Nano{
   static public var _(default,never) = LiftNano;
 }
-//@back2dos haxetink
-@:pure typedef PosDef = 
-  #if macro
-    haxe.macro.Expr.Position;
-  #else
-    haxe.PosInfos;
-  #end
 
 
 typedef Dyn                     = Dynamic;
-typedef Pos                     = PosDef;
 
 @:using(stx.Nano.Tup2Lift)
 enum Tup2<L,R>{
