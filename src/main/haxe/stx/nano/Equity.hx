@@ -57,7 +57,7 @@ class EquityLift extends Clazz{
   static public function is_defined<I,O,E>(self:EquityDef<I,O,E>){
     return self.value != null;
   }
-  static public function has_errors<I,O,E>(self:EquityDef<I,O,E>){
+  static public function has_error<I,O,E>(self:EquityDef<I,O,E>){
     return self.error.is_defined();
   }
   static public function defect<I,O,E>(self:EquityDef<I,O,E>,error:Defect<E>){
