@@ -1,8 +1,7 @@
 package stx.nano;
 
-typedef ReceiptDef<T,E> = {
+typedef ReceiptDef<T,E> = Defect & {
   final value : Null<T>;
-  final error : Defect<E>;
 }
 @:using(stx.nano.Receipt.ReceiptLift)
 @:forward abstract Receipt<T,E>(ReceiptDef<T,E>) from ReceiptDef<T,E> to ReceiptDef<T,E>{
@@ -20,7 +19,7 @@ typedef ReceiptDef<T,E> = {
   private function get_self():Receipt<T,E> return lift(this);
 
   @:noUsing static public function fromDefect<T,E>(self:Defect<E>):Receipt<T,E>{
-    return lift({ value : null, error : self});
+    return lift({ value : null, error : self.error});
   }
   @:noUsing static public function pure<T,E>(self:T):Receipt<T,E>{
     return lift({ value : self, error : Defect.unit()});
