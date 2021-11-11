@@ -25,7 +25,7 @@ class LedgerLift extends Clazz{
   static public function lift<I,O,E>(self:LedgerDef<I,O,E>):Ledger<I,O,E>{
     return Ledger.lift(self);
   }
-  static public function errata<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:Defect<E>->Defect<EE>):Ledger<I,O,EE>{
+  static public function errata<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:Error<E>->Error<EE>):Ledger<I,O,EE>{
     return self.map((x:Equity<I,O,E>) -> x.errata(fn));
   }
   static public function errate<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:E->EE):Ledger<I,O,EE>{
@@ -34,7 +34,7 @@ class LedgerLift extends Clazz{
   static public function flat_map<I,O,Oi,E>(self:LedgerDef<I,O,E>,fn:O->Ledger<I,Oi,E>):Ledger<I,Oi,E>{
     return self.flatMap(
       (x:Equity<I,O,E>) -> __.option(x.value).fold(
-        ok -> fn(ok).errata(e -> x.error.concat(e)),
+        ok -> fn(ok).errata(e -> new stx.nano.error.term.DefectError(x.error).toError().concat(e)),
         () -> Ledger.fromEquity(Equity.make(x.asset,null,x.error))
       )
     );

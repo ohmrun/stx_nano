@@ -14,12 +14,21 @@ abstract Fault(Null<Pos>) from Null<Pos>{
   inline public function any<E>(msg:String):Err<E>{
     return new Err(ERR(FailCode.fromString(msg)),null,this);
   }
+  inline public function external<E>(msg:String):Err<E>{
+    return new Err(ERR(FailCode.fromString(msg)),null,this);
+  }
   inline public function failure<E>(failure:Failure<Dynamic>):Err<E>{
     return new Err(Some(failure),null,this);
   }
+  @:deprecated
+  inline public function internal<E>(code:FailCode):Err<E>{
+    return new Err(Some(ERR(code)),null,this);
+  }
+  @:deprecated
   inline public function code<E>(code:FailCode):Err<E>{
     return new Err(Some(ERR(code)),null,this);
   }
+  @:deprecated
   inline public function err<E>(code:FailCode):Err<E>{
     return new Err(Some(ERR(code)),null,this);
   }

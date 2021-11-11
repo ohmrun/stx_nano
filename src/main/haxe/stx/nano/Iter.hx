@@ -6,8 +6,31 @@ import haxe.Constraints;
 @:forward abstract Iter<T>(Iterable<T>) from Iterable<T> to Iterable<T>{
   static public var _(default,never) = IterLift;
 
-  static public function lift<T>(self:Iterable<T>):Iter<T>{
+  @:noUsing static public function unit<T>():Iter<T>{
+    return lift({
+      iterator : () -> {
+        {
+          hasNext : () -> false,
+          next    : throw __.fault().internal(E_Undefined)
+        }
+      }
+    });
+  }
+  @:noUsing static public function lift<T>(self:Iterable<T>):Iter<T>{
     return new Iter(self);
+  }
+  @:noUsing static public function make<T>(self:Iterator<T>):Iter<T>{
+    return lift(
+      {
+        iterator : () -> self
+      } 
+    );
+  }
+  @:noUsing static public function make0<T>(self : Void -> Couple<() -> Bool,() -> T> ) : Iter<T>{
+    return make({
+      hasNext : () -> self().fst()(),
+      next    : () -> self().snd()() 
+    });
   }
   public function new(self) this = self;
   public function prj():Iterable<T>{
@@ -202,5 +225,37 @@ class IterLift{
       },
       []
     );
+  }
+  static public function concat<T>(self:Iter<T>,that:Iter<T>):Iter<T>{
+    var rest = false;
+    return Iter.make0(
+      () -> {
+        final lhs = self.iterator();
+        final rhs = that.iterator();
+        return __.couple(
+          () -> {
+            return if(!rest){
+              lhs.hasNext().if_else(
+                () -> true,
+                () -> {
+                  rest = true;
+                  return rhs.hasNext();
+                }
+              );
+            }else{
+              rhs.hasNext();
+            }
+          },
+          () -> return if (!rest){
+            lhs.next();
+          }else{
+            rhs.next();
+          }
+        );
+      }
+    );
+  }
+  static public function is_defined<T>(self:Iter<T>){
+    return self.iterator().hasNext();
   }
 }

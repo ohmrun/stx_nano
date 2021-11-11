@@ -113,6 +113,9 @@ typedef StringableDef           = stx.nano.Stringable.StringableDef;
 typedef Stringable              = stx.nano.Stringable;
 
 typedef Defect<E>               = stx.nano.Defect<E>;
+typedef DefectDef<E>            = stx.nano.Defect.DefectDef<E>;
+typedef DefectApi<E>            = stx.nano.Defect.DefectApi<E>;
+typedef DefectCls<E>            = stx.nano.Defect.DefectCls<E>;
 typedef Scuttle                 = Defect<tink.core.Noise>;
 typedef Reaction<T>             = Outcome<T,Scuttle>;
 
@@ -160,6 +163,8 @@ typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
 
 typedef Receipt<T,E>            = stx.nano.Receipt<T,E>;
 typedef ReceiptDef<T,E>         = stx.nano.Receipt.ReceiptDef<T,E>;
+typedef ReceiptApi<T,E>         = stx.nano.Receipt.ReceiptApi<T,E>;
+typedef ReceiptCls<T,E>         = stx.nano.Receipt.ReceiptCls<T,E>;
 typedef Accrual<T,E>            = stx.nano.Accrual<T,E>;
 typedef AccrualDef<T,E>         = stx.nano.Accrual.AccrualDef<T,E>;
 
