@@ -11,6 +11,7 @@ abstract Fault(Null<Pos>) from Null<Pos>{
   inline public function empty<E>():Err<E>{
     return new Err(None,None,this);
   }
+  @:deprecated
   inline public function any<E>(msg:String):Err<E>{
     return new Err(ERR(FailCode.fromString(msg)),null,this);
   }
@@ -20,7 +21,6 @@ abstract Fault(Null<Pos>) from Null<Pos>{
   inline public function failure<E>(failure:Failure<Dynamic>):Err<E>{
     return new Err(Some(failure),null,this);
   }
-  @:deprecated
   inline public function internal<E>(code:FailCode):Err<E>{
     return new Err(Some(ERR(code)),null,this);
   }
