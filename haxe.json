@@ -2,13 +2,14 @@
   "build" : {
     "-lib" : ["tink_core","hx3compat","stx_pico"],
     "-cp"  : ["src/main/haxe"],
-    "hashlink" : {
-      "-main" : "Main",
-      "-hl"   : "build/test/hl/main.hl" 
-    },
-    "interp"  : {
+    "main" : {
       "-main"     : "Main",
-      "--interp"  : true
+      "hashlink" : {
+        "-hl"   : "build/test/hl/main.hl" 
+      },
+      "interp"  : { 
+        "--interp"  : true
+      }
     }
   },
   "run" : {
