@@ -7,9 +7,9 @@
       "hashlink" : {
         "-hl"   : "build/test/hl/main.hl" 
       },
-      "interp"  : { 
+      "interp"  : {
         "--interp"  : true
-      }
+      } 
     }
   },
   "run" : {

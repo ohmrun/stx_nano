@@ -47,7 +47,7 @@ abstract CompilerTarget(CompilerTargetSum) from CompilerTargetSum to CompilerTar
       case "interp" : Interp;
       default       : 
         trace(str);
-        throw __.fault().err(E_Undefined);
+        throw __.fault().internal(E_Undefined);
     }
   }
 }

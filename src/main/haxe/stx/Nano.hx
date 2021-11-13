@@ -3,17 +3,9 @@ package stx;
 class Nano{
   static public var _(default,never) = LiftNano;
 }
-//@back2dos haxetink
-@:pure typedef PosDef = 
-  #if macro
-    haxe.macro.Expr.Position;
-  #else
-    haxe.PosInfos;
-  #end
 
 
 typedef Dyn                     = Dynamic;
-typedef Pos                     = PosDef;
 
 @:using(stx.Nano.Tup2Lift)
 enum Tup2<L,R>{
@@ -121,6 +113,9 @@ typedef StringableDef           = stx.nano.Stringable.StringableDef;
 typedef Stringable              = stx.nano.Stringable;
 
 typedef Defect<E>               = stx.nano.Defect<E>;
+typedef DefectDef<E>            = stx.nano.Defect.DefectDef<E>;
+typedef DefectApi<E>            = stx.nano.Defect.DefectApi<E>;
+typedef DefectCls<E>            = stx.nano.Defect.DefectCls<E>;
 typedef Scuttle                 = Defect<tink.core.Noise>;
 typedef Reaction<T>             = Outcome<T,Scuttle>;
 
@@ -165,6 +160,18 @@ typedef Unfold<T,R>             = stx.nano.Unfold<T,R>;
 typedef Counter                 = stx.nano.Counter;
 typedef Json                    = stx.nano.Json;
 typedef LiftOutcomeTDefect      = stx.nano.lift.LiftOutcomeTDefect;
+
+typedef Receipt<T,E>            = stx.nano.Receipt<T,E>;
+typedef ReceiptDef<T,E>         = stx.nano.Receipt.ReceiptDef<T,E>;
+typedef ReceiptApi<T,E>         = stx.nano.Receipt.ReceiptApi<T,E>;
+typedef ReceiptCls<T,E>         = stx.nano.Receipt.ReceiptCls<T,E>;
+typedef Accrual<T,E>            = stx.nano.Accrual<T,E>;
+typedef AccrualDef<T,E>         = stx.nano.Accrual.AccrualDef<T,E>;
+
+typedef Ledger<I,O,E>           = stx.nano.Ledger<I,O,E>;
+typedef LedgerDef<I,O,E>        = stx.nano.Ledger.LedgerDef<I,O,E>;
+typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;
+typedef EquityDef<I,O,E>        = stx.nano.Equity.EquityDef<I,O,E>;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{

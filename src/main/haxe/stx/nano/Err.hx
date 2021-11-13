@@ -11,11 +11,11 @@ class Err<T>{
   public function new(data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Pos){
     this.data = data;
     this.prev = __.option(prev).defv(None);
-    this.pos  = pos;   
+    this.pos  = __.option(pos);   
   }
   public final prev             : Option<Err<T>>;
   public final data             : Option<Failure<T>>;
-  public final pos              : Pos;
+  public final pos              : Option<Pos>;
 
   public inline function errate<U>(fn:T->U):Err<U> return map(fn);
   
@@ -36,17 +36,17 @@ class Err<T>{
     return new Err(
       next_data,
       next_prev,
-      this.pos
+      this.pos.defv(null)
     );
   }
   // public function app<U>(fn:Failure<T>->Failure<U>):Err<U>{
   //   return new Err(this.data.map(fn),this.prev,this.pos);
   // }
-  public function copy(?data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Pos):Err<T>{
+  public function copy(?data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Option<Pos>):Err<T>{
     return new Err(
       __.option(data).defv(this.data),
       __.option(prev).defv(this.prev),
-      __.option(pos).defv(this.pos)
+      __.option(pos.defv(null)).defv(this.pos.defv(null))
     );
   }
   public function last():Err<T>{
@@ -70,6 +70,7 @@ class Err<T>{
       last = last.prev.fudge();
     }
     var next = Lambda.fold(stack,
+
       (next:Err<T>,memo:Err<T>) -> next.copy(null,
         memo),
       this
@@ -85,10 +86,10 @@ class Err<T>{
   }
   
   public function fault():Fault{
-    return this.pos;
+    return Fault.lift(this.pos.defv(null));
   }
   public function toString(){
-    var p  = Position.lift(pos).toStringClassMethodLine();
+    var p  = Std.string(pos.map(x -> Position.lift(x).toStringClassMethodLine()));
     var e  = Std.string(this.data);
     return '$e at ($p)';
   }
@@ -122,7 +123,7 @@ class Err<T>{
       (v:T) -> (v:Dynamic)
     );
   }
-  @:noUsing static public function grow<E>(arr:Array<E>,?pos:Pos):Err<E>{
+  @:noUsing static public function grow<E>(arr:Cluster<E>,?pos:Pos):Err<E>{
     return arr.tail().lfold(
       (next:E,memo:Err<E>) -> new Err(__.option(ERR_OF(next)),Some(memo),pos),
       new Err(arr.head().map(ERR_OF),None,pos)
@@ -135,6 +136,6 @@ class Err<T>{
     return report().alert();
   }
   public function toTinkError(code=500):tink.core.Error{
-    return tink.core.Error.withData(code, 'TINK_ERROR', this.data, this.pos);
+    return tink.core.Error.withData(code, 'TINK_ERROR', this.data, this.pos.defv(null));
   }
 }

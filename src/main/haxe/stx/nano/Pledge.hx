@@ -85,7 +85,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     );
   }
   @:noUsing static public function fromOption<T,E>(m:Option<T>):Pledge<T,E>{
-    final val = m.fold((x)->__.accept(x),()->__.reject(__.fault().err(E_Undefined)));
+    final val = m.fold((x)->__.accept(x),()->__.reject(__.fault().internal(E_Undefined)));
     return fromRes(val);
   } 
   #if stx_arw
@@ -260,7 +260,7 @@ class PledgeLift{
       }
     );
     if(out == null){
-      throw __.fault().err(E_Undefined);
+      throw __.fault().internal(E_Undefined);
     }
     return out;
   }
