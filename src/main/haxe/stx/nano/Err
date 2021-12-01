@@ -8,23 +8,23 @@ class Err<T>{
   private function get_uuid(){
     return UUID;
   }
-  public function new(data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Pos){
+  public function new(data:Option<Declination<T>>,?prev:Option<Err<T>>,?pos:Pos){
     this.data = data;
     this.prev = __.option(prev).defv(None);
     this.pos  = __.option(pos);   
   }
   public final prev             : Option<Err<T>>;
-  public final data             : Option<Failure<T>>;
+  public final data             : Option<Declination<T>>;
   public final pos              : Option<Pos>;
 
   public inline function errate<U>(fn:T->U):Err<U> return map(fn);
   
   public function map<U>(fn:T->U):Err<U>{
     var next_data = this.data.map(
-      function (t:Failure<T>) : Failure<U> {
+      function (t:Declination<T>) : Declination<U> {
         return switch(t){
-          case ERR_OF(t)          : ERR_OF(fn(t));
-          case ERR(spec)          : ERR(spec);
+          case EXCEPT(t)              : EXCEPT(fn(t));
+          case REFUSE(spec)           : REFUSE(spec);
         }
       }
     );
@@ -39,10 +39,10 @@ class Err<T>{
       this.pos.defv(null)
     );
   }
-  // public function app<U>(fn:Failure<T>->Failure<U>):Err<U>{
+  // public function app<U>(fn:Declination<T>->Declination<U>):Err<U>{
   //   return new Err(this.data.map(fn),this.prev,this.pos);
   // }
-  public function copy(?data:Option<Failure<T>>,?prev:Option<Err<T>>,?pos:Option<Pos>):Err<T>{
+  public function copy(?data:Option<Declination<T>>,?prev:Option<Err<T>>,?pos:Option<Pos>):Err<T>{
     return new Err(
       __.option(data).defv(this.data),
       __.option(prev).defv(this.prev),
@@ -80,7 +80,7 @@ class Err<T>{
   
   public function head():Option<T>{
     return switch(this.data){
-      case Some(ERR_OF(v))  : Some(v);
+      case Some(EXCEPT(v))  : Some(v);
       default               : None;
     }
   }
@@ -107,7 +107,7 @@ class Err<T>{
   }
   #if tink_core
   @:noUsing static public function fromTinkError<E>(err:tink.core.Error):Err<E>{
-    return new Err(ERR(FailCode.fromString(err.message)),null,err.pos);
+    return new Err(REFUSE(Digest.fromString(err.message)),null,err.pos);
   }
   #end
   public function value():Option<T>{
@@ -125,8 +125,8 @@ class Err<T>{
   }
   @:noUsing static public function grow<E>(arr:Cluster<E>,?pos:Pos):Err<E>{
     return arr.tail().lfold(
-      (next:E,memo:Err<E>) -> new Err(__.option(ERR_OF(next)),Some(memo),pos),
-      new Err(arr.head().map(ERR_OF),None,pos)
+      (next:E,memo:Err<E>) -> new Err(__.option(EXCEPT(next)),Some(memo),pos),
+      new Err(arr.head().map(EXCEPT),None,pos)
     );
   }
   public function report():Report<T>{

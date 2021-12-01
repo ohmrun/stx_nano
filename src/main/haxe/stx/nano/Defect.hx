@@ -41,19 +41,22 @@ package stx.nano;
   @:noUsing static public function make<E>(?data:Iter<E>){
     return __.option(data).map((x:Iter<E>) -> lift(new DefectCls(x))).def(unit);
   }
-  @:to public inline function toErr():Err<E>{
-    return Err.grow(this.error.toCluster());
+  public inline function toErrorHere(?pos:Pos):Error<E>{
+    return this.error.tail().lfold(
+      (next:E,memo:Error<E>) -> Error.make(__.option(next),Some(memo),pos),
+      Error.make(this.error.head(),None,pos)
+    );
   }
-  public inline function toErrHere(?pos:Pos):Err<E>{
-    return Err.grow(this.error.toCluster(),pos);
-  }
-  @:from static public function fromErr<E>(err:Err<E>):Defect<E>{
-    return make(Iter.lift(err).map_filter(
-      (x) -> switch(x.data){
-        case Some(ERR_OF(e))  : Some(e);
+  @:from static public function fromException<E>(err:Exception<E>):Defect<E>{
+    return make(Iter.lift(err.content()).map_filter(
+      (x) -> switch(x){
+        case EXCEPT(e)        : Some(e);
         default               : None;
       }
     ));
+  }
+  @:from static public function fromError<E>(self:Error<E>):Defect<E>{
+    return Defect.make(self.content());
   }
   public function elide():Defect<Dynamic>{
     return this;

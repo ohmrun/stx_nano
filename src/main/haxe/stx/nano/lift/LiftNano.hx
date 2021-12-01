@@ -75,8 +75,11 @@ class LiftNano{
   static public function accept<T,E>(wildcard:Wildcard,t:T):Res<T,E>{
     return Res.accept(t);
   }
-  static public function reject<T,E>(wildcard:Wildcard,e:Err<E>):Res<T,E>{
+  static public function reject<T,E>(wildcard:Wildcard,e:Exception<E>):Res<T,E>{
     return Res.reject(e);
+  }
+  static public function decline<E>(wildcard:Wildcard,except:E):Declination<E>{
+    return EXCEPT(except);
   }
   static public function success<T,E>(wildcard:Wildcard,t:T):Outcome<T,E>{
     return Outcome.success(t);
@@ -179,9 +182,9 @@ class LiftNano{
       return v;
     }
   }
-  static public function execute<T,E>(__:Wildcard,fn:Void->Option<Err<E>>):T->Res<T,E>{
+  static public function execute<T,E>(__:Wildcard,fn:Void->Option<Exception<E>>):T->Res<T,E>{
     return (v:T) -> switch(fn()){
-      case Some(e)  : __.reject(e);
+      case Some(e)  : Reject(e);
       default       : __.accept(v);
     }
   }
@@ -213,7 +216,7 @@ class LiftNano{
   static public inline function crack<E>(wildcard:Wildcard,e:E){
     throw e;
   }
-  static public inline function report<E>(wildcard:Wildcard,?f:Fault -> Err<E>,?pos:Pos):Report<E>{
+  static public inline function report<E>(wildcard:Wildcard,?f:Fault -> Error<E>,?pos:Pos):Report<E>{
     return f == null ? Report.unit() : Report.pure(f(__.fault(pos)));
   }
   

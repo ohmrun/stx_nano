@@ -41,10 +41,9 @@ typedef Triple<Ti,Tii,Tiii>     = stx.nano.Triple<Ti,Tii,Tiii>;
 typedef ResSum<T,E>             = stx.nano.Res.ResSum<T,E>;
 typedef Res<T,E>                = stx.nano.Res<T,E>;
 
-typedef Err<E>                  = stx.nano.Err<E>;
-typedef FailureSum<T>           = stx.nano.Failure.FailureSum<T>;
-typedef Failure<T>              = stx.nano.Failure<T>;
-typedef FailCode                = stx.nano.FailCode;
+typedef DeclinationSum<T>       = stx.nano.Declination.DeclinationSum<T>;
+typedef Declination<T>          = stx.nano.Declination<T>;
+typedef Digest                  = stx.nano.Digest;
 typedef Fault                   = stx.nano.Fault;
 
 typedef VBlockDef<T>            = stx.nano.VBlock.VBlockDef<T>;
@@ -54,6 +53,7 @@ typedef VBlock<T>               = stx.nano.VBlock<T>;
 typedef PledgeDef<T,E>          = stx.nano.Pledge.PledgeDef<T,E>;
 typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
 
+typedef Exception<E>            = Error<Declination<E>>;
 /*
 typedef YDef<P, R>              = stx.nano.Y.YDef<P,R>;
 typedef Y<P, R>                 = stx.nano.Y<P,R>;
@@ -67,24 +67,30 @@ class LiftPos{
     return new Position(pos);
   }
 }
-typedef LiftFuture              = stx.nano.lift.LiftFuture;
-typedef LiftIMapToArrayKV       = stx.nano.lift.LiftIMapToArrayKV;
-typedef LiftOptionNano          = stx.nano.lift.LiftOptionNano;
-typedef LiftArrayNano           = stx.nano.lift.LiftArrayNano;
-typedef LiftNano                = stx.nano.lift.LiftNano;
-typedef LiftErrToChunk          = stx.nano.lift.LiftErrToChunk;
-typedef LiftResToChunk          = stx.nano.lift.LiftResToChunk;
-typedef LiftOptionToChunk       = stx.nano.lift.LiftOptionToChunk;
-typedef LiftTinkOutcomeToChunk  = stx.nano.lift.LiftTinkOutcomeToChunk;
-typedef LiftIterableToIter      = stx.nano.lift.LiftIterableToIter;
-typedef LiftArrayToIter         = stx.nano.lift.LiftArrayToIter;
-typedef LiftIteratorToIter      = stx.nano.lift.LiftIteratorToIter;
-typedef LiftMapToIter           = stx.nano.lift.LiftMapToIter;
-typedef LiftStringMapToIter     = stx.nano.lift.LiftStringMapToIter;
-typedef LiftJsPromiseToContract = stx.nano.lift.LiftJsPromiseToContract;
-typedef LiftContractToJsPromise = stx.nano.lift.LiftContractToJsPromise;
-typedef LiftJsPromiseToPledge   = stx.nano.lift.LiftJsPromiseToPledge;
-typedef LiftFutureResToPledge   = stx.nano.lift.LiftFutureResToPledge;
+typedef LiftTinkErrorToException    = stx.nano.lift.LiftTinkErrorToException;
+typedef LiftExceptionToRes          = stx.nano.lift.LiftExceptionToRes;
+typedef LiftErrorToReport           = stx.nano.lift.LiftErrorToReport;
+typedef LiftErrorToAlert            = stx.nano.lift.LiftErrorToAlert;
+typedef LiftErrorToException        = stx.nano.lift.LiftErrorToException;
+typedef LiftFuture                  = stx.nano.lift.LiftFuture;
+typedef LiftIMapToArrayKV           = stx.nano.lift.LiftIMapToArrayKV;
+typedef LiftOptionNano              = stx.nano.lift.LiftOptionNano;
+typedef LiftArrayNano               = stx.nano.lift.LiftArrayNano;
+typedef LiftNano                    = stx.nano.lift.LiftNano;
+typedef LiftErrToChunk              = stx.nano.lift.LiftErrToChunk;
+typedef LiftResToChunk              = stx.nano.lift.LiftResToChunk;
+typedef LiftOptionToChunk           = stx.nano.lift.LiftOptionToChunk;
+typedef LiftTinkOutcomeToChunk      = stx.nano.lift.LiftTinkOutcomeToChunk;
+typedef LiftIterableToIter          = stx.nano.lift.LiftIterableToIter;
+typedef LiftArrayToIter             = stx.nano.lift.LiftArrayToIter;
+typedef LiftIteratorToIter          = stx.nano.lift.LiftIteratorToIter;
+typedef LiftMapToIter               = stx.nano.lift.LiftMapToIter;
+typedef LiftStringMapToIter         = stx.nano.lift.LiftStringMapToIter;
+typedef LiftJsPromiseToContract     = stx.nano.lift.LiftJsPromiseToContract;
+typedef LiftContractToJsPromise     = stx.nano.lift.LiftContractToJsPromise;
+typedef LiftJsPromiseToPledge       = stx.nano.lift.LiftJsPromiseToPledge;
+typedef LiftFutureResToPledge       = stx.nano.lift.LiftFutureResToPledge;
+typedef LiftError                   = stx.nano.lift.LiftError;
 
 class LiftArrayClassWithUnderscore{
   static public function graft(clazz:Class<Array<Dynamic>>){
@@ -172,6 +178,7 @@ typedef Ledger<I,O,E>           = stx.nano.Ledger<I,O,E>;
 typedef LedgerDef<I,O,E>        = stx.nano.Ledger.LedgerDef<I,O,E>;
 typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;
 typedef EquityDef<I,O,E>        = stx.nano.Equity.EquityDef<I,O,E>;
+typedef EquityCls<I,O,E>        = stx.nano.Equity.EquityCls<I,O,E>;
 
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{

@@ -7,7 +7,7 @@ class Json{
     try{
       out = haxe.Json.stringify(v,replacer,space);
     }catch(e:Dynamic){
-      err = new Err(__.option(e));
+      err = Error.make(__.option(e),None,__.here());
     }
     return err == null ? __.accept(out) : __.reject(err);
   }
@@ -17,7 +17,7 @@ class Json{
     try{
       out = haxe.Json.parse(str);
     }catch(e:Dynamic){
-      err = new Err(__.option(e));
+      err = Error.make(__.option(e),None,__.here());
     }
     return err == null ? __.accept(out) : __.reject(err);
   }

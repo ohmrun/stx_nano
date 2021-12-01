@@ -6,7 +6,7 @@ import tink.core.Noise;
 @:using(stx.nano.Res.ResSumLift)
 enum ResSum<T,E>{
   Accept(t:T);
-  Reject(e:Err<E>);
+  Reject(e:Exception<E>);
 }
 class ResSumLift{
   static public function toString<T,E>(self:ResSum<T,E>):String{
@@ -23,24 +23,24 @@ static public var _(default,never) = ResLift;
   
   @:noUsing static public inline function lift<T,E>(self:ResSum<T,E>):Res<T,E> return new Res(self);
   @:noUsing static public function accept<T,E>(t:T):Res<T,E>                    return lift(Accept(t));
-  @:noUsing static public function reject<T,E>(e:Err<E>):Res<T,E>               return lift(Reject(e));
+  @:noUsing static public function reject<T,E>(e:Exception<E>):Res<T,E>               return lift(Reject(e));
 
   @:noUsing static public function fromReport<E>(self:Report<E>):Res<Noise,E>{
     return lift(self.fold(
-      (ok:Err<E>) -> reject(ok),
-      ()   -> accept(Noise)
+      (ok:Error<E>)   -> reject(ok.map(EXCEPT)),
+      ()              -> accept(Noise)
     ));
   }
   public function prj():ResSum<T,E> return this;
 
-  @:from static public function fromOutcome<T,E>(self:Outcome<T,Err<E>>):Res<T,E>{
+  @:from static public function fromOutcome<T,E>(self:Outcome<T,Exception<E>>):Res<T,E>{
     var ocd : ResSum<T,E> = switch(self){
       case Success(ok) : Accept(ok);
       case Failure(no) : Reject(no);
     }
     return lift(ocd);
   }
-  @:to public function toOutcome():Outcome<T,Err<E>>{
+  @:to public function toOutcome():Outcome<T,Exception<E>>{
     return switch(this){
       case Accept(ok) : Success(ok);
       case Reject(no) : Failure(no);
@@ -69,7 +69,7 @@ class ResLift{
       (e) -> 'Reject(${e.toString()})'
     );
   }
-  static public inline function errata<T,E,EE>(self:Res<T,E>,fn:Err<E>->Err<EE>):Res<T,EE>{
+  static public inline function errata<T,E,EE>(self:Res<T,E>,fn:Exception<E>->Exception<EE>):Res<T,EE>{
     return Res.lift(
       self.fold(
         (t) -> Res.accept(t),
@@ -78,11 +78,13 @@ class ResLift{
     );
   }
   static public inline function errate<T,E,EE>(self:Res<T,E>,fn:E->EE):Res<T,EE>{
-    return errata(self,(e) -> e.map(fn));
+    return errata(self,
+      (e) -> e.map(ee -> ee.map(fn))
+    );
   }
   static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
     return switch([self,that]){
-      case [Reject(e),Reject(ee)]     : Reject(e.merge(ee));
+      case [Reject(e),Reject(ee)]     : Reject(e.concat(ee));
       case [Reject(e),_]              : Reject(e);
       case [_,Reject(e)]              : Reject(e);
       case [Accept(t),Accept(tt)]     : Accept(Couple.make(t,tt));
@@ -97,7 +99,7 @@ class ResLift{
   static public inline function adjust<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
     return flat_map(self,fn);
   }
-  static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Err<E>->TT):TT{
+  static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Exception<E>->TT):TT{
     return switch(self){
       case Accept(t) : fn(t);
       case Reject(e) : er(e);
@@ -118,27 +120,27 @@ class ResLift{
       (_) -> None  
     );
   }
-  static public inline function report<T,E>(self:ResSum<T,E>):Report<E>{
+  static public inline function report<T,E>(self:ResSum<T,E>):Report<Declination<E>>{
     return fold(self,
-      (_) -> Report.unit(),
-      Report.pure
+      (ok) -> Report.unit(),
+      (er) -> Report.pure(er)
     );
   }
-  static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Err<E>->ResSum<T,E>):ResSum<T,E>{
+  static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Exception<E>->ResSum<T,E>):ResSum<T,E>{
     return fold(
       self,
       (ok)  -> Res.accept(ok),
       (no)  -> fn(no)
     );
   }
-  static public inline function recover<T,E>(self:ResSum<T,E>,fn:Err<E>->T):T{
+  static public inline function recover<T,E>(self:ResSum<T,E>,fn:Exception<E>->T):T{
     return fold(
       self,
       (v) -> v,
       (e) -> fn(e)
     );
   }
-  static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Err<E>->Void):Res<T,E>{
+  static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Exception<E>->Void):Res<T,E>{
     return fold(
       self,
       (ok) -> {
@@ -161,7 +163,7 @@ class ResLift{
   static public function toPledge<T,E>(self:ResSum<T,E>):Pledge<T,E>{
     return Pledge.fromRes(self);
   }
-  static public function point<T,E>(self:ResSum<T,E>,fn:T->Report<E>):Report<E>{
+  static public function point<T,E>(self:ResSum<T,E>,fn:T->Report<Declination<E>>):Report<Declination<E>>{
     return fold(
       self,
       (ok)  -> fn(ok),

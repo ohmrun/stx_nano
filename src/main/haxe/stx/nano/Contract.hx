@@ -31,7 +31,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (f) -> f(Val(ch))
     ); 
   }
-  @:noUsing static public function reject<T,E>(ch:Err<E>):Contract<T,E>{
+  @:noUsing static public function reject<T,E>(ch:Exception<E>):Contract<T,E>{
     return Future.irreversible(
       (f) -> f(End(ch))
     ); 
@@ -54,7 +54,12 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (f) -> f(Val(fn()))
     ));
   }
-  @:noUsing static public function fromLazyError<T,E>(fn:Void->Err<E>):Contract<T,E>{
+  @:noUsing static public function fromLazyError<T,E>(fn:Void->Error<E>):Contract<T,E>{
+    return fromLazyChunk(
+      () -> End(fn().except())
+    );
+  }
+  @:noUsing static public function fromLazyException<T,E>(fn:Void->Exception<E>):Contract<T,E>{
     return fromLazyChunk(
       () -> End(fn())
     );
@@ -65,7 +70,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     );
   }
 
-  @:noUsing static public function end<T,E>(?e:Err<E>):Contract<T,E>{
+  @:noUsing static public function end<T,E>(?e:Exception<E>):Contract<T,E>{
     return pure(End(e));
   }
   @:noUsing static public function tap<T,E>():Contract<T,E>{
@@ -93,7 +98,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     return _.fold(
       this,
       tink.core.Outcome.Success,
-      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.data.defv(null),e.pos.defv(null))),
+      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.val.defv(null),e.pos.defv(null))),
       () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
     );
   }
@@ -195,15 +200,15 @@ class ContractLift extends Clazz{
           case End(err) : Contract.fromChunk(End(err)).prj();
     }});
   }
-  static public function flat_fold<T,Ti,E>(self:ContractDef<T,E>,val:T->Future<Ti>,ers:Err<E>->Future<Ti>,nil:Void->Future<Ti>):Future<Ti>{
+  static public function flat_fold<T,Ti,E>(self:ContractDef<T,E>,val:T->Future<Ti>,ers:Exception<E>->Future<Ti>,nil:Void->Future<Ti>):Future<Ti>{
     return self.flatMap(
       (chunk:Chunk<T,E>) -> chunk.fold(val,ers,nil)
     );
   }
-  static public function fold<T,Ti,E>(self:Contract<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti,nil:Void->Ti):Future<Ti>{
+  static public function fold<T,Ti,E>(self:Contract<T,E>,val:T->Ti,ers:Null<Exception<E>>->Ti,nil:Void->Ti):Future<Ti>{
     return self.prj().map(Chunk._.fold.bind(_,val,ers,nil));
   }
-  static public function recover<T,E>(self:Contract<T,E>,fn:Err<E>->Chunk<T,E>):Contract<T,E>{
+  static public function recover<T,E>(self:Contract<T,E>,fn:Exception<E>->Chunk<T,E>):Contract<T,E>{
     return lift(fold(
       self,
       (x) -> Val(x),
@@ -219,7 +224,7 @@ class ContractLift extends Clazz{
       ()->Tap
     ));
   }
-  static public function receive<T,E>(self:Contract<T,E>,fn:T->Void):Future<Option<Err<E>>>{
+  static public function receive<T,E>(self:Contract<T,E>,fn:T->Void):Future<Option<Exception<E>>>{
     return self.prj().map(
       (chk) -> switch chk {
         case End(e)   : __.option(e);
@@ -238,13 +243,13 @@ class ContractLift extends Clazz{
     }
     return out;
   }
-  static public function errata<T,E,EE>(self:Contract<T,E>,fn:Err<E>->Err<EE>):Contract<T,EE>{
+  static public function errata<T,E,EE>(self:Contract<T,E>,fn:Exception<E>->Exception<EE>):Contract<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );
   }
   static public inline function errate<T,E,EE>(self:Contract<T,E>,fn:E->EE):Contract<T,EE>{
-    return errata(self,(x) -> x.map(fn));
+    return errata(self,(x) -> x.map(y -> y.map(fn)));
   }
   static public function tap<T,E>(self:Contract<T,E>,fn:Chunk<T,E>->?Pos->Void,?pos:Pos):Contract<T,E>{
     return lift(self.prj().map(

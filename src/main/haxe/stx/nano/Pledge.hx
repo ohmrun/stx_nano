@@ -16,8 +16,8 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       }
     ); 
   }
-  @:noUsing static public inline function accept<T,E>(ch:T):Pledge<T,E>       return make(__.accept(ch));
-  @:noUsing static public inline function reject<T,E>(e:Err<E>):Pledge<T,E>   return make(__.reject(e));
+  @:noUsing static public inline function accept<T,E>(ch:T):Pledge<T,E>         return make(__.accept(ch));
+  @:noUsing static public inline function reject<T,E>(e:Error<E>):Pledge<T,E>   return make(__.reject(e.except()));
 
   @:noUsing static public function bind_fold<T,Ti,E>(it:Cluster<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
     return new Pledge(__.nano().Ft().bind_fold(
@@ -25,7 +25,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{
         return memo.fold(
           (v) -> fm(next,v).prj(),
-          (e) -> make(__.reject(e))
+          (e) -> e.reject()
         );
       },
       __.accept(start)
@@ -34,7 +34,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   @:noUsing static public function seq<T,E>(iter:Array<Pledge<T,E>>):Pledge<Array<T>,E>{
     return bind_fold(
       iter,
-      (next:Pledge<T,E>,memo:Array<T>) -> 
+                        (next:Pledge<T,E>,memo:Array<T>) -> 
         next.map(
           (a) -> memo.snoc(a)
         )
@@ -47,9 +47,9 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       (f) -> f(__.accept(fn()))
     ));
   }
-  @:noUsing static public function fromLazyError<T,E>(fn:Void->Err<E>):Pledge<T,E>{
+  @:noUsing static public function fromLazyError<T,E>(fn:Void->Error<E>):Pledge<T,E>{
     return fromLazyRes(
-      () -> __.reject(fn())
+      () -> __.reject(fn().except())
     );
   }
   #if tink_core
@@ -58,7 +58,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       promise.map(
         (outcome) -> switch(outcome){
           case tink.core.Outcome.Success(s) : __.accept(s);
-          case tink.core.Outcome.Failure(f) : __.reject(Err.fromTinkError(f));
+          case tink.core.Outcome.Failure(f) : __.reject(f.toException());
         }
       )
     );
@@ -73,9 +73,8 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     );
   }
 
-  @:noUsing static public function err<T,E>(e:Err<E>):Pledge<T,E>{
-    return make(__.reject(e));
-    return make(__.reject(e));
+  @:noUsing static public function err<T,E>(e:Error<E>):Pledge<T,E>{
+    return make(__.reject(e.except()));
   }
   @:noUsing static public function fromRes<T,E>(chk:Res<T,E>):Pledge<T,E>{
     return Future.irreversible(
@@ -126,7 +125,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   
 }
 // @:allow(stx.nano.Pledge) private class PledgeCls<T,E>{
-//   private final forward : Future<Res<T,Err<E>>>;
+//   private final forward : Future<Res<T,Error<E>>>;
 
 //   public function new(forward){
 //     this.forward = forward;
@@ -142,7 +141,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
 //   public function zip<Tii>(that:Pledge<Tii,E>):Pledge<Couple<T,Tii>,E>{
 //     return _.zip(this,that);
 //   }
-//   public function fold<Ti,E>(val:T->Ti,ers:Null<Err<E>>->Ti):Future<Ti>{
+//   public function fold<Ti,E>(val:T->Ti,ers:Null<Error<E>>->Ti):Future<Ti>{
 //     return _.fold(this,val,ers);
 //   }
 // }
@@ -164,7 +163,7 @@ class PledgeLift{
               );
             }
           );
-        }catch(e:Err<Dynamic>){
+        }catch(e:Error<Dynamic>){
           reject(__.reject(e));
         }catch(e:Dynamic){
           reject(__.reject(__.fault().any(Std.string(e))));
@@ -209,20 +208,20 @@ class PledgeLift{
         // /trace(x);
         return x.fold(
           (v)   -> fn(v).prj(),
-          (err) -> Pledge.fromRes(__.reject(err)).prj()
+          (err) -> Pledge.fromRes(err.reject()).prj()
         );
       }
     );
   }
-  static public function flat_fold<T,Ti,E>(self:PledgeDef<T,E>,val:T->Future<Ti>,ers:Err<E>->Future<Ti>):Future<Ti>{
+  static public function flat_fold<T,Ti,E>(self:PledgeDef<T,E>,val:T->Future<Ti>,ers:Exception<E>->Future<Ti>):Future<Ti>{
     return self.flatMap(
       (res:Res<T,E>) -> res.fold(val,ers)
     );
   }
-  static public function fold<T,Ti,E>(self:Pledge<T,E>,val:T->Ti,ers:Null<Err<E>>->Ti):Future<Ti>{
+  static public function fold<T,Ti,E>(self:Pledge<T,E>,val:T->Ti,ers:Null<Exception<E>>->Ti):Future<Ti>{
     return self.prj().map(Res._.fold.bind(_,val,ers));
   }
-  static public function recover<T,E>(self:Pledge<T,E>,fn:Err<E>->Res<T,E>):Pledge<T,E>{
+  static public function recover<T,E>(self:Pledge<T,E>,fn:Exception<E>->Res<T,E>):Pledge<T,E>{
     return lift(fold(
       self,
       (x) -> __.accept(x),
@@ -236,12 +235,12 @@ class PledgeLift{
       (v) -> __.reject(v)
     ));
   }
-  static public function rectify<T,Ti,E,U>(self:Pledge<T,E>,fn:Err<E>->Res<T,E>):Pledge<T,E>{
+  static public function rectify<T,Ti,E,U>(self:Pledge<T,E>,fn:Exception<E>->Res<T,E>):Pledge<T,E>{
     return lift(self.prj().map(
       (res:Res<T,E>) -> res.rectify(fn)
     ));
   }
-  static public function receive<T,E>(self:Pledge<T,E>,fn:T->Void):Future<Option<Err<E>>>{
+  static public function receive<T,E>(self:Pledge<T,E>,fn:T->Void):Future<Option<Exception<E>>>{
     return self.prj().map(
       (res) -> res.fold(
         (v) -> {
@@ -264,7 +263,7 @@ class PledgeLift{
     }
     return out;
   }
-  static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<E>):Alert<E>{
+  static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<Declination<E>>):Alert<Declination<E>>{
     return Alert.lift(
       self.map(
         (res:Res<T,E>) -> res.fold(
@@ -273,15 +272,15 @@ class PledgeLift{
       )
     ));
   }
-  static public function errata<T,E,EE>(self:Pledge<T,E>,fn:Err<E>->Err<EE>):Pledge<T,EE>{
+  static public function errata<T,E,EE>(self:Pledge<T,E>,fn:Exception<E>->Exception<EE>):Pledge<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );
   }
   static public inline function errate<T,E,EE>(self:Pledge<T,E>,fn:E->EE):Pledge<T,EE>{
-    return errata(self,(x) -> x.map(fn));
+    return errata(self,(x) -> x.map(y -> y.map(fn)));
   }
-  static public function each<T,E>(self:Pledge<T,E>,fn:T->Void,?err:Err<E>->Void){
+  static public function each<T,E>(self:Pledge<T,E>,fn:T->Void,?err:Exception<E>->Void){
     self.prj().handle(
       (res) -> res.fold(
         fn,
@@ -312,15 +311,15 @@ class PledgeLift{
       (t:T) -> fn().resolve(t)
     );
   }
-  static public function anyway<T,E>(self:PledgeDef<T,E>,fn:Report<E>->Alert<E>):Pledge<T,E>{
+  static public function anyway<T,E>(self:PledgeDef<T,E>,fn:Report<Declination<E>>->Alert<E>):Pledge<T,E>{
     return self.flatMap(
       (res) -> res.fold(
         (ok)  -> fn(__.report()).flat_fold(
-          (err) -> __.reject(err),
+          (err) -> __.reject(err.except()),
           ()    -> __.accept(ok)
         ),
         (err) -> fn(err.report()).flat_fold(
-          (err0) -> __.reject(err.merge(err0)),
+          (err0) -> __.reject(err.concat(err0.except())),
           ()     -> __.reject(err)
         ) 
       )

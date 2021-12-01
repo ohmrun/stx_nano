@@ -1,11 +1,11 @@
 # stx_nano
 
-`using stx.Nano;` pulls in: `Couple<L,R>, Err<E>, FailCode, Failure<E>, Fault<E>, Pos, adPosition, Primitive, Report, Res, Unique, VBlock, Wildcard, Y`
+`using stx.Nano;` pulls in: `Couple<L,R>, Err<E>, Digest, Failure<E>, Fault<E>, Pos, adPosition, Primitive, Report, Res, Unique, VBlock, Wildcard, Y`
 
 `Couple<L,R>` is a two-tuple implemented as a function handler.  
 `Err<E>` is a flexible error class, can be accessed through `__.fault()`.  
-`FailCode` is an enumeration of fails, can be used in a typed Err<E> without effecting the type.  
-`Failure<E>` allows `FailCodes` and whatever type `E` is in `Err` to get along.  
+`Digest` is an enumeration of fails, can be used in a typed Err<E> without effecting the type.  
+`Failure<E>` allows `Digests` and whatever type `E` is in `Err` to get along.  
 `Fault` is a static extension of `Wildcard` that produces an error api, capturing the position information.  
 `Primitive` is an enumeration of Primitive haxe scalars.  
 `Report<E>` is `Option<Err,E>>` with convenience functions.  
@@ -51,7 +51,7 @@ class LiftSomething{
     var e1 = __.fault( ).of(E_SomeOtherError);//Err<ErrorVal>
 
     var e2 = e0.next(e1);//both of these errors now available downstream.
-    var e3 = __.fault().err(FailCode.E_ResourceNotFound);//Err<Unknown>;
+    var e3 = __.fault().err(Digest.E_ResourceNotFound);//Err<Unknown>;
 
     var e4 = e2.next(e3);//Type compatible
 

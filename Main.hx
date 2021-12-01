@@ -1,11 +1,11 @@
+
+using tink.CoreApi;
 using stx.Nano;
 
 
 #if sys
 using stx.Sys;
 #end
-
-using tink.CoreApi;
 
 class Main {
 	static function main() {

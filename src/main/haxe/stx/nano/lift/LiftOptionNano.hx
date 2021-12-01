@@ -7,15 +7,15 @@ class LiftOptionNano{
       default                 : None;
     }
   }
-  static public function fudge<T,E>(self:Null<Option<T>>,?err:Err<E>):T{
-    err = Option.make(err).defv(__.fault().internal(E_Undefined));
+  static public function fudge<T,E>(self:Null<Option<T>>,?err:Error<E>):T{
+    final exception = Option.make(err.except()).defv(__.fault().internal(E_Undefined));
     return switch(self){
       case Some(v)  : v;
-      case None     : throw err;
-      case null     : throw err;
+      case None     : throw exception;
+      case null     : throw exception;
     }
   }
-  static public function resolve<T,E>(self:Option<T>,fn:Fault->Err<E>,?pos:Pos){
+  static public function resolve<T,E>(self:Option<T>,fn:Fault->Exception<E>,?pos:Pos){
     return self.fold(
       __.accept,
       () -> __.reject(fn(__.fault(pos)))

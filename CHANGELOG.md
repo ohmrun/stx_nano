@@ -6,7 +6,7 @@
 * 	 c8cc23e 2021-07-16  added build
 * 	 2d48fc3 2021-07-16  Fault fix
 * 	 e599728 2021-07-16  Don't like `err`
-* 	 64b2b28 2021-07-16  Only FailCode is `E_Undefined`
+* 	 64b2b28 2021-07-16  Only Digest is `E_Undefined`
 * 	 ad15877 2021-07-16  Unspecified
 * 	 ced4f34 2021-07-13  semicolon
 * 	 0dd4627 2021-07-12  Future.fudge
