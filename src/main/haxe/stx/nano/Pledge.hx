@@ -278,7 +278,7 @@ class PledgeLift{
     );
   }
   static public inline function errate<T,E,EE>(self:Pledge<T,E>,fn:E->EE):Pledge<T,EE>{
-    return errata(self,(x) -> x.map(y -> y.map(fn)));
+    return errata(self,(x) -> x.errate(fn));
   }
   static public function each<T,E>(self:Pledge<T,E>,fn:T->Void,?err:Exception<E>->Void){
     self.prj().handle(

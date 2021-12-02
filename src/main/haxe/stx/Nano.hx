@@ -53,7 +53,8 @@ typedef VBlock<T>               = stx.nano.VBlock<T>;
 typedef PledgeDef<T,E>          = stx.nano.Pledge.PledgeDef<T,E>;
 typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
 
-typedef Exception<E>            = Error<Declination<E>>;
+typedef Exception<E>            = stx.nano.Exception<E>;
+typedef ExceptionDef<E>         = stx.nano.Exception.ExceptionDef<E>;
 /*
 typedef YDef<P, R>              = stx.nano.Y.YDef<P,R>;
 typedef Y<P, R>                 = stx.nano.Y<P,R>;

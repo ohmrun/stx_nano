@@ -6,15 +6,15 @@ abstract Fault(Null<Pos>) from Null<Pos>{
     return new Fault(self);
   }
   inline public function of<E>(data:E):Exception<E>{
-    return Error.make(__.option(EXCEPT(data)),None,this);
+    return Exception.make(__.option(EXCEPT(data)),None,this);
   }
   inline public function decline<E>(self:Declination<E>):Exception<E>{
-    return Error.make(Some(self),None,this);
+    return Exception.make(Some(self),None,this);
   }
   inline public function external<E>(msg:String):Exception<E>{
-    return Error.make(Some(REFUSE(Digest.fromString(msg))),None,this).toError();
+   return Exception.make(Some(REFUSE(Digest.fromString(msg))),None,this);
   }
   inline public function internal<E>(code:Digest):Exception<E>{
-    return Error.make(Some(REFUSE(code)),None,this);
+    return Exception.make(Some(REFUSE(code)),None,this);
   }
 }

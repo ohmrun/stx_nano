@@ -43,7 +43,7 @@ class EquityLift extends Clazz{
     return Equity.lift(self);
   }
   static public function errate<I,O,E,EE>(self:EquityDef<I,O,E>,fn:E->EE):Equity<I,O,EE>{
-    return errata(self,x -> x.map(fn));
+    return errata(self,x -> x.errate(fn));
   }
   static public function errata<I,O,E,EE>(self:EquityDef<I,O,E>,fn:Error<E>->Error<EE>):Equity<I,O,EE>{
     return Equity.make(self.asset,self.value,fn(new stx.nano.error.term.DefectError(self.error)).content());

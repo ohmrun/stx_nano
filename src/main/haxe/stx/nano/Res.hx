@@ -79,7 +79,7 @@ class ResLift{
   }
   static public inline function errate<T,E,EE>(self:Res<T,E>,fn:E->EE):Res<T,EE>{
     return errata(self,
-      (e) -> e.map(ee -> ee.map(fn))
+      (e) -> e.errate(fn)
     );
   }
   static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{

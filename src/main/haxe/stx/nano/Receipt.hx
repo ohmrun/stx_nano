@@ -46,7 +46,7 @@ class ReceiptLift extends Clazz{
     return Receipt.lift(self);
   }
   static public function errate<T,E,EE>(self:ReceiptDef<T,E>,fn:E->EE):Receipt<T,EE>{
-    return errata(self,x -> x.map(fn));
+    return errata(self,x -> x.errate(fn));
   }
   static public function errata<T,E,EE>(self:ReceiptDef<T,E>,fn:Error<E>->Error<EE>){
     return Receipt.make(

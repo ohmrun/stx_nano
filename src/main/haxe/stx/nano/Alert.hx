@@ -47,7 +47,7 @@ typedef AlertDef<E> = Future<Report<E>>;
     return this.map(report -> report.errata(fn));
   }
   public function errate<EE>(fn:E->EE):Alert<EE>{
-    return errata((err) -> err.map(x -> x.map(fn)));
+    return errata((err) -> err.errate(fn));
   }
   public function handle(fn:Report<E>->Void):CallbackLink{
     return this.handle(fn);

@@ -169,7 +169,7 @@ class ChunkLift{
  static public function errate<T,E,EE>(self:Chunk<T,E>,fn:E -> EE):Chunk<T,EE>{
   return recover(
    self,
-   (x:Exception<E>) -> return End(x.map(y -> y.map(fn)))
+   (x:Exception<E>) -> return End(x.errate(fn))
   );
 }
  static public function zip<T,Ti,E>(self:Chunk<T,E>,that:Chunk<Ti,E>):Chunk<Couple<T,Ti>,E>{
