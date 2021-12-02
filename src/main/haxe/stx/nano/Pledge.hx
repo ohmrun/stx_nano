@@ -263,7 +263,7 @@ class PledgeLift{
     }
     return out;
   }
-  static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<Declination<E>>):Alert<Declination<E>>{
+  static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<E>):Alert<E>{
     return Alert.lift(
       self.map(
         (res:Res<T,E>) -> res.fold(
@@ -311,15 +311,15 @@ class PledgeLift{
       (t:T) -> fn().resolve(t)
     );
   }
-  static public function anyway<T,E>(self:PledgeDef<T,E>,fn:Report<Declination<E>>->Alert<E>):Pledge<T,E>{
+  static public function anyway<T,E>(self:PledgeDef<T,E>,fn:Report<E>->Alert<E>):Pledge<T,E>{
     return self.flatMap(
       (res) -> res.fold(
         (ok)  -> fn(__.report()).flat_fold(
-          (err) -> __.reject(err.except()),
+          (err) -> __.reject(err),
           ()    -> __.accept(ok)
         ),
         (err) -> fn(err.report()).flat_fold(
-          (err0) -> __.reject(err.concat(err0.except())),
+          (err0) -> __.reject(err.concat(err0)),
           ()     -> __.reject(err)
         ) 
       )

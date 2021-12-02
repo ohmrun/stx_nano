@@ -7,19 +7,19 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   public function new(self) this = self;
   @:noUsing static public inline function lift<E>(self:ReportSum<E>):Report<E> return new Report(self);
 
-  @:noUsing static public function make<E>(data:E,?pos:Pos):Report<Declination<E>>{
+  @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{
     return pure(__.fault(pos).of(data));
   }
-  @:noUsing static public function make0<E>(data:Declination<E>,?pos:Pos):Report<Declination<E>>{
+  @:noUsing static public function make0<E>(data:Declination<E>,?pos:Pos):Report<E>{
     return pure(__.fault(pos).decline(data));
   }
   @:noUsing static public function unit<E>():Report<E>{
     return lift(Happened);
   }
-  @:noUsing static public function conf<E>(?e:Error<E>):Report<E>{
+  @:noUsing static public function conf<E>(?e:Exception<E>):Report<E>{
     return lift(__.option(e).map(Reported).defv(Happened));
   }
-  @:noUsing static public function pure<E>(e:Error<E>):Report<E>{
+  @:noUsing static public function pure<E>(e:Exception<E>):Report<E>{
     return lift(Reported(e));
   }
   public function effects(success:Void->Void,failure:Void->Void):Report<E>{
@@ -41,13 +41,13 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       default             :
     }
   }
-  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Error<E>>):Report<E>{
+  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Exception<E>>):Report<E>{
     return lift(opt.fold(
       Reported,
       () -> Happened
     ));
   }
-  @:from static public function fromOption<E>(opt:Option<Error<E>>):Report<E>{
+  @:from static public function fromOption<E>(opt:Option<Exception<E>>):Report<E>{
     return lift(opt.fold(
       Reported,
       () -> Happened
@@ -56,14 +56,14 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   public function prj():ReportSum<E>{
     return this;
   }
-  public function value():Option<Error<E>>{
+  public function value():Option<Exception<E>>{
     return _.fold(
       this,
       (err) -> Some(err),
       () -> None
     );
   }
-  public function defv(error:Error<E>){
+  public function defv(error:Exception<E>){
     return this.defv(error);
   }
   public function or(that:Void->Report<E>):Report<E>{
@@ -74,7 +74,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
     );
   }
   @:note("error in js")
-  public function errata<EE>(fn:Error<E>->Error<EE>):Report<EE>{
+  public function errata<EE>(fn:Exception<E>->Exception<EE>):Report<EE>{
     return new Report(
       switch(this){
         case Reported(v) :  Reported(fn(v));
@@ -102,7 +102,7 @@ class ReportLift{
   static public function resolve<T,E>(self:ReportSum<E>,fn:Void->T):Res<T,E>{
     return fold(
       self,
-      (x) -> __.reject(x.map(__.decline)),
+      (x) -> __.reject(x),
       ()  -> __.accept(fn())
     );
   }
@@ -114,21 +114,21 @@ class ReportLift{
       default                         : Happened;
     }
   }
-  static public function fold<T,Z>(self:ReportSum<T>,val:Error<T>->Z,nil:Void->Z):Z{
+  static public function fold<T,Z>(self:ReportSum<T>,val:Exception<T>->Z,nil:Void->Z):Z{
     return switch(self){
       case Reported(v)  : val(v);
       case Happened     : nil();
       case null         : nil();
     }
   }
-  static public function def<T>(self:ReportSum<T>,fn:Void->Error<T>):Error<T>{
+  static public function def<T>(self:ReportSum<T>,fn:Void->Exception<T>):Exception<T>{
     return fold(
       self,
       (x) -> x,
       fn
     );
   }
-  static public inline function defv<T>(self:ReportSum<T>,v:Error<T>):Error<T>{
+  static public inline function defv<T>(self:ReportSum<T>,v:Exception<T>):Exception<T>{
     return def(
       self,
       () -> v
@@ -141,12 +141,12 @@ class ReportLift{
       () -> false
     );
   }
-  static public function ignore<T>(self:ReportSum<T>,?fn:T->Bool){
+  static public function ignore<T>(self:ReportSum<T>,?fn:Declination<T>->Bool){
     __.option(fn).def(() -> fn = (x) -> true);
     return fold(
       self,
-      (err:Error<T>) -> err.val.fold(
-        (failure:T) -> fn(failure).if_else(
+      (err:Exception<T>) -> err.val.fold(
+        (failure:Declination<T>) -> fn(failure).if_else(
           ()  -> __.report(),
           ()  -> err.report()
         ),

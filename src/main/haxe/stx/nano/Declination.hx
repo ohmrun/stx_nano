@@ -17,7 +17,7 @@ abstract Declination<T>(DeclinationSum<T>) from DeclinationSum<T> to Declination
   static public function fromErrOf<T>(v:T):Declination<T>{
     return EXCEPT(v);
   }
-  public function report(?pos:Pos):Report<Declination<T>>{
+  public function report(?pos:Pos):Report<T>{
     return Report.pure(Nano._.fault(__,pos).decline(this));
   }
   public function prj():Declination<T> return this;

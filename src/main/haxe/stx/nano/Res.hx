@@ -27,7 +27,7 @@ static public var _(default,never) = ResLift;
 
   @:noUsing static public function fromReport<E>(self:Report<E>):Res<Noise,E>{
     return lift(self.fold(
-      (ok:Error<E>)   -> reject(ok.map(EXCEPT)),
+      (ok:Exception<E>)   -> reject(ok),
       ()              -> accept(Noise)
     ));
   }
@@ -120,7 +120,7 @@ class ResLift{
       (_) -> None  
     );
   }
-  static public inline function report<T,E>(self:ResSum<T,E>):Report<Declination<E>>{
+  static public inline function report<T,E>(self:ResSum<T,E>):Report<E>{
     return fold(self,
       (ok) -> Report.unit(),
       (er) -> Report.pure(er)
@@ -163,7 +163,7 @@ class ResLift{
   static public function toPledge<T,E>(self:ResSum<T,E>):Pledge<T,E>{
     return Pledge.fromRes(self);
   }
-  static public function point<T,E>(self:ResSum<T,E>,fn:T->Report<Declination<E>>):Report<Declination<E>>{
+  static public function point<T,E>(self:ResSum<T,E>,fn:T->Report<E>):Report<E>{
     return fold(
       self,
       (ok)  -> fn(ok),
