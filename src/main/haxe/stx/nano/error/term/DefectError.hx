@@ -1,6 +1,6 @@
 package stx.nano.error.term;
 
-class DefectError<E> extends stx.pico.error.term.ErrorBase<E> implements DefectApi<E>{
+class DefectError<E> extends Error<E> implements DefectApi<E>{
   public var error(get,null) : Iter<E>;
   public function get_error():Iter<E>{
     return this.error;

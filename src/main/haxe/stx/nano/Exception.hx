@@ -1,6 +1,6 @@
 package stx.nano;
 
-typedef ExceptionDef<E>            = ErrorDef<Declination<E>>;
+typedef ExceptionDef<E>            = Error<Declination<E>>;
 
 @:using(stx.nano.Exception.ExceptionLift)
 @:forward abstract Exception<E>(ExceptionDef<E>) from ExceptionDef<E> to ExceptionDef<E>{
@@ -8,7 +8,7 @@ typedef ExceptionDef<E>            = ErrorDef<Declination<E>>;
   public function new(self) this = self;
   static public function lift<E>(self:ExceptionDef<E>):Exception<E> return new Exception(self);
   static public function make<E>(data:Option<Declination<E>>,lst:Option<Exception<E>>,?pos:Pos):Exception<E>{
-    return lift(new ErrorCls(data,lst.map(x -> x.prj()),Some(pos)));
+    return lift(new stx.pico.error.term.ErrorBase(data,lst.map(x -> x.prj()),Some(pos)));
   }
   public function prj():ExceptionDef<E> return this;
   private var self(get,never):Exception<E>;
@@ -33,9 +33,6 @@ class ExceptionLift{
     return lift(self.concat(that.prj()));
   }
   static public function errate<E,EE>(self:ExceptionDef<E>,fn:E->EE):Exception<EE>{
-    return lift(Error._.errate(self,x -> x.map(fn)));
-  }
-  static public function content<E>(self:ExceptionDef<E>):Array<Declination<E>>{
-    return Error._.content(self);
+    return lift(self.errate(x -> x.map(fn)));
   }
 }

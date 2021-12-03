@@ -42,7 +42,7 @@ class AccrualLift extends Clazz{
     return Accrual.lift(self);
   }
   static public function errata<T,E,EE>(self:AccrualDef<T,E>,fn:Error<E>->Error<EE>):Accrual<T,EE>{
-    return self.map((x:Receipt<T,E>) -> x.errata(fn));
+    return lift(self.map((x:Receipt<T,E>) -> x.errata(fn)));
   }
   static public function errate<T,E,EE>(self:AccrualDef<T,E>,fn:E->EE):Accrual<T,EE>{
     return lift(self.map(x -> x.errate(fn)));
