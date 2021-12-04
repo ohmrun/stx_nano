@@ -15,7 +15,7 @@ class LiftOptionNano{
       case null     : throw exception;
     }
   }
-  static public function resolve<T,E>(self:Option<T>,fn:Fault->Exception<E>,?pos:Pos){
+  static public function resolve<T,E>(self:Option<T>,fn:Fault->Rejection<E>,?pos:Pos){
     return self.fold(
       __.accept,
       () -> __.reject(fn(__.fault(pos)))

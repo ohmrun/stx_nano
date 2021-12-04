@@ -16,10 +16,10 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   @:noUsing static public function unit<E>():Report<E>{
     return lift(Happened);
   }
-  @:noUsing static public function conf<E>(?e:Exception<E>):Report<E>{
+  @:noUsing static public function conf<E>(?e:Rejection<E>):Report<E>{
     return lift(__.option(e).map(Reported).defv(Happened));
   }
-  @:noUsing static public function pure<E>(e:Exception<E>):Report<E>{
+  @:noUsing static public function pure<E>(e:Rejection<E>):Report<E>{
     return lift(Reported(e));
   }
   public function effects(success:Void->Void,failure:Void->Void):Report<E>{
@@ -41,13 +41,13 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       default             :
     }
   }
-  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Exception<E>>):Report<E>{
+  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Rejection<E>>):Report<E>{
     return lift(opt.fold(
       Reported,
       () -> Happened
     ));
   }
-  @:from static public function fromOption<E>(opt:Option<Exception<E>>):Report<E>{
+  @:from static public function fromOption<E>(opt:Option<Rejection<E>>):Report<E>{
     return lift(opt.fold(
       Reported,
       () -> Happened
@@ -56,14 +56,14 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   public function prj():ReportSum<E>{
     return this;
   }
-  public function value():Option<Exception<E>>{
+  public function value():Option<Rejection<E>>{
     return _.fold(
       this,
       (err) -> Some(err),
       () -> None
     );
   }
-  public function defv(error:Exception<E>){
+  public function defv(error:Rejection<E>){
     return this.defv(error);
   }
   public function or(that:Void->Report<E>):Report<E>{
@@ -74,7 +74,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
     );
   }
   @:note("error in js")
-  public function errata<EE>(fn:Exception<E>->Exception<EE>):Report<EE>{
+  public function errata<EE>(fn:Rejection<E>->Rejection<EE>):Report<EE>{
     return new Report(
       switch(this){
         case Reported(v) :  Reported(fn(v));
@@ -114,21 +114,21 @@ class ReportLift{
       default                         : Happened;
     }
   }
-  static public function fold<T,Z>(self:ReportSum<T>,val:Exception<T>->Z,nil:Void->Z):Z{
+  static public function fold<T,Z>(self:ReportSum<T>,val:Rejection<T>->Z,nil:Void->Z):Z{
     return switch(self){
       case Reported(v)  : val(v);
       case Happened     : nil();
       case null         : nil();
     }
   }
-  static public function def<T>(self:ReportSum<T>,fn:Void->Exception<T>):Exception<T>{
+  static public function def<T>(self:ReportSum<T>,fn:Void->Rejection<T>):Rejection<T>{
     return fold(
       self,
       (x) -> x,
       fn
     );
   }
-  static public inline function defv<T>(self:ReportSum<T>,v:Exception<T>):Exception<T>{
+  static public inline function defv<T>(self:ReportSum<T>,v:Rejection<T>):Rejection<T>{
     return def(
       self,
       () -> v
@@ -145,7 +145,7 @@ class ReportLift{
     __.option(fn).def(() -> fn = (x) -> true);
     return fold(
       self,
-      (err:Exception<T>) -> err.val.fold(
+      (err:Rejection<T>) -> err.val.fold(
         (failure:Declination<T>) -> fn(failure).if_else(
           ()  -> __.report(),
           ()  -> err.report()

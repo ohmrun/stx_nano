@@ -1,5 +1,5 @@
 package stx.nano.lift;
 
-class LiftException{
+class LiftRejection{
   
 }

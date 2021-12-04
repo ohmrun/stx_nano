@@ -47,7 +47,7 @@ package stx.nano;
       Error.make(this.error.head(),None,pos)
     );
   }
-  @:from static public function fromException<E>(err:Exception<E>):Defect<E>{
+  @:from static public function fromRejection<E>(err:Rejection<E>):Defect<E>{
     return make(Iter.lift(err.content()).map_filter(
       (x) -> switch(x){
         case EXCEPT(e)        : Some(e);

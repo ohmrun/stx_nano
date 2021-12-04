@@ -53,8 +53,8 @@ typedef VBlock<T>               = stx.nano.VBlock<T>;
 typedef PledgeDef<T,E>          = stx.nano.Pledge.PledgeDef<T,E>;
 typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
 
-typedef Exception<E>            = stx.nano.Exception<E>;
-typedef ExceptionDef<E>         = stx.nano.Exception.ExceptionDef<E>;
+typedef Rejection<E>            = stx.nano.Rejection<E>;
+typedef RejectionDef<E>         = stx.nano.Rejection.RejectionDef<E>;
 /*
 typedef YDef<P, R>              = stx.nano.Y.YDef<P,R>;
 typedef Y<P, R>                 = stx.nano.Y<P,R>;
@@ -68,11 +68,11 @@ class LiftPos{
     return new Position(pos);
   }
 }
-typedef LiftTinkErrorToException    = stx.nano.lift.LiftTinkErrorToException;
-typedef LiftExceptionToRes          = stx.nano.lift.LiftExceptionToRes;
+typedef LiftTinkErrorToRejection    = stx.nano.lift.LiftTinkErrorToRejection;
+typedef LiftRejectionToRes          = stx.nano.lift.LiftRejectionToRes;
 typedef LiftErrorToReport           = stx.nano.lift.LiftErrorToReport;
 typedef LiftErrorToAlert            = stx.nano.lift.LiftErrorToAlert;
-typedef LiftErrorToException        = stx.nano.lift.LiftErrorToException;
+typedef LiftErrorToRejection        = stx.nano.lift.LiftErrorToRejection;
 typedef LiftFuture                  = stx.nano.lift.LiftFuture;
 typedef LiftIMapToArrayKV           = stx.nano.lift.LiftIMapToArrayKV;
 typedef LiftOptionNano              = stx.nano.lift.LiftOptionNano;

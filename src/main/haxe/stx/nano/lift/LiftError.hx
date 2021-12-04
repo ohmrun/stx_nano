@@ -4,7 +4,7 @@ class LiftError{
   static public function fault<E>(self:Error<E>):Fault{
     return Fault.lift(self.pos.defv(null));
   }
-  static public function report<E>(error:Exception<E>):Report<E>{
+  static public function report<E>(error:Rejection<E>):Report<E>{
     return Reported(error);
   }
   static public function toTinkError<E>(self:Error<E>,code=500):tink.core.Error{
