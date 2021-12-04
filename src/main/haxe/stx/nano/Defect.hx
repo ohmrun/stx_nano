@@ -4,12 +4,12 @@ package stx.nano;
   public var error(get,null) : Iter<E>;
   public function get_error():Iter<E>;
 
-  public function toDefect():DefectDef<E>;
+  public function toDefect():Defect<E>;
 }
 @:pure interface DefectApi<E>{
   public var error(get,null) : Iter<E>;
   public function get_error():Iter<E>;
-  public function toDefect():DefectDef<E>;
+  public function toDefect():Defect<E>;
 }
 @:pure class DefectCls<E> implements DefectApi<E>{
   public var error(get,null) : Iter<E>;
@@ -19,7 +19,7 @@ package stx.nano;
   public function new(error){
     this.error = error;
   }
-  public function toDefect():DefectDef<E>{
+  public function toDefect():Defect<E>{
     return this;
   }
 }
@@ -66,6 +66,9 @@ package stx.nano;
   }
   @:to public function toError(){
     return new stx.nano.error.term.DefectError(this.error).toError();
+  }
+  public function prj():DefectDef<E>{
+    return this;
   }
 }
 class DefectLift{

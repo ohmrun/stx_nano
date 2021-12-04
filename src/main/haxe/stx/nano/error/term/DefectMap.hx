@@ -1,3 +1,4 @@
+
 package stx.nano.error.term;
 
 class DefectMap<E,EE> implements DefectApi<EE>{

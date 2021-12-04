@@ -35,7 +35,7 @@ class DefectError<E> extends Error<E> implements DefectApi<E>{
   public function copy(){
     return new DefectError(this.error).toError();
   }
-  public function toDefect(){
+  public function toDefect():Defect<E>{
     return this;
   }
 }

@@ -1,6 +1,9 @@
 package stx.nano.lift;
 
 class LiftError{
+  static public function fault<E>(self:Error<E>):Fault{
+    return Fault.lift(self.pos.defv(null));
+  }
   static public function report<E>(error:Exception<E>):Report<E>{
     return Reported(error);
   }
