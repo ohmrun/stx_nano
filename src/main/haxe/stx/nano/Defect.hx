@@ -17,7 +17,7 @@ package stx.nano;
     return error;
   }
   public function new(error){
-    this.error = error;
+    this.error = __.option(error).def(Iter.unit);
   }
   public function toDefect():Defect<E>{
     return this;

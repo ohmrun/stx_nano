@@ -7,3 +7,7 @@ import tink.core.Promise;
 
 using stx.Pico;
 using stx.Nano;
+
+#if stx_assert
+using stx.Assert;
+#end

@@ -11,7 +11,8 @@ import haxe.Constraints;
       iterator : () -> {
         {
           hasNext : () -> false,
-          next    : throw __.fault().internal(E_Undefined)
+          next    : () -> null//throw __.fault().internal(E_Undefined) 
+          //TODO why is this called?
         }
       }
     });

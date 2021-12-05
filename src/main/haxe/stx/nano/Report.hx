@@ -114,7 +114,7 @@ class ReportLift{
       default                         : Happened;
     }
   }
-  static public function fold<T,Z>(self:ReportSum<T>,val:Rejection<T>->Z,nil:Void->Z):Z{
+  static inline public function fold<T,Z>(self:ReportSum<T>,val:Rejection<T>->Z,nil:Void->Z):Z{
     return switch(self){
       case Reported(v)  : val(v);
       case Happened     : nil();
