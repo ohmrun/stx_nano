@@ -5,6 +5,7 @@ package stx.nano;
     this = self;
   }
   var E_Undefined;
+  var E_ResourceNotFound;
 
   static private function fromString(str:String):Digest{
     return new Digest(str);

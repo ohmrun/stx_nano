@@ -32,7 +32,7 @@ typedef EquityDef<I,O,E> = ReceiptDef<O,E> & {
     return lift(new EquityCls(error,value,asset).toEquity());
   }
   @:to public function toError(){
-    return new stx.nano.error.term.DefectError(this.error).toError();
+    return Error.iter(this.error);
   }
 }
 class EquityLift extends Clazz{
@@ -46,7 +46,7 @@ class EquityLift extends Clazz{
     return errata(self,x -> x.errate(fn));
   }
   static public function errata<I,O,E,EE>(self:EquityDef<I,O,E>,fn:Error<E>->Error<EE>):Equity<I,O,EE>{
-    return Equity.make(self.asset,self.value,fn(new stx.nano.error.term.DefectError(self.error)).content());
+    return Equity.make(self.asset,self.value,fn(Error.iter(Iter.lift(self.error))).toIterable());
   }
   static public function copy<I,O,E>(self:EquityDef<I,O,E>,asset:I,?value:O,?error:Iter<E>){
     return lift(new EquityCls(

@@ -121,19 +121,7 @@ class IterLift{
     var it = iter.iterator();
     return it.hasNext() ? Some(it.next()) : None;
   }
-  static public function tail<T>(iter:Iterable<T>):Iter<T>{
-    return {
-      iterator : function() {
-        var it = iter.iterator();
-            it.next();
-        return {
-          next : it.next,
-          hasNext : it.hasNext
-        }
-      }
-    }
-  }
-    /**
+  /**
 
     Tising starting var `z`, run `f` on each element, storing the result, and passing that result
     into the next call.
@@ -148,9 +136,24 @@ class IterLift{
     return folded;
   }
   static public function lfold1<T>(iter: Iterable<T>, mapper: T -> T -> T):Option<T> {
-    return head(iter).map(
-      (seed:T) -> lfold(tail(iter),mapper,seed)
-    );
+    var it = iter.iterator();
+    var memo = None;
+    return if(!it.hasNext()){
+      None;
+    }else{
+      memo = Some(it.next());
+      while(true){
+        if(!it.hasNext()){
+          break;
+        }else{
+          memo = memo.flat_map(
+            (lhs) -> Some(mapper(lhs,it.next()))
+          );
+        }
+      };
+      memo;
+
+    }
   }  
   static public function toGenerator<T>(self:Iter<T>):Void->Option<T>{
     var iter : Option<Iterator<T>> = None;

@@ -42,13 +42,13 @@ package stx.nano;
     return __.option(data).map((x:Iter<E>) -> lift(new DefectCls(x))).def(unit);
   }
   public inline function toErrorHere(?pos:Pos):Error<E>{
-    return this.error.tail().lfold(
+    return Lambda.array(this.error).tail().lfold(
       (next:E,memo:Error<E>) -> Error.make(__.option(next),Some(memo),pos),
       Error.make(this.error.head(),None,pos)
     );
   }
   @:from static public function fromRejection<E>(err:Rejection<E>):Defect<E>{
-    return make(Iter.lift(err.content()).map_filter(
+    return make(Iter.lift(err).map_filter(
       (x) -> switch(x){
         case EXCEPT(e)        : Some(e);
         default               : None;
@@ -56,7 +56,7 @@ package stx.nano;
     ));
   }
   @:from static public function fromError<E>(self:Error<E>):Defect<E>{
-    return Defect.make(self.content());
+    return Defect.make(Iter.lift(self));
   }
   public function elide():Defect<Dynamic>{
     return this;
@@ -64,8 +64,8 @@ package stx.nano;
   public function entype<E>():Defect<E>{
     return cast this;
   }
-  @:to public function toError(){
-    return new stx.nano.error.term.DefectError(this.error).toError();
+  @:to public function toError():Error<E>{
+    return Error.iter(this.error);
   }
   public function prj():DefectDef<E>{
     return this;

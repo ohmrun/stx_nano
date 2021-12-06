@@ -8,11 +8,7 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
   public function new(self) this = self;
   static public function lift<E>(self:RejectionDef<E>):Rejection<E> return new Rejection(self);
   static public function make<E>(data:Option<Declination<E>>,lst:Option<Rejection<E>>,?pos:Pos):Rejection<E>{
-    // #if stx_assert
-    // __.assert().exists(data);
-    // __.assert().exists(lst);
-    // #end
-    return lift(new stx.pico.error.term.ErrorBase(data,lst.map(x -> x.prj()),Some(pos)));
+    return lift(Error.make(data,lst.map(x -> x.prj()),pos));
   }
   public function prj():RejectionDef<E> return this;
   private var self(get,never):Rejection<E>;

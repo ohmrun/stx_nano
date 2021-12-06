@@ -35,7 +35,7 @@ typedef ReceiptDef<T,E> = DefectDef<E> & {
     return make(self,Iter.unit());
   }
   @:to public function toError(){
-    return new stx.nano.error.term.DefectError(this.error).toError();
+    return Error.iter(this.error);
   }
 }
 class ReceiptLift extends Clazz{
@@ -51,7 +51,7 @@ class ReceiptLift extends Clazz{
   static public function errata<T,E,EE>(self:ReceiptDef<T,E>,fn:Error<E>->Error<EE>){
     return Receipt.make(
       self.value,
-      fn(new stx.nano.error.term.DefectError(self.error)).content()
+      Iter.lift(fn(Error.iter(self.error)))
     );
   }
   static public function copy<T,E>(self:ReceiptDef<T,E>,?value:T,?error:Iter<E>){
