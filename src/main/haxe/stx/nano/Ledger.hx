@@ -34,7 +34,7 @@ class LedgerLift extends Clazz{
   static public function flat_map<I,O,Oi,E>(self:LedgerDef<I,O,E>,fn:O->Ledger<I,Oi,E>):Ledger<I,Oi,E>{
     return self.flatMap(
       (x:Equity<I,O,E>) -> __.option(x.value).fold(
-        ok -> fn(ok).errata(e -> Error.iter(x.error).concat(e)),
+        ok -> fn(ok).errata(e -> x.error.toError().concat(e)),
         () -> Ledger.fromEquity(Equity.make(x.asset,null,x.error))
       )
     );

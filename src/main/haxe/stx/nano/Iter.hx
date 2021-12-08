@@ -231,33 +231,7 @@ class IterLift{
     );
   }
   static public function concat<T>(self:Iter<T>,that:Iter<T>):Iter<T>{
-    var rest = false;
-    return Iter.make0(
-      () -> {
-        final lhs = self.iterator();
-        final rhs = that.iterator();
-        return __.couple(
-          () -> {
-            return if(!rest){
-              lhs.hasNext().if_else(
-                () -> true,
-                () -> {
-                  rest = true;
-                  return rhs.hasNext();
-                }
-              );
-            }else{
-              rhs.hasNext();
-            }
-          },
-          () -> return if (!rest){
-            lhs.next();
-          }else{
-            rhs.next();
-          }
-        );
-      }
-    );
+    return Iter.lift(IterableLift.concat(self,that));
   }
   static public function is_defined<T>(self:Iter<T>){
     return self.iterator().hasNext();

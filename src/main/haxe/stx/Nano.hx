@@ -175,6 +175,8 @@ typedef ReceiptCls<T,E>         = stx.nano.Receipt.ReceiptCls<T,E>;
 typedef Accrual<T,E>            = stx.nano.Accrual<T,E>;
 typedef AccrualDef<T,E>         = stx.nano.Accrual.AccrualDef<T,E>;
 
+typedef ErrataDef<E>            = stx.nano.Errata.ErrataDef<E>;
+typedef Errata<E>               = stx.nano.Errata<E>;
 typedef Ledger<I,O,E>           = stx.nano.Ledger<I,O,E>;
 typedef LedgerDef<I,O,E>        = stx.nano.Ledger.LedgerDef<I,O,E>;
 typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;
