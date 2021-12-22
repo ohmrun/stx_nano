@@ -2,6 +2,15 @@
   "build" : {
     "-lib" : ["tink_core","hx3compat","stx_pico"],
     "-cp"  : ["src/main/haxe"],
+    "unit" : {
+      "--macro" : [
+        "include('stx.Nano',true,[])",
+        "include('stx.nano',true,[])" 
+      ],
+      "interp"  : {
+        "--interp" : true
+      }
+    },
     "main" : {
       "-main"     : "Main",
       "hashlink" : {

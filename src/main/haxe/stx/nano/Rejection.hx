@@ -5,9 +5,9 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
 @:using(stx.nano.Rejection.RejectionLift)
 @:forward abstract Rejection<E>(RejectionDef<E>) from RejectionDef<E> to RejectionDef<E>{
   static public var _(default,never) = RejectionLift;
-  public function new(self) this = self;
-  static public function lift<E>(self:RejectionDef<E>):Rejection<E> return new Rejection(self);
-  static public function make<E>(data:Option<Declination<E>>,lst:Option<Rejection<E>>,?pos:Pos):Rejection<E>{
+  public inline function new(self) this = self;
+  static public inline function lift<E>(self:RejectionDef<E>):Rejection<E> return new Rejection(self);
+  static public inline function make<E>(data:Option<Declination<E>>,lst:Option<Rejection<E>>,?pos:Pos):Rejection<E>{
     return lift(Error.make(data,lst.map(x -> x.prj()),pos));
   }
   public function prj():RejectionDef<E> return this;
@@ -23,6 +23,9 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
   }
   public function errate<EE>(fn:E->EE):Rejection<EE>{
     return _.errate(this,fn);
+  }
+  @:from static public function fromError<E>(self:Error<E>){
+    return lift(self.errate(EXCEPT));
   }
 }
 class RejectionLift{
