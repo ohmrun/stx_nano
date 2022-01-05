@@ -27,6 +27,12 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
   @:from static public function fromError<E>(self:Error<E>){
     return lift(self.errate(EXCEPT));
   }
+  @:noUsing static public function fromDefect<T,E>(self:Defect<E>):Rejection<E>{
+    return fromError(self.toError());
+  }
+  public function iterator():Iterator<Null<Declination<E>>>{
+    return this.iterator();
+  }
 }
 class RejectionLift{
   static public inline function lift<E>(self:RejectionDef<E>):Rejection<E>{
@@ -38,4 +44,5 @@ class RejectionLift{
   static public function errate<E,EE>(self:RejectionDef<E>,fn:E->EE):Rejection<EE>{
     return lift(self.errate(x -> x.map(fn)));
   }
+  //static public function fold<E,Z>(self:RejectionDef<E>,fn:Fault->Option<E>)
 }
