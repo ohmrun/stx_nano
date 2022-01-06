@@ -18,7 +18,7 @@ abstract Resource(StdString){
       if(pos == null){
         throw('E_ResourceNotFound($str)');
       }else{
-        var error = __.fault(pos).external('${E_ResourceNotFound}("$str")');
+        var error = __.fault(pos).explain(_ -> _.e_resource_not_found(str));
         #if stx_log
         __.log().info('resource "$str" not found.');
         #end

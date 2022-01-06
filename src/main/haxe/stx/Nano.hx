@@ -1,6 +1,9 @@
 package stx;
 
 class Nano{
+  static public function digests(wildcard:Wildcard):Digests{
+    return wildcard;
+  }
   static public var _(default,never) = LiftNano;
 }
 
@@ -43,7 +46,10 @@ typedef Res<T,E>                = stx.nano.Res<T,E>;
 
 typedef DeclinationSum<T>       = stx.nano.Declination.DeclinationSum<T>;
 typedef Declination<T>          = stx.nano.Declination<T>;
+
 typedef Digest                  = stx.nano.Digest;
+typedef Digests                 = stx.nano.Digests;
+
 typedef Fault                   = stx.nano.Fault;
 
 typedef VBlockDef<T>            = stx.nano.VBlock.VBlockDef<T>;

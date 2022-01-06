@@ -11,10 +11,7 @@ abstract Fault(Null<Pos>) from Null<Pos>{
   inline public function decline<E>(self:Declination<E>):Rejection<E>{
     return Rejection.make(Some(self),None,this);
   }
-  inline public function external<E>(msg:String):Rejection<E>{
-   return Rejection.make(Some(REFUSE(Digest.fromString(msg))),None,this);
-  }
-  inline public function internal<E>(code:Digest):Rejection<E>{
-    return Rejection.make(Some(REFUSE(code)),None,this);
+  inline public function explain<E>(fn:Digests->Digest):Rejection<E>{
+    return Rejection.make(Some(REFUSE(fn(__.digests()))),None,this);
   }
 }
