@@ -34,10 +34,16 @@ class Digest extends Clazz{
   static public function e_resource_not_found(self:Digests,name){
     return new stx.nano.digest.term.EResourceNotFound(name);
   }
+  static public function e_no_field(self:Digests,name){
+    return new stx.nano.digest.term.ENoField(name);
+  }
   static public function e_undefined(self:Digests){
     return new stx.nano.digest.term.EUndefined();
   }
   static public function e_tink_error(self:Digests,msg,code){
     return new stx.nano.digest.term.ETinkError(msg,code);
+  }
+  static public function e_unimplemented(self:Digests){
+    return new stx.nano.digest.term.EUnimplemented();
   }
 }

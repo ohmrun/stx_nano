@@ -1,5 +1,8 @@
 package stx;
 
+import haxe.Int64;
+import haxe.io.Bytes;
+
 using tink.CoreApi;
 
 import tink.core.Future;

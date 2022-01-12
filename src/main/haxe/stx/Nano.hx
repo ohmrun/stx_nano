@@ -61,6 +61,9 @@ typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
 
 typedef Rejection<E>            = stx.nano.Rejection<E>;
 typedef RejectionDef<E>         = stx.nano.Rejection.RejectionDef<E>;
+
+typedef ByteSize                = stx.nano.ByteSize;
+typedef Endianness              = stx.nano.Endianness;
 /*
 typedef YDef<P, R>              = stx.nano.Y.YDef<P,R>;
 typedef Y<P, R>                 = stx.nano.Y<P,R>;
@@ -98,6 +101,8 @@ typedef LiftContractToJsPromise     = stx.nano.lift.LiftContractToJsPromise;
 typedef LiftJsPromiseToPledge       = stx.nano.lift.LiftJsPromiseToPledge;
 typedef LiftFutureResToPledge       = stx.nano.lift.LiftFutureResToPledge;
 typedef LiftError                   = stx.nano.lift.LiftError;
+typedef LiftErrorDigestToRejection  = stx.nano.lift.LiftErrorDigestToRejection;
+typedef LiftBytes                   = stx.nano.lift.LiftBytes;
 
 class LiftArrayClassWithUnderscore{
   static public function graft(clazz:Class<Array<Dynamic>>){
@@ -160,6 +165,8 @@ typedef Signal<T>               = stx.nano.Signal<T>;
 typedef Char                    = stx.nano.Char;
 typedef Chars                   = stx.nano.Chars;
 typedef Ints                    = stx.nano.Ints;
+typedef Numeric                 = stx.nano.Numeric;
+typedef Sprig                   = stx.nano.Sprig;
 typedef Floats                  = stx.nano.Floats;
 typedef Math                    = stx.nano.Math;
 typedef Bools                   = stx.nano.Bools;

@@ -14,4 +14,7 @@ abstract Fault(Null<Pos>) from Null<Pos>{
   inline public function explain<E>(fn:Digests->Digest):Rejection<E>{
     return Rejection.make(Some(REFUSE(fn(__.digests()))),None,this);
   }
+  inline public function digest(fn:Digests->Digest):Error<Digest>{
+    return Error.make(Some(fn(__.digests())),None,this);
+  }
 }
