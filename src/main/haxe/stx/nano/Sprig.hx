@@ -14,4 +14,11 @@ abstract Sprig(SprigSum) from SprigSum to SprigSum{
   public function prj():SprigSum return this;
   private var self(get,never):Sprig;
   private function get_self():Sprig return lift(this);
+
+  public function toString(){
+    return switch(this){
+      case Textal(str) : str;
+      case Byteal(b)   : b.toString();
+    }
+  }
 }

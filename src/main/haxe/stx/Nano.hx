@@ -166,6 +166,7 @@ typedef Char                    = stx.nano.Char;
 typedef Chars                   = stx.nano.Chars;
 typedef Ints                    = stx.nano.Ints;
 typedef Numeric                 = stx.nano.Numeric;
+typedef NumericSum              = stx.nano.Numeric.NumericSum;
 typedef SprigSum                = stx.nano.Sprig.SprigSum;
 typedef Sprig                   = stx.nano.Sprig;
 typedef Floats                  = stx.nano.Floats;
