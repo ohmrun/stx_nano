@@ -1,6 +1,7 @@
 package stx.nano.lift;
 
 class LiftBytes{
+  //TODO verify
   static public function get(self:haxe.io.Bytes,pos:Int,quantity:ByteSize):Sprig{
     return switch(quantity){
       case I8      : 
