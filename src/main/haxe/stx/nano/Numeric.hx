@@ -20,4 +20,14 @@ abstract Numeric(NumericSum) from NumericSum to NumericSum{
       case NFloat(v)  : '$v';
     }
   }
+  public function get_width(){
+    return switch(this){
+      case NInt(int)      : 4;
+      case NInt64(int)    : 8;
+      case NFloat(f)      : 8;
+    }
+  }
+  public function intoBytes(){
+
+  }
 }

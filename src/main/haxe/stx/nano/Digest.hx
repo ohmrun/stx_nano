@@ -5,9 +5,9 @@ class Digest extends Clazz{
   static function get_register(){
     return register == null ? register = new haxe.ds.StringMap() : register;
   } 
-  final uuid    : String;
-  final detail  : String;
-  final code    : Int;
+  public final uuid    : String;
+  public final detail  : String;
+  public final code    : Int;
 
   public function new(uuid,detail,code=-1){
     super();

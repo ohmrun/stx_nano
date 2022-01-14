@@ -30,4 +30,20 @@ package stx.nano;
       default : None;
     }
   }
+  public var length(get,never):Int;
+
+  private function get_length():Int{
+    return switch(this){
+      case I8                               : 1;
+      case I16BE | I16LE | UI16BE | UI16LE  : 2;
+      case I24BE | I24LE | UI24BE | UI24LE  : 3;
+      case I32BE | I32LE | FBE    | FLE     : 4;
+      case DBE   | DLE                      : 8;
+      default                               : -1;
+    }
+  }
+  public function get_width():Option<Int>{
+    final l = get_length();
+    return l == -1 ? None : Some(l);
+  }
 }

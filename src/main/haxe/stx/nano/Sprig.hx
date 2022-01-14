@@ -21,4 +21,10 @@ abstract Sprig(SprigSum) from SprigSum to SprigSum{
       case Byteal(b)   : b.toString();
     }
   }
+  public function fold<Z>(textal:String -> Z,byteal:Numeric -> Z) : Z {
+    return switch(this){
+      case Textal(txt) : textal(txt);
+      case Byteal(num) : byteal(num);
+    } 
+  }
 }
