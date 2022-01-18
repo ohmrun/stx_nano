@@ -102,6 +102,9 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   public function flat_map<Ti>(fn:T->Pledge<Ti,E>):Pledge<Ti,E>{
     return _.flat_map(this,fn);
   }
+  static public function trigger<T,E>():PledgeTrigger<T,E>{
+    return new PledgeTrigger();
+  }
   #if js
   @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>,?pos:Pos):Pledge<T,E>{
     return Pledge.lift(Future.ofJsPromise(self).map(
@@ -334,4 +337,14 @@ class PledgeLift{
     );
   }
   #end 
+}
+typedef PledgeTriggerDef<R,E> = FutureTrigger<Res<R,E>>;
+
+@:forward(trigger) abstract PledgeTrigger<R,E>(PledgeTriggerDef<R,E>) from PledgeTriggerDef<R,E> to PledgeTriggerDef<R,E>{
+  public function new() this = new FutureTrigger();
+
+  @:to public function toPledge(){
+    return Pledge.lift(this.asFuture());
+  }
+  public function prj():PledgeTriggerDef<R,E> return this;
 }
