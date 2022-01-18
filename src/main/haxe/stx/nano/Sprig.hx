@@ -1,5 +1,8 @@
 package stx.nano;
 
+/**
+  Intending to group Haxe's byte-like types. 
+**/
 enum SprigSum{
   Textal(str:String);
   Byteal(byte:Numeric);

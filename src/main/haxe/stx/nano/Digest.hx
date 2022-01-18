@@ -1,5 +1,8 @@
 package stx.nano;
 
+/**
+  Represents information about an error. `uuid` is intended to be unique, but this iss currently not enforced.
+**/
 class Digest extends Clazz{
   static public var register(get,null) : haxe.ds.StringMap<Digest>;
   static function get_register(){
@@ -23,7 +26,7 @@ class Digest extends Clazz{
     }
   }
   public function toString(){
-    return 'DIGEST($code,"$uuid","$detail")';
+    return '($code,"$uuid","$detail")';
   }
   public function asDigest():Digest{
     return this;

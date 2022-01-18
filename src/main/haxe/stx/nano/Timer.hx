@@ -3,6 +3,10 @@ package stx.nano;
 typedef TimerDef = {
   var created(default,null) : Float;
 }
+/**
+  Immutable interface Timer.
+**/
+@:stx.make('unit')
 @:forward abstract Timer(TimerDef) from TimerDef to TimerDef{
   public function new(?self){
     if(self == null){
@@ -11,6 +15,7 @@ typedef TimerDef = {
       this = self;
     }
   }
+  //TODO should `pure` be only open type?
   static public function pure(v:Float):Timer{
     return {
       created : v

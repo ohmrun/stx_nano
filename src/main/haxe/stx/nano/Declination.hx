@@ -1,5 +1,8 @@
 package stx.nano;
 
+/**
+  This allows either typed comprehensive checks on `T` or open/unrecoverable/library errors in the `Digest`.
+**/
 @:using(stx.nano.Declination.DeclinationLift)
 enum DeclinationSum<T>{
   EXCEPT(v:T);//ERR_OF
