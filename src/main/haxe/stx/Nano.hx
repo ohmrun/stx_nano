@@ -198,6 +198,7 @@ typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;
 typedef EquityDef<I,O,E>        = stx.nano.Equity.EquityDef<I,O,E>;
 typedef EquityCls<I,O,E>        = stx.nano.Equity.EquityCls<I,O,E>;
 
+typedef Retry                   = stx.nano.Retry;
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
     return Slot.Guard(ft,pos);
