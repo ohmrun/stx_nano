@@ -77,6 +77,7 @@ class LiftPos{
     return new Position(pos);
   }
 }
+typedef LiftErrorStringToRejection  = stx.nano.lift.LiftErrorStringToRejection;
 typedef LiftTinkErrorToRejection    = stx.nano.lift.LiftTinkErrorToRejection;
 typedef LiftRejectionToRes          = stx.nano.lift.LiftRejectionToRes;
 typedef LiftErrorToReport           = stx.nano.lift.LiftErrorToReport;
