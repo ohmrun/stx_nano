@@ -104,20 +104,22 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
   }
   #if js
   @:noUsing static public function fromJsPromise<T,E>(self:js.lib.Promise<T>,?pos:Pos):Contract<T,E>{
-    var t = Future.trigger();
-    self.then(
-      ok -> {
-        t.trigger(Val(ok));
-      },
-      no -> {
-        t.trigger(End(__.fault(pos).any(no)));
+    return Contract.lift(Future.ofJsPromise(self).map(
+      (outcome : tink.core.Outcome<T,tink.core.Error>) -> {
+        return switch(outcome){
+          case tink.core.Outcome.Success(v) : 
+            Val(v);
+          case tink.core.Outcome.Failure(e) :  
+            switch(std.Type.typeof(e.data)){
+              case TClass(js.lib.Error) :
+                var er : js.lib.Error = e.data; 
+                End(__.fault(pos).explain(_ -> _.e_js_error(er)));
+              default : 
+                End(__.fault(pos).explain(_ -> _.e_js_error(new js.lib.Error('${e.data}'))));
+            }
+        }
       }
-    ).catchError(
-      (e) -> {
-        t.trigger(End(__.fault(pos).any(e)));
-      }
-    );
-    return lift(t.asFuture());
+    ));
   }
   #end
   public function prj():Future<Chunk<T,E>> return this;
@@ -164,10 +166,10 @@ class ContractLift extends Clazz{
               );
             }
           );
-        }catch(e:Err<Dynamic>){
+        }catch(e:Error<Dynamic>){
           reject(__.reject(e));
-        }catch(e:Dynamic){
-          reject(__.reject(__.fault().any(Std.string(e))));
+        }catch(e:js.lib.Error){
+          reject(__.reject(__.fault().explain(_ -> _.e_js_error(e))));
         }
       }
     );

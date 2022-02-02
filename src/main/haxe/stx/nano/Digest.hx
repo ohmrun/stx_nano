@@ -49,4 +49,9 @@ class Digest extends Clazz{
   static public function e_unimplemented(self:Digests){
     return new stx.nano.digest.term.EUnimplemented();
   }
+  #if js
+  static public function e_js_error(self:Digests,error:js.lib.Error){
+    return new stx.nano.digest.term.EJsError(error);
+  }
+  #end
 }

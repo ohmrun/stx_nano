@@ -19,9 +19,24 @@
       "interp"  : {
         "--interp"  : true
       } 
+    },
+    "test" : {
+      "-lib"  : ["stx_test"],
+      "-D" : ["no-deprecation-warnings"],
+      "-main" : "stx.nano.Test",
+      "js" : {
+        "node" : {
+          "-lib" : ["hxnodejs"],
+          "-js"  : "build/test/node/main.js"
+        }
+      }
     }
   },
   "run" : {
-    "hashlink" : [["hl","build/test/hl/main.hl"]]
+    "hashlink"      : [["hl","build/test/hl/main.hl"]],
+    "test.js.node"  : [
+      ["hx","build","test/js/node"],
+      ["node","build/test/node/main.js"]
+    ] 
   }
 }

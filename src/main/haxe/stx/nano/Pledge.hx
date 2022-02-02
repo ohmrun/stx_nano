@@ -116,9 +116,9 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
             switch(std.Type.typeof(e.data)){
               case TClass(js.lib.Error) :
                 var er : js.lib.Error = e.data; 
-                __.reject(__.fault(pos).any(er.message));
+                __.reject(__.fault(pos).explain(_ -> _.e_js_error(er)));
               default : 
-                __.reject(__.fault(pos).any(e.data));
+                __.reject(__.fault(pos).explain(_ -> _.e_js_error(new js.lib.Error('${e.data}'))));
             }
         }
       }
@@ -168,8 +168,8 @@ class PledgeLift{
           );
         }catch(e:Error<Dynamic>){
           reject(__.reject(e));
-        }catch(e:Dynamic){
-          reject(__.reject(__.fault().any(Std.string(e))));
+        }catch(e:js.lib.Error){
+          reject(__.reject(__.fault().explain(_ -> _.e_js_error(e))));
         }
       }
     );
