@@ -21,7 +21,7 @@ abstract Declination<T>(DeclinationSum<T>) from DeclinationSum<T> to Declination
     return EXCEPT(v);
   }
   public function report(?pos:Pos):Report<T>{
-    return Report.pure(Nano._.fault(__,pos).decline(this));
+    return Report.pure(LiftNano.fault(__,pos).decline(this));
   }
   public function prj():Declination<T> return this;
   private var self(get,never):Declination<T>;
@@ -37,12 +37,12 @@ class DeclinationLift{
   static public function fold_filter<T>(self:DeclinationSum<T>,val:T->Bool,def:Digest->Bool):Option<Declination<T>>{
     return fold(
       self,
-      (x) -> Nano._.if_else(
+      (x) -> LiftNano.if_else(
         val(x),
         () -> Option.pure(EXCEPT(x)),
         () -> Option.unit()
       ),
-      x -> Nano._.if_else(
+      x -> LiftNano.if_else(
         def(x),
         () -> Option.pure(REFUSE(x)),
         () -> Option.unit()

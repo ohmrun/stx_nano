@@ -10,7 +10,7 @@ enum ResSum<T,E>{
 }
 class ResSumLift{
   static public function toString<T,E>(self:ResSum<T,E>):String{
-    return Res._.toString(self);
+    return ResLift.toString(self);
   }
 }
 @:using(stx.nano.Res.ResLift)

@@ -9,6 +9,9 @@
       ],
       "interp"  : {
         "--interp" : true
+      },
+      "cpp"  : {
+        "--cpp" : "build/unit/cpp"
       }
     },
     "main" : {
