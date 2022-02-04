@@ -12,6 +12,9 @@
       },
       "cpp"  : {
         "--cpp" : "build/unit/cpp"
+      },
+      "java"  : {
+        "--java" : "build/unit/java"
       }
     },
     "main" : {
