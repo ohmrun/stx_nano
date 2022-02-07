@@ -16,6 +16,9 @@ typedef ClusterDef<T> = Array<T>;
   static public function unit<T>():Cluster<T>{
     return lift([]);  
   } 
+  @:noUsing static public inline function pure<T>(self:T):Cluster<T>{
+    return lift([self]);  
+  } 
   @:to public function toIterable():Iterable<T>{
     return this;
   }
@@ -32,6 +35,9 @@ typedef ClusterDef<T> = Array<T>;
   public var length(get,never):Int;
   private function get_length():Int{
     return this.length;
+  }
+  private function prj():Array<T>{
+    return this;
   }
 }
 class ClusterLift{
