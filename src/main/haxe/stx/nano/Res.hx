@@ -153,7 +153,7 @@ class ResLift{
       }
     );
   }
-  static public inline function ok<T,E>(self:ResSum<T,E>):Bool{
+  static public inline function is_ok<T,E>(self:ResSum<T,E>):Bool{
     return fold(
       self,
       (_) -> true,

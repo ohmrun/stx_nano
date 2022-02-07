@@ -82,7 +82,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       }
     );
   }
-  public function ok(){
+  public function is_ok(){
     return switch(this){
       case Happened : true;
       default       : false;
