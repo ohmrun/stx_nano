@@ -126,6 +126,9 @@ class ResLift{
       (er) -> Report.pure(er)
     );
   }
+  static public inline function usher<T,E,Z>(self:ResSum<T,E>,fn:Option<E>->Z):Z{
+    return report(self).usher(fn);
+  }
   static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Rejection<E>->ResSum<T,E>):ResSum<T,E>{
     return fold(
       self,

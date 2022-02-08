@@ -171,4 +171,10 @@ class ReportLift{
       ()  -> fn()
     );
   }
+  static public function usher<T,Z>(self:ReportSum<T>,fn:Option<T>->Z):Z{
+    return switch(self){
+      case Reported(rejection)  : rejection.usher(fn);
+      default                   : fn(None);
+    }
+  }
 }

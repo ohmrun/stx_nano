@@ -44,5 +44,11 @@ class RejectionLift{
   static public function errate<E,EE>(self:RejectionDef<E>,fn:E->EE):Rejection<EE>{
     return lift(self.errate(x -> x.map(fn)));
   }
+  static public function usher<E,Z>(self:RejectionDef<E>,fn:Option<E>->Z):Z{
+    return switch(self.val){
+      case Some(REJECT(e))  : fn(Some(e));
+      default               : fn(None);
+    }
+  }
   //static public function fold<E,Z>(self:RejectionDef<E>,fn:Fault->Option<E>)
 }
