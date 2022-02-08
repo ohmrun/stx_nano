@@ -25,7 +25,7 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
     return _.errate(this,fn);
   }
   @:from static public function fromError<E>(self:Error<E>){
-    return lift(self.errate(EXCEPT));
+    return lift(self.errate(REJECT));
   }
   @:noUsing static public function fromDefect<T,E>(self:Defect<E>):Rejection<E>{
     return fromError(self.toError());

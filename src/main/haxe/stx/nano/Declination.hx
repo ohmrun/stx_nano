@@ -5,8 +5,8 @@ package stx.nano;
 **/
 @:using(stx.nano.Declination.DeclinationLift)
 enum DeclinationSum<T>{
-  EXCEPT(v:T);//ERR_OF
-  REFUSE(digest:Digest);
+  REJECT(v:T);//ERR_OF
+  DIGEST(digest:Digest);
 }
 @:using(stx.nano.Declination.DeclinationLift)
 abstract Declination<T>(DeclinationSum<T>) from DeclinationSum<T> to DeclinationSum<T>{
@@ -15,10 +15,10 @@ abstract Declination<T>(DeclinationSum<T>) from DeclinationSum<T> to Declination
   @:noUsing static public inline function lift<T>(self:DeclinationSum<T>):Declination<T> return new Declination(self);
 
   @:from static public function fromDigest<T>(code:Digest):Declination<T>{
-    return REFUSE(code);
+    return DIGEST(code);
   }
   static public function fromErrOf<T>(v:T):Declination<T>{
-    return EXCEPT(v);
+    return REJECT(v);
   }
   public function report(?pos:Pos):Report<T>{
     return Report.pure(LiftNano.fault(__,pos).decline(this));
@@ -30,8 +30,8 @@ abstract Declination<T>(DeclinationSum<T>) from DeclinationSum<T> to Declination
 class DeclinationLift{
   static public function fold<T,Z>(self:DeclinationSum<T>,val:T->Z,def:Digest->Z):Z{
     return switch(self){
-      case EXCEPT(v) :  val(v);
-      case REFUSE(e)    :  def(e);
+      case REJECT(v)    :  val(v);
+      case DIGEST(e)    :  def(e);
     }
   }
   static public function fold_filter<T>(self:DeclinationSum<T>,val:T->Bool,def:Digest->Bool):Option<Declination<T>>{
@@ -39,12 +39,12 @@ class DeclinationLift{
       self,
       (x) -> LiftNano.if_else(
         val(x),
-        () -> Option.pure(EXCEPT(x)),
+        () -> Option.pure(REJECT(x)),
         () -> Option.unit()
       ),
       x -> LiftNano.if_else(
         def(x),
-        () -> Option.pure(REFUSE(x)),
+        () -> Option.pure(DIGEST(x)),
         () -> Option.unit()
       )
     );
@@ -70,8 +70,8 @@ class DeclinationLift{
     return stx.nano.Declination.lift(
       fold(
         self,
-        x -> EXCEPT(fn(x)),
-        y -> REFUSE(y)      
+        x -> REJECT(fn(x)),
+        y -> DIGEST(y)      
       )
     );
   }

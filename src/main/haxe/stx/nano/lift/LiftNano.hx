@@ -79,7 +79,7 @@ class LiftNano{
     return Res.reject(e);
   }
   static public function decline<E>(wildcard:Wildcard,except:E):Declination<E>{
-    return EXCEPT(except);
+    return REJECT(except);
   }
   static public function success<T,E>(wildcard:Wildcard,t:T):Outcome<T,E>{
     return Outcome.success(t);

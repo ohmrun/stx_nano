@@ -6,13 +6,13 @@ abstract Fault(Null<Pos>) from Null<Pos>{
     return new Fault(self);
   }
   inline public function of<E>(data:E):Rejection<E>{
-    return Rejection.make(__.option(EXCEPT(data)),None,this);
+    return Rejection.make(__.option(REJECT(data)),None,this);
   }
   inline public function decline<E>(self:Declination<E>):Rejection<E>{
     return Rejection.make(Some(self),None,this);
   }
   inline public function explain<E>(fn:Digests->Digest):Rejection<E>{
-    return Rejection.make(Some(REFUSE(fn(__.digests()))),None,this);
+    return Rejection.make(Some(DIGEST(fn(__.digests()))),None,this);
   }
   inline public function digest(fn:Digests->Digest):Error<Digest>{
     return Error.make(Some(fn(__.digests())),None,this);

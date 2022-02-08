@@ -47,7 +47,7 @@ package stx.nano;
   // @:from static public function fromRejection<E>(err:Rejection<E>):Defect<E>{
   //   return make(Errata.lift(err).map_filter(
   //     (x) -> switch(x){
-  //       case EXCEPT(e)        : Some(e);
+  //       case REJECT(e)        : Some(e);
   //       default               : None;
   //     }
   //   ));
