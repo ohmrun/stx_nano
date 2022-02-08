@@ -6,7 +6,8 @@ typedef TimerDef = {
 /**
   Immutable interface Timer.
 **/
-@:stx.make('unit')
+//TODO make
+//@:stx.make('unit')
 @:forward abstract Timer(TimerDef) from TimerDef to TimerDef{
   public function new(?self){
     if(self == null){
