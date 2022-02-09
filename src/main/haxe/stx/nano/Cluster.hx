@@ -61,7 +61,7 @@ class ClusterLift{
   static public function bind_fold<T,Ti,TT>(self:Cluster<T>,pure:Ti->TT,init:Ti,bind:TT->(Ti->TT)->TT,fold:T->Ti->Ti):TT  return accs(self,_.bind_fold.bind(_,pure,init,bind,fold));
   static public function reduce<T,TT>(self:Cluster<T>,unit:Void->TT,pure:T->TT,plus:TT->TT->TT):TT                        return accs(self,_.reduce.bind(_,unit,pure,plus));
   static public function map<T,TT>(self:Cluster<T>,fn:T->TT):Cluster<TT>                                                  return fmap(self,_.map.bind(_,fn));
-  static public function mapi<T,TT>(self:Cluster<T>,fn:Int->T->TT):Cluster<TT>                                            return fmap(self,_.mapi.bind(_,fn));
+  static public function imap<T,TT>(self:Cluster<T>,fn:Int->T->TT):Cluster<TT>                                            return fmap(self,_.imap.bind(_,fn));
   static public function flat_map<T,TT>(self:Cluster<T>,fn:T->Iterable<TT>):Cluster<TT>                                   return fmap(self,_.flat_map.bind(_,fn));
   static public function lfold<T,TT>(self:Cluster<T>,fn:T->TT->TT,memo:TT):TT                                             return accs(self,_.lfold.bind(_,fn,memo));
   static public function lfold1<T>(self:Cluster<T>,fn:T->T->T):Option<T>                                                  return accs(self,_.lfold1.bind(_,fn));
@@ -106,5 +106,6 @@ class ClusterLift{
   static public function rotate<T>(self:Cluster<T>,i:Int):Cluster<T>                                                      return fmap(self,_.rotate.bind(_,i));
   static public function iterator<T>(self:Cluster<T>):Iterator<T>                                                         return accs(self,_.iterator);
   static public function elide<T>(self:Cluster<T>):Cluster<Dynamic>                                                       return map(self,(v) -> (v:Dynamic));
-  static public function range<T>(self:Cluster<T>,l:Int,r:Int):Cluster<T>                                                 return fmap(self,_.range.bind(_,l,r));
+  static public function range<T>(self:Cluster<T>,l:Int,?r:Int):Cluster<T>                                                return fmap(self,_.range.bind(_,l,r));
+  
 }

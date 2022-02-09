@@ -46,7 +46,7 @@ static public var _(default,never) = ResLift;
       case Reject(no) : Failure(no);
     }
   }
-  @:noUsing static public function bind_fold<T,E,Z>(arr:Array<T>,fn:T->Z->Res<Z,E>,init:Z):Res<Z,E>{
+  @:noUsing static public function bind_fold<T,E,Z>(arr:Cluster<T>,fn:T->Z->Res<Z,E>,init:Z):Res<Z,E>{
     return arr.lfold(
       (next:T,memo:Res<Z,E>) -> memo.fold(
         (ok)  -> fn(next,ok),
