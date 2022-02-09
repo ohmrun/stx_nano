@@ -44,14 +44,6 @@ package stx.nano;
   public inline function toErrorAt(?pos:Pos):Error<E>{
     return Errata._.toErrorAt(this.error,pos);
   }
-  // @:from static public function fromRejection<E>(err:Rejection<E>):Defect<E>{
-  //   return make(Errata.lift(err).map_filter(
-  //     (x) -> switch(x){
-  //       case REJECT(e)        : Some(e);
-  //       default               : None;
-  //     }
-  //   ));
-  // }
   @:from static public function fromError<E>(self:Error<E>):Defect<E>{
     return Defect.make(Errata.lift(self));
   }
@@ -74,5 +66,8 @@ class DefectLift{
   }
   static public function errate<E,EE>(self:Defect<E>,fn:E->EE):Defect<EE>{
     return Defect.make(self.error.errata(e -> e.errate(fn)));
+  }
+  static public function has_error<E>(self:Defect<E>):Bool{
+    return self.error.is_defined();
   }
 }

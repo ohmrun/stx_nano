@@ -34,6 +34,7 @@ typedef EquityDef<I,O,E> = ReceiptDef<O,E> & {
   @:to public function toError(){
     return this.error.toError();
   }
+
 }
 class EquityLift extends Clazz{
   static public function make(){
@@ -84,5 +85,11 @@ class EquityLift extends Clazz{
   }
   static public function defect<I,O,E>(self:EquityDef<I,O,E>,error:Iter<E>){
     return copy(self,null,null,self.error.concat(error));
+  }
+  static public function toRes<I,O,E>(self:EquityDef<I,O,E>):Res<O,E>{
+    return switch(self.error.is_defined()){
+      case true   : __.reject(self.error.toError());
+      case false  : __.accept(self.value); 
+    }
   }
 }
