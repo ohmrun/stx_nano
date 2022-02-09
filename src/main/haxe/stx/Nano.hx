@@ -4,10 +4,21 @@ class Nano{
   static public function digests(wildcard:Wildcard):Digests{
     return wildcard;
   }
+  
   static public var _(default,never) = LiftNano;
 }
 
-
+class LiftArrayToCluster{
+  static public inline function toCluster<T>(self:Array<T>):Cluster<T>{
+    return Cluster.lift(self);
+  }
+  /**
+    Cluster is an immutable Array.
+  **/
+  static public inline function imm<T>(self:Array<T>):Cluster<T>{
+    return toCluster(self);
+  }
+}
 typedef Dyn                     = Dynamic;
 
 @:using(stx.Nano.Tup2Lift)

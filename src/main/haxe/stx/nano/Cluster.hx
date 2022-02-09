@@ -106,4 +106,5 @@ class ClusterLift{
   static public function rotate<T>(self:Cluster<T>,i:Int):Cluster<T>                                                      return fmap(self,_.rotate.bind(_,i));
   static public function iterator<T>(self:Cluster<T>):Iterator<T>                                                         return accs(self,_.iterator);
   static public function elide<T>(self:Cluster<T>):Cluster<Dynamic>                                                       return map(self,(v) -> (v:Dynamic));
+  static public function range<T>(self:Cluster<T>,l:Int,r:Int):Cluster<T>                                                 return fmap(self,_.range.bind(_,l,r));
 }
