@@ -17,6 +17,13 @@ abstract Errata<E>(ErrataDef<E>) from ErrataDef<E> to ErrataDef<E>{
   public function elide<EE>():Errata<EE>{
     return cast this;
   }
+  public function toString():String{
+    var str = "\n";
+    for(x in this){
+      str += '${x}\n';
+    }
+    return str;
+  }
   // static public function toError<E>(self:ErrataDef<E>):Error<E>{
   //   return toErrorAt(self,null);
   // }

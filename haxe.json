@@ -5,7 +5,9 @@
     "unit" : {
       "--macro" : [
         "include('stx.Nano',true,[])",
-        "include('stx.nano',true,[])" 
+        "include('stx.nano',true,[])", 
+        "include('stx.Sys',true,[])",
+        "include('stx.sys',true,[])"
       ],
       "interp"  : {
         "--interp" : true
@@ -15,6 +17,10 @@
       },
       "java"  : {
         "--java" : "build/unit/java"
+      },
+      "hl"  : {
+        "--verbose" : true,
+        "--hl" : "build/unit/hl/main.hl"
       }
     },
     "main" : {

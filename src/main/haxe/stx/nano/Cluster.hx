@@ -39,6 +39,9 @@ typedef ClusterDef<T> = Array<T>;
   private function prj():Array<T>{
     return this;
   }
+  public function toString(){
+    return Std.string(this);
+  }
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;

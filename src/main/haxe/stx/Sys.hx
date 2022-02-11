@@ -1,18 +1,20 @@
 package stx;
 
-import sys.FileSystem;
-import sys.io.File;
+#if (sys || hxnodejs)
+  import sys.FileSystem;
+  import sys.io.File;
+#end
+
 
 typedef Clump<E>      = stx.sys.fs.Clump<E>;
 typedef Catalog<T>    = stx.sys.fs.Catalog<T>;
-
 
 class Sys{
   static public function sys(wildcard:Wildcard){
     return new Module();
   }
 }
-private class Module extends Clazz{
+class Module extends Clazz{
   public function fs() return new Fs();
   public function dir() return new Dir();
   public function env(key:String):Option<String>{
@@ -21,17 +23,16 @@ private class Module extends Clazz{
   public function args(){
     return std.Sys.args();
   }
-  public function cwd(){
+  public function cwd()
     return {
        get : ()           -> std.Sys.getCwd(),
        put : (str:String) -> { std.Sys.setCwd(str); }
     }
-  }
-  public inline function println(str:String){
-    return std.Sys.println(str);
+  public inline function println(str:String):Void{
+    std.Sys.println(str);
   }
   public inline function print(str:String){
-    return std.Sys.print(str);
+    std.Sys.print(str);
   }
   public inline function exit(code){
     std.Sys.exit(code);
