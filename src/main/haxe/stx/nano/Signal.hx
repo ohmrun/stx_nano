@@ -10,7 +10,7 @@ import tink.core.Signal in TinkSignal;
   static public function lift<T>(self:TinkSignal<T>){
     return new Signal(self);
   }
-  static public function make<T>(f:(fire:T->Void)->CallbackLink, ?init:OwnedDisposable->Void):Signal<T>{
+  @:noUsing static public function make<T>(f:(fire:T->Void)->CallbackLink, ?init:OwnedDisposable->Void):Signal<T>{
     return lift(new TinkSignal(f,init));
   }
   static public function bind_fold<T,Z,E>(self:Signal<T>,fn:T->Z->Signal<Z>,init:Z):Signal<Z>{

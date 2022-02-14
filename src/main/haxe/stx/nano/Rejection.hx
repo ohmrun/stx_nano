@@ -7,7 +7,7 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
   static public var _(default,never) = RejectionLift;
   public inline function new(self) this = self;
   static public inline function lift<E>(self:RejectionDef<E>):Rejection<E> return new Rejection(self);
-  static public inline function make<E>(data:Option<Declination<E>>,lst:Option<Rejection<E>>,?pos:Pos):Rejection<E>{
+  @:noUsing static public inline function make<E>(data:Option<Declination<E>>,lst:Option<Rejection<E>>,?pos:Pos):Rejection<E>{
     return lift(Error.make(data,lst.map(x -> x.prj()),pos));
   }
   public function prj():RejectionDef<E> return this;

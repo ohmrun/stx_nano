@@ -11,7 +11,7 @@ typedef AlertDef<E> = Future<Report<E>>;
   static public function pure<E>(e:Rejection<E>):Alert<E>{
     return Future.irreversible((cb) -> cb(Report.pure(e)));
   }
-  static public function make<E>(self:Report<E>):Alert<E>{
+  @:noUsing static public function make<E>(self:Report<E>):Alert<E>{
     return Future.irreversible((cb) -> cb(self));
   }
   //TODO not sure about this

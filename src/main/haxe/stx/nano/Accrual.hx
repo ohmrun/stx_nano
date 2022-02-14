@@ -35,7 +35,7 @@ abstract Accrual<T,E>(AccrualDef<T,E>) from AccrualDef<T,E> to AccrualDef<T,E>{
   private function get_self():Accrual<T,E> return lift(this);
 }
 class AccrualLift extends Clazz{
-  static public function make(){
+  @:noUsing static public function make(){
     return new AccrualLift();
   }
   static inline public function lift<T,E>(self:AccrualDef<T,E>){

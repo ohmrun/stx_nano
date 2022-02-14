@@ -14,7 +14,7 @@ class Retry{
       __.option(born).defv(this.born)
     );
   }
-  static public function make(attempts,born){
+  @:noUsing static public function make(attempts,born){
     return new Retry(attempts,born);
   }
   static public function unit(){

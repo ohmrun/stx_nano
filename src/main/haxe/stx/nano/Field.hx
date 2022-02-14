@@ -13,7 +13,7 @@ package stx.nano;
   @:noUsing @:from static public function fromCouple<V>(tp:Couple<StdString,V>):Field<V>{
     return new Field({ key : tp.fst(), val : tp.snd()});
   }
-  static public function create<V>(key:StdString,val:V){
+  static public function make<V>(key:StdString,val:V){
     return new Field({
       key : key,
       val : val
@@ -28,5 +28,14 @@ package stx.nano;
   public function toCouple():Couple<StdString,V>{
     return __.couple(this.key,this.val);
   }
-
+  @:from static public function fromKeyValue<V>(self:{key:String,value:V}){
+    return lift({
+      key : self.key,
+      val : self.value
+    });   
+  }
+  public var value(get,never) : V;
+  public function get_value(){
+    return this.val;
+  }
 }

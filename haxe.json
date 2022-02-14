@@ -15,6 +15,10 @@
       "cpp"  : {
         "--cpp" : "build/unit/cpp"
       },
+      "cppia"  : {
+        "-D" : ["cppia"],
+        "--cppia" : "build/unit/cppia/main.cppia"
+      },
       "java"  : {
         "--java" : "build/unit/java"
       },
@@ -30,6 +34,10 @@
       },
       "interp"  : {
         "--interp"  : true
+      },
+      "cppia" :{
+        "-D" : "cppia",
+        "--cppia" : "build/main/cppia/main.cppia"
       } 
     },
     "test" : {
@@ -41,6 +49,10 @@
           "-lib" : ["hxnodejs"],
           "-js"  : "build/test/node/main.js"
         }
+      },
+      "cppia" :{
+        "-D" : "cppia",
+        "--cppia" : "build/test/cppia/main.cppia"
       }
     }
   },

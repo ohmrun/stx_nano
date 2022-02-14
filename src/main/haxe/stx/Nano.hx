@@ -238,6 +238,12 @@ typedef FPath       = stx.nano.FPath;
 typedef Unspecified = stx.nano.Unspecified;
 typedef Timer       = stx.nano.Timer;
 
-typedef IdentDef    = stx.nano.Ident.IdentDef;
-typedef Ident       = stx.nano.Ident;
-typedef Way         = stx.nano.Way;
+typedef IdentDef            = stx.nano.Ident.IdentDef;
+typedef Ident               = stx.nano.Ident;
+typedef Way                 = stx.nano.Way;
+
+typedef Ensemble<T>         = stx.nano.Ensemble<T>;
+typedef EnsembleDef<T>      = stx.nano.Ensemble.EnsembleDef<T>;
+
+typedef IterKV<K,V>         = stx.nano.IterKV<K,V>;
+typedef IterKVDef<K,V>      = stx.nano.IterKV.IterKVDef<K,V>;
