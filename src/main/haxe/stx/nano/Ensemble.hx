@@ -56,6 +56,13 @@ typedef EnsembleDef<T> = haxe.DynamicAccess<T>;
     }
     return Cluster.lift(next);
   }
+  public function toClusterCouple():Cluster<Couple<String,T>>{
+    final next = [];
+    for(k => v in this){
+      next.push(__.couple(k,v));
+    }
+    return Cluster.lift(next);
+  }
 }
 
 class EnsembleLift{

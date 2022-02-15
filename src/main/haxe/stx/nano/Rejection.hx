@@ -51,5 +51,8 @@ class RejectionLift{
       default               : fn(None);
     }
   }
+// static public function reject<T,E>(self:RejectionDef<E>):Res<T,E>{
+  
+// }
   //static public function fold<E,Z>(self:RejectionDef<E>,fn:Fault->Option<E>)
 }
