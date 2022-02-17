@@ -47,7 +47,7 @@
       "js" : {
         "node" : {
           "-lib" : ["hxnodejs"],
-          "-js"  : "build/test/node/main.js"
+          "--js"  : "build/test/node/main.js"
         }
       },
       "cppia" :{

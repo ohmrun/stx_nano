@@ -1,5 +1,6 @@
 package stx.nano;
 
+//Todo Jvm
 enum CompilerTargetSum{
   Js;
   Lua;
@@ -39,6 +40,7 @@ abstract CompilerTarget(CompilerTargetSum) from CompilerTargetSum to CompilerTar
       case "php"    : Php;
       case "neko"   : Neko;
       case "cpp"    : Cpp;
+      case "Cppia"  : Cppia;
       case "cs"     : Cs;
       case "java"   : Java;
       case "python" : Python;
@@ -62,6 +64,7 @@ class CompilerTargetLift{
       case Php            : Some("php");
       case Neko           : Some("neko");
       case Cpp            : Some("cpp");
+      case Cppia          : Some("cppia");
       case Cs             : Some("cs");
       case Java           : Some("java");
       case Python         : Some("python");
@@ -71,7 +74,39 @@ class CompilerTargetLift{
       default             : None;
     }
   }
-  
+  static public function uses_directory(self:CompilerTarget):Bool{
+    return switch(self){
+      case Swf | Js | Neko | Cppia | Python | Lua | Hl  | Interp  : false;
+      case Php | Cpp | Cs | Java                                  : true;
+    }
+  }
+  static public function uses_file(self:CompilerTarget):Bool{
+    return switch(self){
+      case Swf | Js | Neko | Cppia | Python | Lua | Hl            : true;
+      case Php | Cpp | Cs | Java | Interp                         : false;
+    }
+  }
+  static public function extension(self:CompilerTarget):Option<String>{
+    return switch(self){
+      case Js     : Some("js");
+      case Lua    : Some("lua");
+      case Swf    : Some("swf");
+      case Neko   : Some("n");
+      case Php    : Some("php");
+
+      case Cpp    : None;
+      case Cppia  : Some("cppia");
+
+      case Cs     : None;
+      case Java   : None;
+
+      case Python : Some("py");
+
+      case Hl     : Some("hl");
+      
+      case Interp : None;
+    }
+  }
   static public function canonical(target:CompilerTarget):String{
     return new EnumValue(target.prj()).ctr();
   }

@@ -7,7 +7,7 @@ class LiftOptionNano{
       default                 : None;
     }
   }
-  static public function fudge<T,E>(self:Null<Option<T>>,?err:Error<E>):T{
+  static public inline function fudge<T,E>(self:Null<Option<T>>,?err:Error<E>):T{
     final exception = Option.make(err.except()).defv(__.fault().explain(_ -> _.e_undefined()));
     return switch(self){
       case Some(v)  : v;
