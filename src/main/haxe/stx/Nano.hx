@@ -247,3 +247,6 @@ typedef EnsembleDef<T>      = stx.nano.Ensemble.EnsembleDef<T>;
 
 typedef IterKV<K,V>         = stx.nano.IterKV<K,V>;
 typedef IterKVDef<K,V>      = stx.nano.IterKV.IterKVDef<K,V>;
+
+typedef Enquire<P>          = stx.nano.Enquire<P>;
+typedef EnquireDef<P>       = stx.nano.Enquire.EnquireDef<P>;

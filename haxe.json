@@ -4,6 +4,7 @@
     "-cp"  : ["src/main/haxe"],
     "unit" : {
       "--macro" : [
+        "allowPackage('sys')",
         "include('stx.Nano',true,[])",
         "include('stx.nano',true,[])", 
         "include('stx.Sys',true,[])",
@@ -25,6 +26,11 @@
       "hl"  : {
         "--verbose" : true,
         "--hl" : "build/unit/hl/main.hl"
+      },
+      "node" : {
+        "--remap" : "sys:sys",
+        "-lib" : ["hxnodejs"],
+        "--js" : "build/unit/js/main.js"
       }
     },
     "main" : {
