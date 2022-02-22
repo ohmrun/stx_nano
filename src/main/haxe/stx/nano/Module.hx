@@ -9,6 +9,13 @@ class Module extends Clazz{
   public function Ft() return new Ft();
   #end
   public function Map() return new Map();
+
+  public function command<T>(fn:T->Void):T->T{
+    return (v:T) -> {
+      fn(v);
+      return v;
+    }
+  }
 }
 #if tink_core
 private class Ft extends Clazz{

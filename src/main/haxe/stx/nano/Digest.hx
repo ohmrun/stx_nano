@@ -20,7 +20,9 @@ class Digest extends Clazz{
     
     if(register.exists(uuid)){
       final val = register.get(uuid);
-      throw 'Digest identifier $uuid already registered for $val';
+      if(Type.getClass(val) != Type.getClass(this)){
+        throw 'Digest identifier $uuid on ${this.identifier()} already registered for $val';
+      }
     }else{
       register.set(uuid,this);
     }

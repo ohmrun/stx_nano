@@ -170,12 +170,6 @@ class LiftNano{
   static public function through<T>(__:Wildcard):T->T{
     return (v:T) -> v;
   }
-  static public function command<T>(__:Wildcard,fn:T->Void):T->T{
-    return (v:T) -> {
-      fn(v);
-      return v;
-    }
-  }
   static public function perform<T>(__:Wildcard,fn:Void->Void):T->T{
     return (v:T) -> {
       fn();
