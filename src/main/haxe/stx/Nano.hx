@@ -250,3 +250,6 @@ typedef IterKVDef<K,V>      = stx.nano.IterKV.IterKVDef<K,V>;
 
 typedef Enquire<P>          = stx.nano.Enquire<P>;
 typedef EnquireDef<P>       = stx.nano.Enquire.EnquireDef<P>;
+
+typedef Cell<P>             = stx.nano.Cell<P>;
+typedef CellDef<P>          = stx.nano.Cell.CellDef<P>;
