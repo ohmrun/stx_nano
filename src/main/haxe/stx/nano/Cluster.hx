@@ -22,6 +22,9 @@ typedef ClusterDef<T> = Array<T>;
   @:to public function toIterable():Iterable<T>{
     return this;
   }
+  @:to public function toIter():Iter<T>{
+    return this;
+  }
   // @:arrayAccess
   // public function get(int:Int):Null<T>{
   //   return this[0];

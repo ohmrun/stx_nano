@@ -234,9 +234,9 @@ class LiftLazyFutureToSlot{
 //   }
 // }
 
-typedef FPath       = stx.nano.FPath;
-typedef Unspecified = stx.nano.Unspecified;
-typedef Timer       = stx.nano.Timer;
+typedef FPath               = stx.nano.FPath;
+typedef Unspecified         = stx.nano.Unspecified;
+typedef Timer               = stx.nano.Timer;
 
 typedef IdentDef            = stx.nano.Ident.IdentDef;
 typedef Ident               = stx.nano.Ident;
