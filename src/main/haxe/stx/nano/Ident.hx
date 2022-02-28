@@ -19,6 +19,12 @@ typedef IdentDef = {
       () -> this.pack.snoc(this.name) 
     );
   }
+  @:from static public function fromObject(self:{ name : String, pack : Array<String> }){
+    return lift({
+      name : self.name,
+      pack : Way.fromArray(self.pack)
+    });
+  }
   static public function fromIdentifier(self:Identifier):stx.nano.Ident{
     var n = self.name;
     var p = self.pack;

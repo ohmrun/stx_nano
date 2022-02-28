@@ -8,6 +8,9 @@ package stx.nano;
   @:noUsing static public function unit():Way{
     return lift(Cluster.unit());
   }
+  @:noUsing static public function fromArray(self:Array<String>){
+    return lift(Cluster.lift(self));
+  }
   @:noUsing static public function fromString(self:String){
     return lift(self.split(__.sep()));
   }
