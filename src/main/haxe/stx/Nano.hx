@@ -253,3 +253,6 @@ typedef EnquireDef<P>       = stx.nano.Enquire.EnquireDef<P>;
 
 typedef Cell<P>             = stx.nano.Cell<P>;
 typedef CellDef<P>          = stx.nano.Cell.CellDef<P>;
+
+typedef Trivalent           = stx.nano.Trivalent;
+typedef TrivalentSum        = stx.nano.Trivalent.TrivalentSum;
