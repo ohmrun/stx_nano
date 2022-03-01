@@ -83,11 +83,14 @@ class ResLift{
     );
   }
   static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
+    return zip_with(self,that,__.couple);
+  }
+  static public inline function zip_with<T,TT,Z,E>(self:ResSum<T,E>,that:ResSum<TT,E>,with:T->TT->Z):Res<Z,E>{
     return switch([self,that]){
       case [Reject(e),Reject(ee)]     : Reject(e.concat(ee));
       case [Reject(e),_]              : Reject(e);
       case [_,Reject(e)]              : Reject(e);
-      case [Accept(t),Accept(tt)]     : Accept(Couple.make(t,tt));
+      case [Accept(t),Accept(tt)]     : Accept(with(t,tt));
     }
   }
   static public inline function map<T,E,TT>(self:ResSum<T,E>,fn:T->TT):Res<TT,E>{
