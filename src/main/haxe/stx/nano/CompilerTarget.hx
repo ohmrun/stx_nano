@@ -28,7 +28,6 @@ abstract CompilerTarget(CompilerTargetSum) from CompilerTargetSum to CompilerTar
   public function new(self) this = self;
   @:noUsing static public function lift(self:CompilerTargetSum):CompilerTarget return new CompilerTarget(self);
   
-
   public function prj():CompilerTargetSum return this;
   private var self(get,never):CompilerTarget;
   private function get_self():CompilerTarget return lift(this);

@@ -106,7 +106,7 @@ class ReportLift{
       ()  -> __.accept(fn())
     );
   }
-  static public function merge<E>(self:Report<E>,that:Report<E>):Report<E>{
+  static public function concat<E>(self:Report<E>,that:Report<E>):Report<E>{
     return switch([self,that]){
       case [Reported(l),Happened]     : Reported(l);
       case [Happened,Reported(r)]     : Reported(r); 

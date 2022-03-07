@@ -19,7 +19,7 @@ typedef AlertDef<E> = Future<Report<E>>;
     return lift(__.nano().Ft().bind_fold(
       arr,
       (next:Alert<E>,memo:Report<E>) -> next.prj().map(
-        (report:Report<E>) -> memo.merge(report)
+        (report:Report<E>) -> memo.concat(report)
       ),
       Report.unit()
     ));

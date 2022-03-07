@@ -166,6 +166,7 @@ typedef Field<T>                = stx.nano.Field<T>;
 typedef OneOrManySum<T>         = stx.nano.OneOrMany.OneOrManySum<T>;
 typedef OneOrMany<T>            = stx.nano.OneOrMany<T>;
 typedef CompilerTarget          = stx.nano.CompilerTarget;
+typedef CompilerTargetSum       = stx.nano.CompilerTarget.CompilerTargetSum;
 typedef Enum<T>                 = stx.nano.Enum<T>;
 typedef Introspectable          = stx.nano.Introspectable;
 typedef AlertDef<E>             = stx.nano.Alert.AlertDef<E>;
@@ -256,3 +257,9 @@ typedef CellDef<P>          = stx.nano.Cell.CellDef<P>;
 
 typedef Trivalent           = stx.nano.Trivalent;
 typedef TrivalentSum        = stx.nano.Trivalent.TrivalentSum;
+
+typedef NuggetApi<P>        = stx.nano.Nugget.NuggetApi<P>;
+typedef NuggetCls<P>        = stx.nano.Nugget.NuggetCls<P>;
+
+typedef Absorbable<P>       = stx.nano.Nugget.Absorbable<P>;
+typedef Producable<P>       = stx.nano.Nugget.Producable<P>;
