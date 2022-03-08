@@ -59,6 +59,9 @@
       "cppia" :{
         "-D" : "cppia",
         "--cppia" : "build/test/cppia/main.cppia"
+      },
+      "interp" : {
+        "--interp" : true
       }
     }
   },

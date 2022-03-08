@@ -9,7 +9,14 @@ using stx.Nano;
   class Test{
     static public function main(){
       __.log().info("test");
-      __.test([],[]);
+      __.test([
+
+      ],[]);
+    }
+  }
+  class NuggetTest extends TestCase{
+    public function test(){
+      
     }
   }
 #end

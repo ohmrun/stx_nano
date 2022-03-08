@@ -260,6 +260,7 @@ typedef TrivalentSum        = stx.nano.Trivalent.TrivalentSum;
 
 typedef NuggetApi<P>        = stx.nano.Nugget.NuggetApi<P>;
 typedef NuggetCls<P>        = stx.nano.Nugget.NuggetCls<P>;
+typedef Nugget<P>           = stx.nano.Nugget<P>;
 
 typedef Absorbable<P>       = stx.nano.Nugget.Absorbable<P>;
 typedef Producable<P>       = stx.nano.Nugget.Producable<P>;
