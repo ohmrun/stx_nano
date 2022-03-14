@@ -35,9 +35,9 @@ typedef IdentDef = {
   }
   public function toIdentifier(){
     return switch(this){
-      case { name : n, pack : null }   : Identifier.lift(n);
-      case { name : n, pack : []   }   : Identifier.lift(n);
-      case { name : n, pack : p    }   : Identifier.lift(p.snoc(n).join("."));    
+      case { name : n, pack : null }                          : Identifier.lift(n);
+      case { name : n, pack : pack }    if (pack.length == 0) : Identifier.lift(n);
+      case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join("."));    
     }
   }
 }
