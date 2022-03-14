@@ -117,7 +117,7 @@ class ResLift{
       (e) -> Accept(e)
     );
   }
-  static public inline function value<T,E>(self:ResSum<T,E>):Option<T>{
+  static public inline function option<T,E>(self:ResSum<T,E>):Option<T>{
     return fold(self,
       Some,
       (_) -> None  
