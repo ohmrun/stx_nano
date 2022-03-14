@@ -3,7 +3,7 @@ package stx.nano;
 typedef ErrataDef<E> = Iter<E>;
 
 @:using(stx.nano.Errata.ErrataLift)
-abstract Errata<E>(ErrataDef<E>) from ErrataDef<E> to ErrataDef<E>{
+@:forward(iterator) abstract Errata<E>(ErrataDef<E>) from ErrataDef<E> to ErrataDef<E>{
   static public var _(default,never) = ErrataLift;
   public function new(self) this = self;
   static public function lift<E>(self:ErrataDef<E>):Errata<E> return new Errata(self);
@@ -23,6 +23,9 @@ abstract Errata<E>(ErrataDef<E>) from ErrataDef<E> to ErrataDef<E>{
       str += '${x}\n';
     }
     return str;
+  }
+  @:from static public function fromArray<E>(self:Array<E>):Errata<E>{
+    return lift(Iter.lift(self));
   }
   // static public function toError<E>(self:ErrataDef<E>):Error<E>{
   //   return toErrorAt(self,null);

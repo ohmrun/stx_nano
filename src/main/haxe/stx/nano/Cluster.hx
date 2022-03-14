@@ -1,11 +1,18 @@
 package stx.nano;
 
+#if tink_json
+  import tink.json.Representation;
+#end
 import haxe.Constraints.IMap;
 
 typedef ClusterDef<T> = Array<T>;
 
 @:using(stx.nano.Cluster.ClusterLift)
 @:pure @:forward(fmap,accs,iterator,join) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
+  static public var ZERO(get,null) : Cluster<Dynamic>;
+  static public function get_ZERO(){
+    return ZERO == null ? ZERO = new Cluster([]) : ZERO;
+  }
   @:op([]) static public function array_access<T>(self:Cluster<T>, idx:Int):T;
   
   static public var _(default,never) = ClusterLift;
@@ -45,6 +52,14 @@ typedef ClusterDef<T> = Array<T>;
   public function toString(){
     return Std.string(this);
   }
+  #if tink_json
+    @:to function toRepresentation():Representation<Array<T>>
+      return new Representation(this);
+
+    @:from static function ofRepresentation<T>(self:Representation<Array<T>>)
+      return lift(self.get());
+
+  #end
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;
