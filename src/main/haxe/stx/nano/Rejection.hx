@@ -10,6 +10,9 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
   @:noUsing static public inline function make<E>(data:Option<Declination<E>>,lst:Option<Rejection<E>>,?pos:Pos):Rejection<E>{
     return lift(Error.make(data,lst.map(x -> x.prj()),pos));
   }
+  @:noUsing static public function pure<E>(data:E):Rejection<E>{
+    return make(Some(REJECT(data)),None,__.here());
+  }
   public function prj():RejectionDef<E> return this;
   private var self(get,never):Rejection<E>;
   private function get_self():Rejection<E> return lift(this);
