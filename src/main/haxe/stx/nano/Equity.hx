@@ -86,6 +86,9 @@ class EquityLift extends Clazz{
   static public function defect<I,O,E>(self:EquityDef<I,O,E>,error:Iter<E>){
     return copy(self,null,null,self.error.concat(error));
   }
+  static public function relate<I,O,E>(self:EquityDef<I,O,E>,value:O):Equity<I,O,E>{
+    return copy(self,null,value);
+  }
   static public inline function toRes<I,O,E>(self:EquityDef<I,O,E>):Res<O,E>{
     return switch(self.error.is_defined()){
       case true   : __.reject(self.error.toError());

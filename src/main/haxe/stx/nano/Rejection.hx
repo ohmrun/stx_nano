@@ -51,6 +51,14 @@ class RejectionLift{
       default               : fn(None);
     }
   }
+  static public function fold<E,Z>(self:RejectionDef<E>,reject:E -> Z, explain : Digest -> Z, nothing : () -> Z) : Z {
+    return switch(self.val){
+      case Some(REJECT(e)) : reject(e);
+      case Some(DIGEST(e)) : explain(e);
+      case None            : nothing();
+    }
+  }
+  //static public function elide<E>(self:RejectionDef<E>):Reje
 // static public function reject<T,E>(self:RejectionDef<E>):Res<T,E>{
   
 // }

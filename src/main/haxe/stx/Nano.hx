@@ -210,6 +210,7 @@ typedef LedgerDef<I,O,E>        = stx.nano.Ledger.LedgerDef<I,O,E>;
 typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;
 typedef EquityDef<I,O,E>        = stx.nano.Equity.EquityDef<I,O,E>;
 typedef EquityCls<I,O,E>        = stx.nano.Equity.EquityCls<I,O,E>;
+typedef EquityApi<I,O,E>        = stx.nano.Equity.EquityApi<I,O,E>;
 
 typedef Retry                   = stx.nano.Retry;
 class LiftFutureToSlot{
