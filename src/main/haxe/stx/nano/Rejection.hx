@@ -30,10 +30,12 @@ typedef RejectionDef<E>            = Error<Declination<E>>;
   @:from static public function fromError<E>(self:Error<E>){
     return lift(self.errate(REJECT));
   }
-  @:noUsing static public function fromDefect<T,E>(self:Defect<E>):Rejection<E>{
+  @:from @:noUsing static public function fromDefect<T,E>(self:Defect<E>):Rejection<E>{
     return fromError(self.toError());
   }
-  
+  @:from @:noUsing static public function fromErrata<T,E>(self:Errata<E>):Rejection<E>{
+    return fromError(self.toError());
+  }
   public function iterator():Iterator<Null<Declination<E>>>{
     return this.iterator();
   }

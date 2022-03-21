@@ -265,3 +265,7 @@ typedef Nugget<P>           = stx.nano.Nugget<P>;
 
 typedef Absorbable<P>       = stx.nano.Nugget.Absorbable<P>;
 typedef Producable<P>       = stx.nano.Nugget.Producable<P>;
+
+enum abstract UNIMPLEMENTED(String){
+  var UNIMPLEMENTED;
+}

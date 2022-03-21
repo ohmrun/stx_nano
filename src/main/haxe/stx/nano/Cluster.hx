@@ -17,7 +17,7 @@ typedef ClusterDef<T> = Array<T>;
   
   static public var _(default,never) = ClusterLift;
   public function new(?self:Array<T>) this = __.option(self).defv([]);
-
+  
   static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
 
   static public function unit<T>():Cluster<T>{
@@ -52,14 +52,6 @@ typedef ClusterDef<T> = Array<T>;
   public function toString(){
     return Std.string(this);
   }
-  #if tink_json
-    @:to function toRepresentation():Representation<Array<T>>
-      return new Representation(this);
-
-    @:from static function ofRepresentation<T>(self:Representation<Array<T>>)
-      return lift(self.get());
-
-  #end
 }
 class ClusterLift{
   static public var _(default,never) = stx.lift.ArrayLift;

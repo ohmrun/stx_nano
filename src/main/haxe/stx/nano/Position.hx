@@ -44,22 +44,6 @@ package stx.nano;
   static public function here(?pos:Pos) {
     return pos;
   } 
-  public var fileName(get,never) : String;
-  public function get_fileName(){
-    return #if macro '<macro>' #else this.fileName #end;
-  }
-  public var className(get,never) : String;
-  public function get_className(){
-    return #if macro '<macro>' #else this.className #end;
-   }
-  public var methodName(get,never) : String;
-  public function get_methodName(){
-    return #if macro '<macro>' #else this.methodName #end;
-  }
-  public var lineNummber(get,never) : Int;
-  public function get_lineNummber(){
-    return #if macro -1 #else this.lineNumber #end;
-  }
   public var customParams(get,never) : Array<Dynamic>;
   public function get_customParams(){
     return #if macro [] #else this.customParams #end;
@@ -67,6 +51,23 @@ package stx.nano;
   public function toIdent():Ident{
     return Ident.fromIdentifier((this:Pos).toIdentifier());
   }
+  public var className(get,never):String;
+  private function get_className():String{
+    return #if macro 'unknown' #else this.className #end;
+  }
+  public var fileName(get,never):String;
+  private function get_fileName():String{
+    return #if macro 'unknown' #else this.fileName #end;
+  }
+  public var lineNumber(get,never):Int;
+  private function get_lineNumber():Int{
+    return #if macro -1 #else this.lineNumber #end;
+  }
+  public var methodName(get,never):String;
+  private function get_methodName():String{
+    return #if macro 'unknown' #else this.methodName #end;
+  }
+
   public function toPos():Pos{
     return this;
   }
@@ -84,7 +85,7 @@ class PositionLift {
       return '$pos';
     #end
   }
-  static public function clone(p:Pos){
+  static public function copy(p:Pos){
     return 
       #if !macro 
         Position.make(p.fileName,p.className,p.methodName,p.lineNumber,p.customParams);
@@ -141,7 +142,7 @@ class PositionLift {
     #end
   }
   static public function withCustomParams(p:Pos,v:Dynamic):Pos{
-    p = clone(p);
+    p = copy(p);
     #if !macro
       if(p.customParams == null){
         p.customParams = [];
