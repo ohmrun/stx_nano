@@ -6,7 +6,7 @@ enum OneOrManySum<T>{
 }
 abstract OneOrMany<T>(OneOrManySum<T>) from OneOrManySum<T> to OneOrManySum<T>{
   public function new(self) this = self;
-  static public function lift<T>(self:OneOrManySum<T>):OneOrMany<T> return new OneOrMany(self);
+  @:noUsing static public function lift<T>(self:OneOrManySum<T>):OneOrMany<T> return new OneOrMany(self);
   
   @:noUsing @:from static public function fromT<T>(self:T):OneOrMany<T>{
     return lift(OneOf(self));

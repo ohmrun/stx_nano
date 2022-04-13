@@ -6,7 +6,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
 @:forward abstract Pledge<T,E>(PledgeDef<T,E>) from PledgeDef<T,E> to PledgeDef<T,E>{
   static public var _(default,never) = PledgeLift;
   public function new(self) this = self;
-  static public function lift<T,E>(self:PledgeDef<T,E>):Pledge<T,E> return new Pledge(self);
+  @:noUsing static public function lift<T,E>(self:PledgeDef<T,E>):Pledge<T,E> return new Pledge(self);
 
   @:noUsing static public function make<T,E>(ch:Res<T,E>):Pledge<T,E>{
     return new Future(

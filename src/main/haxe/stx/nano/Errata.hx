@@ -6,7 +6,7 @@ typedef ErrataDef<E> = Iter<E>;
 @:forward(iterator) abstract Errata<E>(ErrataDef<E>) from ErrataDef<E> to ErrataDef<E>{
   static public var _(default,never) = ErrataLift;
   public function new(self) this = self;
-  static public function lift<E>(self:ErrataDef<E>):Errata<E> return new Errata(self);
+  @:noUsing static public function lift<E>(self:ErrataDef<E>):Errata<E> return new Errata(self);
   static public function unit<E>():Errata<E>{
     return lift(Iter.unit());
   }

@@ -6,7 +6,7 @@ typedef LedgerDef<I,O,E> = Future<Equity<I,O,E>>;
 abstract Ledger<I,O,E>(LedgerDef<I,O,E>) from LedgerDef<I,O,E> to LedgerDef<I,O,E>{
   static public var _(default,never) = LedgerLift;
   public function new(self) this = self;
-  static public function lift<I,O,E>(self:LedgerDef<I,O,E>):Ledger<I,O,E> return new Ledger(self);
+  @:noUsing static public function lift<I,O,E>(self:LedgerDef<I,O,E>):Ledger<I,O,E> return new Ledger(self);
 
   public function prj():LedgerDef<I,O,E> return this;
   private var self(get,never):Ledger<I,O,E>;
@@ -19,10 +19,10 @@ abstract Ledger<I,O,E>(LedgerDef<I,O,E>) from LedgerDef<I,O,E> to LedgerDef<I,O,
   }
 }
 class LedgerLift extends Clazz{
-  static public function make(){
+  @:noUsing static public function make(){
     return new LedgerLift();
   }
-  static public function lift<I,O,E>(self:LedgerDef<I,O,E>):Ledger<I,O,E>{
+  @:noUsing static public function lift<I,O,E>(self:LedgerDef<I,O,E>):Ledger<I,O,E>{
     return Ledger.lift(self);
   }
   static public function errata<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:Error<E>->Error<EE>):Ledger<I,O,EE>{

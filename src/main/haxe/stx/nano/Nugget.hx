@@ -81,7 +81,7 @@ class FutureNugget<T> extends NuggetCls<T>{
 // }
 abstract Nugget<T>(NuggetApi<T>) from NuggetApi<T> to NuggetApi<T>{
   public function new(self) this = self;
-  static public function lift<T>(self:NuggetApi<T>):Nugget<T> return new Nugget(self);
+  @:noUsing static public function lift<T>(self:NuggetApi<T>):Nugget<T> return new Nugget(self);
 
   public function prj():NuggetApi<T> return this;
   private var self(get,never):Nugget<T>;
@@ -92,10 +92,10 @@ abstract Nugget<T>(NuggetApi<T>) from NuggetApi<T> to NuggetApi<T>{
   public function new(self:NuggetApi<T>){
     this = self;
   }
-  static public function lift<T>(self:NuggetApi<T>):Absorbable<T>{
+  @:noUsing static public function lift<T>(self:NuggetApi<T>):Absorbable<T>{
     return new Absorbable(self);
   }
-  static public function pure<T>(v:T):Absorbable<T>{
+  @:noUsing static public function pure<T>(v:T):Absorbable<T>{
     return lift(new NuggetCls(v));
   }
   static public function later<T>(ft:Future<T>):Absorbable<T>{
@@ -106,7 +106,7 @@ abstract Producable<T>(NuggetApi<T>) from NuggetApi<T>{
   public function new(self:NuggetApi<T>){
     this = self;
   }
-  static public function lift<T>(self:NuggetApi<T>){
+  @:noUsing static public function lift<T>(self:NuggetApi<T>){
     return new Producable(self);
   } 
   static public function unit<T>():Producable<T>{

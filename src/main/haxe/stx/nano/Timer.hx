@@ -17,7 +17,7 @@ typedef TimerDef = {
     }
   }
   //TODO should `pure` be only open type?
-  static public function pure(v:Float):Timer{
+  @:noUsing static public function pure(v:Float):Timer{
     return {
       created : v
     };

@@ -11,9 +11,23 @@ typedef EnsembleDef<T> = haxe.DynamicAccess<T>;
   }
 
   public function new(self) this = self;
-  static public function lift<T>(self:EnsembleDef<T>):Ensemble<T> return new Ensemble(self);
+  @:noUsing static public function lift<T>(self:EnsembleDef<T>):Ensemble<T> return new Ensemble(self);
   static public function unit<T>():Ensemble<T>{
     return lift({});
+  }
+  @:noUsing static public function fromMap<T>(self:haxe.ds.StringMap<T>){
+    final data : haxe.DynamicAccess<T>  = {};
+    for( k => v in self){
+      data.set(k,v);
+    }
+    return lift(data);
+  }
+  @:noUsing static public function fromIterKV<T>(self:Iter<KV<String,T>>){
+    final data : haxe.DynamicAccess<T>  = {};
+    for( v in self){
+      data.set(v.key,v.val);
+    }
+    return lift(data);
   }
   public function prj():EnsembleDef<T> return this;
   private var self(get,never):Ensemble<T>;
@@ -62,6 +76,9 @@ typedef EnsembleDef<T> = haxe.DynamicAccess<T>;
       next.push(__.couple(k,v));
     }
     return Cluster.lift(next);
+  }
+  public function toIterKV():IterKV<String,T>{
+    return IterKV.fromEnsemble(this);
   }
 }
 

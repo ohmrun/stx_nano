@@ -7,6 +7,7 @@ import haxe.Constraints.IMap;
 
 typedef ClusterDef<T> = Array<T>;
 
+@:allow(stx)
 @:using(stx.nano.Cluster.ClusterLift)
 @:pure @:forward(fmap,accs,iterator,join) abstract Cluster<T>(ClusterDef<T>) from ClusterDef<T>{
   static public var ZERO(get,null) : Cluster<Dynamic>;
@@ -18,7 +19,7 @@ typedef ClusterDef<T> = Array<T>;
   static public var _(default,never) = ClusterLift;
   public function new(?self:Array<T>) this = __.option(self).defv([]);
   
-  static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
+  @:noUsing static public function lift<T>(self:ClusterDef<T>):Cluster<T> return new Cluster(self);
 
   static public function unit<T>():Cluster<T>{
     return lift([]);  

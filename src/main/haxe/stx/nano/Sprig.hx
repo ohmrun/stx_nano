@@ -9,7 +9,7 @@ enum SprigSum{
 }
 abstract Sprig(SprigSum) from SprigSum to SprigSum{
   public function new(self) this = self;
-  static public function lift(self:SprigSum):Sprig return new Sprig(self);
+  @:noUsing static public function lift(self:SprigSum):Sprig return new Sprig(self);
 
   @:to public function toPrimitive():Primitive{
     return PSprig(this);

@@ -1,7 +1,7 @@
 package stx.nano;
 
 abstract FPath(Chars){
-  static public function lift(self:Chars) return new FPath(self);
+  @:noUsing static public function lift(self:Chars) return new FPath(self);
   public function new(self) this = self;
   @:noUsing static public function unit():FPath{
     return lift("/"); 

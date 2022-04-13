@@ -254,9 +254,8 @@ class LiftNano{
       default   : Val(v);
     }
   }
-  @:deprecated
-  static public function ident(wildcard:Wildcard,str:String):Identifier{
-    return new Identifier(str);
+  static public function way(wildcard:Wildcard,?str:String):Way{
+    return str == null ? Way.unit() :  Way.fromStringDotted(str);
   }
   static public function toIdentifier(pos:Pos):Identifier{
     return Identifier.lift(Position.lift(pos).className);
@@ -269,9 +268,15 @@ class LiftNano{
     var fn = pos.toPosition().methodName;
     return '${id}.${fn}';
   }
+  static public function toIdent(self:Identifier):Ident{
+    return Ident.fromIdentifier(self);
+  }
 }
 class StringToIdentifier{
   static public function identifier(wildcard:Wildcard,str:String):Identifier{
     return new Identifier(str);
   }
 }
+class LiftIdentifierToIdent{
+  
+} 

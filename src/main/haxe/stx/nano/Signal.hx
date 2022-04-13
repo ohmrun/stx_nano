@@ -7,7 +7,7 @@ import tink.core.Signal in TinkSignal;
 @:forward abstract Signal<T>(TinkSignal<T>) from TinkSignal<T> to TinkSignal<T>{
   static public var _(default,never) = SignalLift;
   public function new(self:TinkSignal<T>) this = self;
-  static public function lift<T>(self:TinkSignal<T>){
+  @:noUsing static public function lift<T>(self:TinkSignal<T>){
     return new Signal(self);
   }
   @:noUsing static public function make<T>(f:(fire:T->Void)->CallbackLink, ?init:OwnedDisposable->Void):Signal<T>{
@@ -30,7 +30,7 @@ import tink.core.Signal in TinkSignal;
       }
     ));
   }
-  static public function pure<T>(v:T):Signal<T>{
+  @:noUsing static public function pure<T>(v:T):Signal<T>{
     return lift(new TinkSignal(
       (cb) -> {
         cb(v);
@@ -79,6 +79,9 @@ import tink.core.Signal in TinkSignal;
   public function prj():TinkSignal<T>{
     return this;
   }
+  static public function trigger<T>():SignalTrigger<T>
+    return new SignalTrigger();
+
 }
 class SignalLift{
   static function lift<T>(self:TinkSignal<T>){

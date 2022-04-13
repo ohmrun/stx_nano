@@ -8,7 +8,7 @@ typedef AlertDef<E> = Future<Report<E>>;
   static public function unit<E>():Alert<E>{
     return Future.irreversible((cb) -> cb(Report.unit()));
   }
-  static public function pure<E>(e:Rejection<E>):Alert<E>{
+  @:noUsing static public function pure<E>(e:Rejection<E>):Alert<E>{
     return Future.irreversible((cb) -> cb(Report.pure(e)));
   }
   @:noUsing static public function make<E>(self:Report<E>):Alert<E>{
@@ -37,7 +37,7 @@ typedef AlertDef<E> = Future<Report<E>>;
     );
   }
   public function new(self) this = self;
-  static public function lift<E>(self:AlertDef<E>):Alert<E> return new Alert(self);
+  @:noUsing static public function lift<E>(self:AlertDef<E>):Alert<E> return new Alert(self);
 
   public function prj():AlertDef<E> return this;
   private var self(get,never):Alert<E>;

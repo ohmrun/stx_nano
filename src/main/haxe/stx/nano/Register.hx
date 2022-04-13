@@ -4,7 +4,7 @@ typedef RegisterDef<T> = Dynamic<T>;
 
 @:pure abstract Register<T>(RegisterDef<T>) from RegisterDef<T> to RegisterDef<T>{
   public function new(self) this = self;
-  static public function lift<T>(self:RegisterDef<T>):Register<T> return new Register(self);
+  @:noUsing static public function lift<T>(self:RegisterDef<T>):Register<T> return new Register(self);
 
   @:arrayAccess
   public function get(key:String){

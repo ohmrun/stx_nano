@@ -39,10 +39,10 @@ typedef ReceiptDef<T,E> = DefectDef<E> & {
   }
 }
 class ReceiptLift extends Clazz{
-  static public function make(){
+  @:noUsing static public function make(){
     return new ReceiptLift();
   }
-  static public function lift<T,E>(self:ReceiptDef<T,E>):Receipt<T,E>{
+  @:noUsing static public function lift<T,E>(self:ReceiptDef<T,E>):Receipt<T,E>{
     return Receipt.lift(self);
   }
   static public function errate<T,E,EE>(self:ReceiptDef<T,E>,fn:E->EE):Receipt<T,EE>{

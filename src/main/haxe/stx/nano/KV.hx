@@ -11,6 +11,9 @@ typedef KVDef<K,V> = {
   @:noUsing static public function lift<K,V>(self:KVDef<K,V>):KV<K,V>{
     return new KV(self);
   }
+  @:noUsing static public function make<K,V>(k:K,v:V){
+    return lift({key : k, val : v});
+  }
   @:from static public function fromObj<K,V>(self:KVDef<K,V>):KV<K,V>{
     return new KV(self);
   }

@@ -10,7 +10,7 @@ package stx.nano;
 
   
   public function new(self:Pos) this = self;
-  @:noUsing static public inline function lift(pos:Pos):Position return fromPos(pos);
+  static public inline function lift(pos:Pos):Position return fromPos(pos);
   
 
   @:noUsing static public function make(fileName:String,className:String,methodName:String,lineNumber:Null<Int>,?customParams:Array<Dynamic>):Pos{ 

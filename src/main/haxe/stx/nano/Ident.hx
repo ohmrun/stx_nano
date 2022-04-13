@@ -7,8 +7,13 @@ typedef IdentDef = {
 
 @:forward abstract Ident(IdentDef) from IdentDef to IdentDef{
   public function new(self) this = self;
-  static public function lift(self:IdentDef):Ident return new Ident(self);
-
+  @:noUsing static public function lift(self:IdentDef):Ident return new Ident(self);
+  @:noUsing static public function make(name:String,?pack:Way){
+    return lift({
+      name : name,
+      pack : pack
+    });
+  }
   public function prj():IdentDef return this;
   private var self(get,never):Ident;
   private function get_self():Ident return lift(this);
@@ -38,6 +43,13 @@ typedef IdentDef = {
       case { name : n, pack : null }                          : Identifier.lift(n);
       case { name : n, pack : pack }    if (pack.length == 0) : Identifier.lift(n);
       case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join("."));    
+    }
+  }
+  public function toString_underscored(){
+    return switch(this){
+      case { name : n, pack : null }                          : n;
+      case { name : n, pack : pack }    if (pack.length == 0) : n;
+      case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join("_"));    
     }
   }
 }

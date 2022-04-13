@@ -2,7 +2,7 @@ package stx.nano;
 
 @:using(stx.nano.Chars.CharsLift)
 @:forward abstract Chars(StdString) from StdString to StdString{
-  static public function lift(self:StdString){
+  @:noUsing static public function lift(self:StdString){
     return new Chars(self);
   }
   static public var _(default,never) = CharsLift;
@@ -196,10 +196,57 @@ class CharsLift{
     var reg = new EReg("([^\\A])([A-Z])", "g");
     return reg.replace(value, '$1${separator}$2').toLowerCase();
   }
-  static public function camelCaseToUpperCase(value : Chars, ?separator : Chars = "_") : Chars {
-    var reg = new EReg("([^\\A])([A-Z])", "g");
-    return reg.replace(value, '$1${separator}$2').toUpperCase();
-  }*/
+  */
+  // static public function camelCaseToUpperCase(value : Chars, ?separator : Chars = "_") : Chars {
+  //   var reg = new EReg("([^\\A])([A-Z])", "g");
+  //   return reg.replace(value, '$1${separator}$2').toUpperCase();
+  // }
+  //https://github.com/haxeui/haxeui-core/blob/d13a7570d522f03b31aa42be72a5ed66dc3d8738/haxe/ui/util/StringUtil.hx
+  public static function uncapitalize_first_letter(self:Chars):Chars {
+    self = self.substr(0, 1).toLowerCase() + self.substr(1, self.length);
+    return self;
+  }
+  public static function capitalize_first_letter(self:Chars):Chars {
+      self = self.substr(0, 1).toUpperCase() + self.substr(1, self.length);
+      return self;
+  }
+
+  public static function capitalize_hyphens(self:Chars):Chars {
+      return capitalize_delim(self, "-");
+  }
+
+  public static function capitalize_delim(self:Chars, d:Chars):Chars {
+      var r:String = self;
+      var n:Int = r.indexOf(d);
+      while (n != -1) {
+          var before:String = r.substr(0, n);
+          var after:String = r.substr(n + 1, r.length);
+          r = before + capitalize_first_letter(after);
+          n = r.indexOf(d, n + 1);
+      }
+      return r;
+  }
+  public static function to_dashes(self:Chars, toLower:Bool = true):Chars {
+      var self = ~/([a-zA-Z])(?=[A-Z])/g.map(self, function(re:EReg):String {
+          return '${re.matched(1)}-' ;
+      });
+
+      if (toLower == true) {
+          self = self.toLowerCase();
+      }
+
+      return self;
+  }
+
+  public static function replace_vars(self:Chars, params:Map<String, Dynamic>):Chars {
+      if (params != null) {
+          for (k in params.keys()) {
+              self = StringTools.replace(self, "${" + k + "}", params.get(k));
+          }
+      }
+      return self;
+  }
+
   static public function is_space(self : Chars, pos : Int ) : Bool {
     var c = self.charCodeAt( pos );
     return (c >= 9 && c <= 13) || c == 32;

@@ -7,7 +7,7 @@ enum NumericSum{
 }
 abstract Numeric(NumericSum) from NumericSum to NumericSum{
   public function new(self) this = self;
-  static public function lift(self:NumericSum):Numeric return new Numeric(self);
+  @:noUsing static public function lift(self:NumericSum):Numeric return new Numeric(self);
 
   public function prj():NumericSum return this;
   private var self(get,never):Numeric;

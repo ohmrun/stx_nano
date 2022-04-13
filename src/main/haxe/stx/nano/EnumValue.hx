@@ -1,7 +1,10 @@
 package stx.nano;
 
 abstract EnumValue(StdEnumValue) from StdEnumValue{
-  static public function pure(self:StdEnumValue):EnumValue{
+  @:noUsing static public function pure(self:StdEnumValue):EnumValue{
+    return new EnumValue(self);
+  }
+  @:noUsing static public function lift(self:StdEnumValue):EnumValue{
     return new EnumValue(self);
   }
   public function new(self:StdEnumValue) this = self;

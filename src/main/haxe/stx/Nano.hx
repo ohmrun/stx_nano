@@ -84,7 +84,7 @@ typedef Recursive<P>            = RecursiveDef<P>;
 */
 
 class LiftPos{
-  static public function lift(pos:Pos):Position{
+  @:noUsing static public function lift(pos:Pos):Position{
     return new Position(pos);
   }
 }
@@ -240,6 +240,9 @@ typedef FPath               = stx.nano.FPath;
 typedef Unspecified         = stx.nano.Unspecified;
 typedef Timer               = stx.nano.Timer;
 
+typedef CTRDef<P,R>         = stx.nano.CTR.CTRDef<P,R>;
+typedef CTR<P,R>            = stx.nano.CTR<P,R>;
+
 typedef IdentDef            = stx.nano.Ident.IdentDef;
 typedef Ident               = stx.nano.Ident;
 typedef Way                 = stx.nano.Way;
@@ -268,4 +271,9 @@ typedef Producable<P>       = stx.nano.Nugget.Producable<P>;
 
 enum abstract UNIMPLEMENTED(String){
   var UNIMPLEMENTED;
+}
+class LiftEnumValue{
+  static public function value(self:StdEnumValue):EnumValue{
+    return stx.nano.EnumValue.lift(self);
+  }
 }

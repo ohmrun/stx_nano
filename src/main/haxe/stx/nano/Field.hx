@@ -13,7 +13,7 @@ package stx.nano;
   @:noUsing @:from static public function fromCouple<V>(tp:Couple<StdString,V>):Field<V>{
     return new Field({ key : tp.fst(), val : tp.snd()});
   }
-  static public function make<V>(key:StdString,val:V){
+  @:noUsing static public function make<V>(key:StdString,val:V){
     return new Field({
       key : key,
       val : val

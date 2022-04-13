@@ -22,7 +22,7 @@ typedef EquityDef<I,O,E> = ReceiptDef<O,E> & {
 @:forward abstract Equity<I,O,E>(EquityDef<I,O,E>) from EquityDef<I,O,E> to EquityDef<I,O,E>{
   static public var _(default,never) = EquityLift;
   public function new(self) this = self;
-  static public function lift<I,O,E>(self:EquityDef<I,O,E>):Equity<I,O,E> return new Equity(self);
+  @:noUsing static public function lift<I,O,E>(self:EquityDef<I,O,E>):Equity<I,O,E> return new Equity(self);
 
   public function prj():EquityDef<I,O,E> return this;
   private var self(get,never):Equity<I,O,E>;
@@ -37,10 +37,10 @@ typedef EquityDef<I,O,E> = ReceiptDef<O,E> & {
 
 }
 class EquityLift extends Clazz{
-  static public function make(){
+  @:noUsing static public function make(){
     return new EquityLift();
   }
-  static public function lift<I,O,E>(self:EquityDef<I,O,E>):Equity<I,O,E>{
+  @:noUsing static public function lift<I,O,E>(self:EquityDef<I,O,E>):Equity<I,O,E>{
     return Equity.lift(self);
   }
   static public function errate<I,O,E,EE>(self:EquityDef<I,O,E>,fn:E->EE):Equity<I,O,EE>{
