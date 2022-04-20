@@ -4,9 +4,9 @@ package stx.nano;
 import haxe.Json;
 import haxe.io.Bytes;
 
-#if stx_log
-  using stx.Log;
-#end
+// #if stx_log
+//   using stx.Log;
+// #end
 abstract Resource(StdString){
   static public function exists(str:String){
     return haxe.Resource.listNames().any(
@@ -19,9 +19,9 @@ abstract Resource(StdString){
         throw('E_ResourceNotFound($str)');
       }else{
         var error = __.fault(pos).explain(_ -> _.e_resource_not_found(str));
-        #if stx_log
-        __.log().info('resource "$str" not found.');
-        #end
+        // #if stx_log
+        // __.log().info('resource "$str" not found.');
+        // #end
         throw error;
       }
     }

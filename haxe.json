@@ -46,6 +46,12 @@
         "--cppia" : "build/main/cppia/main.cppia"
       } 
     },
+    "bootstrap" : {
+      "hl" : {
+        "--verbose" : "true",
+        "--hl"  : "build/test/hl/main.hl"
+      }
+    },
     "test" : {
       "-lib"  : ["stx_test"],
       "-D" : ["no-deprecation-warnings"],
@@ -70,6 +76,10 @@
     "test.js.node"  : [
       ["hx","build","test/js/node"],
       ["node","build/test/node/main.js"]
-    ] 
+    ],
+    "test::hl" : [
+      ["hx","build","test/hl"],
+      ["hl","build/test/hl/main.hl"]
+    ]
   }
 }
