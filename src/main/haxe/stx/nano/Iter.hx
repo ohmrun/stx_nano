@@ -236,4 +236,13 @@ class IterLift{
   static public function is_defined<T>(self:Iter<T>){
     return self.iterator().hasNext();
   }
+  static public function count<T>(self:Iter<T>,fn:T->Bool){
+    return self.lfold(
+      (n,m) -> m + (fn(n) ? 1 : 0),
+      0
+    );
+  }
+  static public function size<T>(self:Iter<T>){
+    return count(self,_ -> true);
+  }
 }
