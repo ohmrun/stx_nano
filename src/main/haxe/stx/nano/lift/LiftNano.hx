@@ -63,7 +63,7 @@ class LiftNano{
   /**
     Most used wildcard, creates an option, often used like: `__.option(value).defv(fallback)`
   **/
-  static public function option<T>(wildcard:Wildcard,v:T):Option<T>{
+  static public function option<T>(wildcard:Wildcard,v:Null<T>):Option<T>{
     return switch(v){
       case null : None;
       default   : Some(v);
