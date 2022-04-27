@@ -167,7 +167,10 @@ class PledgeLift{
             }
           );
         }catch(e:Error<Dynamic>){
-          reject(__.reject(e));
+          __.reject(switch(Refuse.catcher(e)){
+            case Left(e)  : e.digest_with(x -> Std.string(x));
+            case Right(e) : e;  
+          });
         }catch(e:js.lib.Error){
           reject(__.reject(__.fault().explain(_ -> _.e_js_error(e))));
         }
