@@ -31,7 +31,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       (f) -> f(Val(ch))
     ); 
   }
-  @:noUsing static public function reject<T,E>(ch:Rejection<E>):Contract<T,E>{
+  @:noUsing static public function reject<T,E>(ch:Refuse<E>):Contract<T,E>{
     return Future.irreversible(
       (f) -> f(End(ch))
     ); 
@@ -59,7 +59,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
       () -> End(fn().except())
     );
   }
-  @:noUsing static public function fromLazyRejection<T,E>(fn:Void->Rejection<E>):Contract<T,E>{
+  @:noUsing static public function fromLazyRefuse<T,E>(fn:Void->Refuse<E>):Contract<T,E>{
     return fromLazyChunk(
       () -> End(fn())
     );
@@ -70,7 +70,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     );
   }
 
-  @:noUsing static public function end<T,E>(?e:Rejection<E>):Contract<T,E>{
+  @:noUsing static public function end<T,E>(?e:Refuse<E>):Contract<T,E>{
     return pure(End(e));
   }
   @:noUsing static public function tap<T,E>():Contract<T,E>{
@@ -98,7 +98,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     return _.fold(
       this,
       tink.core.Outcome.Success,
-      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.val.defv(null),e.pos.defv(null))),
+      e  -> tink.core.Outcome.Failure(tink.core.Error.withData(500,e.toString(),e.data.defv(null),e.pos.defv(null))),
       () -> tink.core.Outcome.Failure(new tink.core.Error(500,'empty'))  
     );
   }
@@ -202,15 +202,15 @@ class ContractLift extends Clazz{
           case End(err) : Contract.fromChunk(End(err)).prj();
     }});
   }
-  static public function flat_fold<T,Ti,E>(self:ContractDef<T,E>,val:T->Future<Ti>,ers:Rejection<E>->Future<Ti>,nil:Void->Future<Ti>):Future<Ti>{
+  static public function flat_fold<T,Ti,E>(self:ContractDef<T,E>,val:T->Future<Ti>,ers:Refuse<E>->Future<Ti>,nil:Void->Future<Ti>):Future<Ti>{
     return self.flatMap(
       (chunk:Chunk<T,E>) -> chunk.fold(val,ers,nil)
     );
   }
-  static public function fold<T,Ti,E>(self:Contract<T,E>,val:T->Ti,ers:Null<Rejection<E>>->Ti,nil:Void->Ti):Future<Ti>{
+  static public function fold<T,Ti,E>(self:Contract<T,E>,val:T->Ti,ers:Null<Refuse<E>>->Ti,nil:Void->Ti):Future<Ti>{
     return self.prj().map(Chunk._.fold.bind(_,val,ers,nil));
   }
-  static public function recover<T,E>(self:Contract<T,E>,fn:Rejection<E>->Chunk<T,E>):Contract<T,E>{
+  static public function recover<T,E>(self:Contract<T,E>,fn:Refuse<E>->Chunk<T,E>):Contract<T,E>{
     return lift(fold(
       self,
       (x) -> Val(x),
@@ -226,7 +226,7 @@ class ContractLift extends Clazz{
       ()->Tap
     ));
   }
-  static public function receive<T,E>(self:Contract<T,E>,fn:T->Void):Future<Option<Rejection<E>>>{
+  static public function receive<T,E>(self:Contract<T,E>,fn:T->Void):Future<Option<Refuse<E>>>{
     return self.prj().map(
       (chk) -> switch chk {
         case End(e)   : __.option(e);
@@ -245,7 +245,7 @@ class ContractLift extends Clazz{
     }
     return out;
   }
-  static public function errata<T,E,EE>(self:Contract<T,E>,fn:Rejection<E>->Rejection<EE>):Contract<T,EE>{
+  static public function errata<T,E,EE>(self:Contract<T,E>,fn:Refuse<E>->Refuse<EE>):Contract<T,EE>{
     return self.prj().map(
       (chk) -> chk.errata(fn)
     );

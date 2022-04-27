@@ -6,7 +6,7 @@ import tink.core.Outcome in TinkOutcome;
 enum ChunkSum<V,E>{
   Val(v:V);
   Tap;
-  End(?err:Rejection<E>);
+  End(?err:Refuse<E>);
 }
 
 @:using(stx.nano.Chunk.ChunkLift)
@@ -14,7 +14,7 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
   static public var _(default,never) = ChunkLift;
   public function new(self:ChunkSum<T,E>) this = self;
 
-  @:from @:noUsing static public function fromRejection<T,E>(e:Rejection<E>):Chunk<T,E>           return End(e);
+  @:from @:noUsing static public function fromRefuse<T,E>(e:Refuse<E>):Chunk<T,E>           return End(e);
   @:from @:noUsing static public function fromError<T,E>(e:Error<E>):Chunk<T,E>                   return End(e.except());
 
   @:noUsing static inline public function fromNull_T<T,E>(v:Null<T>):Chunk<T,E>                   return pure(v);
@@ -43,7 +43,7 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
       case None     : Tap; 
     }
   }
-  @:noUsing static public function fromOptionRejection<E>(opt:Option<Rejection<E>>):Chunk<Noise,E>{
+  @:noUsing static public function fromOptionRefuse<E>(opt:Option<Refuse<E>>):Chunk<Noise,E>{
     return switch(opt){
       case Some(v)  : End(v);
       case None     : Tap; 
@@ -52,7 +52,7 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
   /**
 		Produces a `Chunk` of `Array<A>` only if all chunks are defined.
 	**/
-  @:noUsing static public function all<T,E>(arr:Array<Chunk<T,E>>,?TapFail:Rejection<E>):Chunk<Array<T>,E>{
+  @:noUsing static public function all<T,E>(arr:Array<Chunk<T,E>>,?TapFail:Refuse<E>):Chunk<Array<T>,E>{
     return arr.lfold(
         function(next,memo:Chunk<Array<T>,E>){
           return switch ([memo,next]) {
@@ -66,7 +66,7 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
                   __.option(e).toArray()
                     .concat(__.option(e0).toArray())
                     .lfold(
-                      (nx,mm:Rejection<E>) -> mm.concat(nx),
+                      (nx,mm:Refuse<E>) -> mm.concat(nx),
                       TapFail
                     );
                 End(err);
@@ -115,7 +115,7 @@ class ChunkLift{
      case Tap         : t;
    }
  }
- static inline public function fold<T,E,Ti>(chk:Chunk<T,E>,val:T->Ti,ers:Null<Rejection<E>>->Ti,tap:Void->Ti):Ti{
+ static inline public function fold<T,E,Ti>(chk:Chunk<T,E>,val:T->Ti,ers:Null<Refuse<E>>->Ti,tap:Void->Ti):Ti{
    return switch (chk) {
      case Val(v) : val(v);
      case End(e) : ers(e);
@@ -151,25 +151,25 @@ class ChunkLift{
    }
  }
  /*
-   If the Chunk is in an Rejection state, recover using the handler `fn`
+   If the Chunk is in an Refuse state, recover using the handler `fn`
  */
- static public function recover<T,E,EE>(self:Chunk<T,E>,fn:Rejection<E> -> Chunk<T,EE>):Chunk<T,EE>{
+ static public function recover<T,E,EE>(self:Chunk<T,E>,fn:Refuse<E> -> Chunk<T,EE>):Chunk<T,EE>{
    return switch (self){
      case Tap      : Tap;
      case Val(v)   : Val(v);
      case End(err) : fn(err);
    }
  }
- static public function errata<T,E,EE>(self:Chunk<T,E>,fn:Rejection<E> -> Rejection<EE>):Chunk<T,EE>{
+ static public function errata<T,E,EE>(self:Chunk<T,E>,fn:Refuse<E> -> Refuse<EE>):Chunk<T,EE>{
    return recover(
     self,
-    (x:Rejection<E>) -> return End(fn(x))
+    (x:Refuse<E>) -> return End(fn(x))
    );
  }
  static public function errate<T,E,EE>(self:Chunk<T,E>,fn:E -> EE):Chunk<T,EE>{
   return recover(
    self,
-   (x:Rejection<E>) -> return End(x.errate(fn))
+   (x:Refuse<E>) -> return End(x.errate(fn))
   );
 }
  static public function zip<T,Ti,E>(self:Chunk<T,E>,that:Chunk<Ti,E>):Chunk<Couple<T,Ti>,E>{
@@ -205,7 +205,7 @@ class ChunkLift{
      ()  -> false
    );
  }
- static public function opt_else<T,Ti,E>(self:Chunk<T,E>,_if:T->Ti,_else:Option<Rejection<E>>->Ti):Ti{
+ static public function opt_else<T,Ti,E>(self:Chunk<T,E>,_if:T->Ti,_else:Option<Refuse<E>>->Ti):Ti{
    return fold(
     self,
      _if,

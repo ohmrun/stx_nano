@@ -6,7 +6,7 @@ import tink.core.Noise;
 @:using(stx.nano.Res.ResSumLift)
 enum ResSum<T,E>{
   Accept(t:T);
-  Reject(e:Rejection<E>);
+  Reject(e:Refuse<E>);
 }
 class ResSumLift{
   static public function toString<T,E>(self:ResSum<T,E>):String{
@@ -23,24 +23,24 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
   
   @:noUsing static public inline function lift<T,E>(self:ResSum<T,E>):Res<T,E> return new Res(self);
   @:noUsing static public function accept<T,E>(t:T):Res<T,E>                    return lift(Accept(t));
-  @:noUsing static public function reject<T,E>(e:Rejection<E>):Res<T,E>               return lift(Reject(e));
+  @:noUsing static public function reject<T,E>(e:Refuse<E>):Res<T,E>               return lift(Reject(e));
 
   @:noUsing static public function fromReport<E>(self:Report<E>):Res<Noise,E>{
     return lift(self.fold(
-      (ok:Rejection<E>)   -> reject(ok),
+      (ok:Refuse<E>)   -> reject(ok),
       ()              -> accept(Noise)
     ));
   }
   public function prj():ResSum<T,E> return this;
 
-  @:from static public function fromOutcome<T,E>(self:Outcome<T,Rejection<E>>):Res<T,E>{
+  @:from static public function fromOutcome<T,E>(self:Outcome<T,Refuse<E>>):Res<T,E>{
     var ocd : ResSum<T,E> = switch(self){
       case Success(ok) : Accept(ok);
       case Failure(no) : Reject(no);
     }
     return lift(ocd);
   }
-  @:to public function toOutcome():Outcome<T,Rejection<E>>{
+  @:to public function toOutcome():Outcome<T,Refuse<E>>{
     return switch(this){
       case Accept(ok) : Success(ok);
       case Reject(no) : Failure(no);
@@ -60,6 +60,29 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
       toString : _.toString.bind(this)
     }
   }
+  @:to public function toIterable():Iterable<T>{
+    return {
+      iterator : iterator
+    };
+  }
+  public function iterator():Iterator<T>{
+    var done = false;
+    return {
+      hasNext : () -> {
+        return this.fold(
+          ok  -> !done,
+          (_) -> false
+        );
+      },
+      next : () -> {
+        done = true;
+        return this.fold(
+          ok  -> ok,
+          _   -> null
+        );
+      }
+    }
+  }
 }
 class ResLift{
   @:nb("toString() isn't called in the normal way.","//T:{ toString : () -> String }")
@@ -69,7 +92,7 @@ class ResLift{
       (e) -> 'Reject(${e.toString()})'
     );
   }
-  static public inline function errata<T,E,EE>(self:Res<T,E>,fn:Rejection<E>->Rejection<EE>):Res<T,EE>{
+  static public inline function errata<T,E,EE>(self:Res<T,E>,fn:Refuse<E>->Refuse<EE>):Res<T,EE>{
     return Res.lift(
       self.fold(
         (t) -> Res.accept(t),
@@ -102,7 +125,7 @@ class ResLift{
   static public inline function adjust<T,E,TT>(self:ResSum<T,E>,fn:T->ResSum<TT,E>):Res<TT,E>{
     return flat_map(self,fn);
   }
-  static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Rejection<E>->TT):TT{
+  static public inline function fold<T,E,TT>(self:ResSum<T,E>,fn:T->TT,er:Refuse<E>->TT):TT{
     return switch(self){
       case Accept(t) : fn(t);
       case Reject(e) : er(e);
@@ -129,24 +152,24 @@ class ResLift{
       (er) -> Report.pure(er)
     );
   }
-  static public inline function usher<T,E,Z>(self:ResSum<T,E>,fn:Option<E>->Z):Z{
+  static public inline function usher<T,E,Z>(self:ResSum<T,E>,fn:Option<Decline<E>>->Z):Z{
     return report(self).usher(fn);
   }
-  static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Rejection<E>->ResSum<T,E>):ResSum<T,E>{
+  static public inline function rectify<T,E>(self:ResSum<T,E>,fn:Refuse<E>->ResSum<T,E>):ResSum<T,E>{
     return fold(
       self,
       (ok)  -> Res.accept(ok),
       (no)  -> fn(no)
     );
   }
-  static public inline function recover<T,E>(self:ResSum<T,E>,fn:Rejection<E>->T):T{
+  static public inline function recover<T,E>(self:ResSum<T,E>,fn:Refuse<E>->T):T{
     return fold(
       self,
       (v) -> v,
       (e) -> fn(e)
     );
   }
-  static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Rejection<E>->Void):Res<T,E>{
+  static public function effects<T,E>(self:ResSum<T,E>,success:T->Void,failure:Refuse<E>->Void):Res<T,E>{
     return fold(
       self,
       (ok) -> {

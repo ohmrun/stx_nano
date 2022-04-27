@@ -19,13 +19,13 @@ abstract Accrual<T,E>(AccrualDef<T,E>) from AccrualDef<T,E> to AccrualDef<T,E>{
   @:noUsing static public function pure<T,E>(self:T){
     return make(self);
   } 
-  @:noUsing static public function make<T,E>(value:Null<T>,?error:Iter<E>){
+  @:noUsing static public function make<T,E>(value:Null<T>,?error:Refuse<E>){
     return lift(Future.irreversible(cb -> cb(Receipt.make(value,error))));
   }
   @:noUsing static public inline function ok<T,E>(self:T){
     return pure(self);
   }
-  @:noUsing static public inline function no<T,E>(self:Iter<T>){
+  @:noUsing static public inline function no<T,E>(self:Refuse<T>){
     return make(null,self);
   }
   @:noUsing static public function lift<T,E>(self:AccrualDef<T,E>):Accrual<T,E> return new Accrual(self);
@@ -41,7 +41,7 @@ class AccrualLift extends Clazz{
   static inline public function lift<T,E>(self:AccrualDef<T,E>){
     return Accrual.lift(self);
   }
-  static public function errata<T,E,EE>(self:AccrualDef<T,E>,fn:Error<E>->Error<EE>):Accrual<T,EE>{
+  static public function errata<T,E,EE>(self:AccrualDef<T,E>,fn:Refuse<E>->Refuse<EE>):Accrual<T,EE>{
     return lift(self.map((x:Receipt<T,E>) -> x.errata(fn)));
   }
   static public function errate<T,E,EE>(self:AccrualDef<T,E>,fn:E->EE):Accrual<T,EE>{

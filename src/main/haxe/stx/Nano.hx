@@ -55,10 +55,9 @@ typedef Triple<Ti,Tii,Tiii>     = stx.nano.Triple<Ti,Tii,Tiii>;
 typedef ResSum<T,E>             = stx.nano.Res.ResSum<T,E>;
 typedef Res<T,E>                = stx.nano.Res<T,E>;
 
-typedef DeclinationSum<T>       = stx.nano.Declination.DeclinationSum<T>;
-typedef Declination<T>          = stx.nano.Declination<T>;
+// typedef DeclineSum<T>       = stx.nano.Decline.DeclineSum<T>;
+//typedef Decline<T>          = stx.nano.Decline<T>;
 
-typedef Digest                  = stx.nano.Digest;
 typedef Digests                 = stx.nano.Digests;
 
 typedef Fault                   = stx.nano.Fault;
@@ -70,8 +69,8 @@ typedef VBlock<T>               = stx.nano.VBlock<T>;
 typedef PledgeDef<T,E>          = stx.nano.Pledge.PledgeDef<T,E>;
 typedef Pledge<T,E>             = stx.nano.Pledge<T,E>;
 
-typedef Rejection<E>            = stx.nano.Rejection<E>;
-typedef RejectionDef<E>         = stx.nano.Rejection.RejectionDef<E>;
+//typedef Refuse<E>            = stx.nano.Refuse<E>;
+//typedef RefuseDef<E>         = stx.nano.Refuse.RefuseDef<E>;
 
 typedef ByteSize                = stx.nano.ByteSize;
 typedef Endianness              = stx.nano.Endianness;
@@ -88,12 +87,12 @@ class LiftPos{
     return new Position(pos);
   }
 }
-typedef LiftErrorStringToRejection  = stx.nano.lift.LiftErrorStringToRejection;
-typedef LiftTinkErrorToRejection    = stx.nano.lift.LiftTinkErrorToRejection;
-typedef LiftRejectionToRes          = stx.nano.lift.LiftRejectionToRes;
+typedef LiftErrorStringToRefuse     = stx.nano.lift.LiftErrorStringToRefuse;
+typedef LiftTinkErrorToRefuse       = stx.nano.lift.LiftTinkErrorToRefuse;
+typedef LiftRefuseToRes             = stx.nano.lift.LiftRefuseToRes;
 typedef LiftErrorToReport           = stx.nano.lift.LiftErrorToReport;
 typedef LiftErrorToAlert            = stx.nano.lift.LiftErrorToAlert;
-typedef LiftErrorToRejection        = stx.nano.lift.LiftErrorToRejection;
+typedef LiftErrorToRefuse           = stx.nano.lift.LiftErrorToRefuse;
 typedef LiftFuture                  = stx.nano.lift.LiftFuture;
 typedef LiftIMapToArrayKV           = stx.nano.lift.LiftIMapToArrayKV;
 typedef LiftOptionNano              = stx.nano.lift.LiftOptionNano;
@@ -113,7 +112,7 @@ typedef LiftContractToJsPromise     = stx.nano.lift.LiftContractToJsPromise;
 typedef LiftJsPromiseToPledge       = stx.nano.lift.LiftJsPromiseToPledge;
 typedef LiftFutureResToPledge       = stx.nano.lift.LiftFutureResToPledge;
 typedef LiftError                   = stx.nano.lift.LiftError;
-typedef LiftErrorDigestToRejection  = stx.nano.lift.LiftErrorDigestToRejection;
+typedef LiftErrorDigestToRefuse  = stx.nano.lift.LiftErrorDigestToRefuse;
 typedef LiftBytes                   = stx.nano.lift.LiftBytes;
 
 class LiftArrayClassWithUnderscore{
@@ -203,8 +202,8 @@ typedef ReceiptCls<T,E>         = stx.nano.Receipt.ReceiptCls<T,E>;
 typedef Accrual<T,E>            = stx.nano.Accrual<T,E>;
 typedef AccrualDef<T,E>         = stx.nano.Accrual.AccrualDef<T,E>;
 
-typedef ErrataDef<E>            = stx.nano.Errata.ErrataDef<E>;
-typedef Errata<E>               = stx.nano.Errata<E>;
+// typedef ErrataDef<E>            = stx.nano.Errata.ErrataDef<E>;
+// typedef Errata<E>               = stx.nano.Errata<E>;
 typedef Ledger<I,O,E>           = stx.nano.Ledger<I,O,E>;
 typedef LedgerDef<I,O,E>        = stx.nano.Ledger.LedgerDef<I,O,E>;
 typedef Equity<I,O,E>           = stx.nano.Equity<I,O,E>;

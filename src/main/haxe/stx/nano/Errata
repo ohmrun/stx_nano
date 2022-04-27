@@ -65,8 +65,8 @@ class ErrataLift{
         iterator : () -> {
           hasNext : () -> self != null,
           next    : () -> {
-            final val   = self.val.defv(null);
-            self        = self.lst.defv(null);
+            final val   = self.data.defv(null);
+            self        = self.next.defv(null);
             return val;
           }
         }

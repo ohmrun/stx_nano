@@ -10,16 +10,16 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   @:noUsing static public function make<E>(data:E,?pos:Pos):Report<E>{
     return pure(__.fault(pos).of(data));
   }
-  @:noUsing static public function make0<E>(data:Declination<E>,?pos:Pos):Report<E>{
+  @:noUsing static public function make0<E>(data:Decline<E>,?pos:Pos):Report<E>{
     return pure(__.fault(pos).decline(data));
   }
   @:noUsing static public function unit<E>():Report<E>{
     return lift(Happened);
   }
-  @:noUsing static public function conf<E>(?e:Rejection<E>):Report<E>{
+  @:noUsing static public function conf<E>(?e:Refuse<E>):Report<E>{
     return lift(__.option(e).map(Reported).defv(Happened));
   }
-  @:noUsing static public function pure<E>(e:Rejection<E>):Report<E>{
+  @:noUsing static public function pure<E>(e:Refuse<E>):Report<E>{
     return lift(Reported(e));
   }
   public function effects(success:Void->Void,failure:Void->Void):Report<E>{
@@ -41,13 +41,13 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       default             :
     }
   }
-  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Rejection<E>>):Report<E>{
+  @:from static public function fromStdOption<E>(opt:haxe.ds.Option<Refuse<E>>):Report<E>{
     return lift(opt.fold(
       Reported,
       () -> Happened
     ));
   }
-  @:from static public function fromOption<E>(opt:Option<Rejection<E>>):Report<E>{
+  @:from static public function fromOption<E>(opt:Option<Refuse<E>>):Report<E>{
     return lift(opt.fold(
       Reported,
       () -> Happened
@@ -56,14 +56,14 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   public function prj():ReportSum<E>{
     return this;
   }
-  public function value():Option<Rejection<E>>{
+  public function value():Option<Refuse<E>>{
     return _.fold(
       this,
       (err) -> Some(err),
       () -> None
     );
   }
-  public function defv(error:Rejection<E>){
+  public function defv(error:Refuse<E>){
     return this.defv(error);
   }
   public function or(that:Void->Report<E>):Report<E>{
@@ -74,7 +74,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
     );
   }
   @:note("error in js")
-  public function errata<EE>(fn:Rejection<E>->Rejection<EE>):Report<EE>{
+  public function errata<EE>(fn:Refuse<E>->Refuse<EE>):Report<EE>{
     return new Report(
       switch(this){
         case Reported(v) :  Reported(fn(v));
@@ -114,21 +114,21 @@ class ReportLift{
       default                         : Happened;
     }
   }
-  static inline public function fold<T,Z>(self:ReportSum<T>,val:Rejection<T>->Z,nil:Void->Z):Z{
+  static inline public function fold<T,Z>(self:ReportSum<T>,val:Refuse<T>->Z,nil:Void->Z):Z{
     return switch(self){
       case Reported(v)  : val(v);
       case Happened     : nil();
       case null         : nil();
     }
   }
-  static public function def<T>(self:ReportSum<T>,fn:Void->Rejection<T>):Rejection<T>{
+  static public function def<T>(self:ReportSum<T>,fn:Void->Refuse<T>):Refuse<T>{
     return fold(
       self,
       (x) -> x,
       fn
     );
   }
-  static public inline function defv<T>(self:ReportSum<T>,v:Rejection<T>):Rejection<T>{
+  static public inline function defv<T>(self:ReportSum<T>,v:Refuse<T>):Refuse<T>{
     return def(
       self,
       () -> v
@@ -141,12 +141,12 @@ class ReportLift{
       () -> false
     );
   }
-  static public function ignore<T>(self:ReportSum<T>,?fn:Declination<T>->Bool){
+  static public function ignore<T>(self:ReportSum<T>,?fn:Decline<T>->Bool){
     __.option(fn).def(() -> fn = (x) -> true);
     return fold(
       self,
-      (err:Rejection<T>) -> err.val.fold(
-        (failure:Declination<T>) -> fn(failure).if_else(
+      (err:Refuse<T>) -> err.data.fold(
+        (failure:Decline<T>) -> fn(failure).if_else(
           ()  -> __.report(),
           ()  -> err.report()
         ),
@@ -171,9 +171,9 @@ class ReportLift{
       ()  -> fn()
     );
   }
-  static public function usher<T,Z>(self:ReportSum<T>,fn:Option<T>->Z):Z{
+  static public function usher<T,Z>(self:ReportSum<T>,fn:Option<Decline<T>>->Z):Z{
     return switch(self){
-      case Reported(rejection)  : rejection.usher(fn);
+      case Reported(refuse)     : refuse.usher(fn);
       default                   : fn(None);
     }
   }

@@ -25,7 +25,7 @@ class LedgerLift extends Clazz{
   @:noUsing static public function lift<I,O,E>(self:LedgerDef<I,O,E>):Ledger<I,O,E>{
     return Ledger.lift(self);
   }
-  static public function errata<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:Error<E>->Error<EE>):Ledger<I,O,EE>{
+  static public function errata<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:Refuse<E>->Refuse<EE>):Ledger<I,O,EE>{
     return self.map((x:Equity<I,O,E>) -> x.errata(fn));
   }
   static public function errate<I,O,E,EE>(self:LedgerDef<I,O,E>,fn:E->EE):Ledger<I,O,EE>{

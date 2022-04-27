@@ -1,23 +1,23 @@
 package stx.nano;
 
 @:pure typedef DefectDef<E> = {
-  public var error(get,null):Errata<E>;
-  public function get_error():Errata<E>;
+  public var error(get,null):Refuse<E>;
+  public function get_error():Refuse<E>;
 
   public function toDefect():Defect<E>;
 }
 @:pure interface DefectApi<E>{
-  public var error(get,null):Errata<E>;
-  public function get_error():Errata<E>;
+  public var error(get,null):Refuse<E>;
+  public function get_error():Refuse<E>;
   public function toDefect():Defect<E>;
 }
 @:pure class DefectCls<E> implements DefectApi<E>{
-  public var error(get,null):Errata<E>;
-  public function get_error():Errata<E>{ 
+  public var error(get,null):Refuse<E>;
+  public function get_error():Refuse<E>{ 
     return error;
   }
-  public function new(error:Errata<E>){
-    this.error = __.option(error).def(Errata.unit);
+  public function new(error:Refuse<E>){
+    this.error = __.option(error).def(Refuse.unit);
   }
   public function toDefect():Defect<E>{
     return this;
@@ -33,19 +33,19 @@ package stx.nano;
     return new Defect(self);
   }
   @:noUsing static public function unit<E>():Defect<E>{
-    return lift(new DefectCls(Errata.unit()));
+    return lift(new DefectCls(Refuse.unit()));
   }
   @:noUsing static public function pure<E>(e:E):Defect<E>{
-    return make(Errata.lift([e]));
+    return make(Refuse.pure(e));
   }
-  @:noUsing static public function make<E>(?data:Errata<E>){
-    return __.option(data).map((x:Errata<E>) -> lift(new DefectCls(x))).def(unit);
+  @:noUsing static public function make<E>(?data:Refuse<E>){
+    return __.option(data).map((x:Refuse<E>) -> lift(new DefectCls(x))).def(unit);
   }
-  public inline function toErrorAt(?pos:Pos):Error<E>{
-    return Errata._.toErrorAt(this.error,pos);
-  }
-  @:from static public function fromError<E>(self:Error<E>):Defect<E>{
-    return Defect.make(Errata.lift(self));
+  // public inline function toRefuseAt(?pos:Pos):RefuseAt<E>{
+  //   return Refuse._.toRefuse(this.error,pos);
+  // }
+  @:from static public function fromRefuse<E>(self:Refuse<E>):Defect<E>{
+    return Defect.make(Refuse.lift(self));
   }
   public function elide():Defect<Dynamic>{
     return this;
@@ -53,7 +53,7 @@ package stx.nano;
   public function entype<E>():Defect<E>{
     return cast this;
   }
-  @:to public function toError():Error<E>{
+  @:to public function toRefuse():Refuse<E>{
     return this.error.toError();
   }
   public function prj():DefectDef<E>{
@@ -64,9 +64,9 @@ class DefectLift{
   static public function concat<E>(self:Defect<E>,that:Defect<E>):Defect<E>{
     return Defect.make(self.error.concat(that.error));
   }
-  static public function errate<E,EE>(self:Defect<E>,fn:E->EE):Defect<EE>{
-    return Defect.make(self.error.errata(e -> e.errate(fn)));
-  }
+  // static public function errate<E,EE>(self:Defect<E>,fn:E->EE):Defect<EE>{
+  //   return Defect.make(self.error.errata(e -> e.errate(fn)));
+  // }
   static public function has_error<E>(self:Defect<E>):Bool{
     return self.error.is_defined();
   }

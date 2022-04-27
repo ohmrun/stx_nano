@@ -19,10 +19,10 @@ typedef ReceiptDef<T,E> = DefectDef<E> & {
   public function new(self) this = self;
   @:noUsing static public function lift<T,E>(self:ReceiptDef<T,E>):Receipt<T,E> return new Receipt(self);
   static public function unit<T,E>(){
-    return make(null,Iter.unit());
+    return make(null,Refuse.unit());
   }
-  @:noUsing static public function make<T,E>(value:Null<T>,?error:Iter<E>){
-    return lift(new ReceiptCls(__.option(error).defv(Iter.unit()),value));
+  @:noUsing static public function make<T,E>(value:Null<T>,?error:Refuse<E>){
+    return lift(new ReceiptCls(__.option(error).defv(Refuse.unit()),value));
   }
   public function prj():ReceiptDef<T,E> return this;
   private var self(get,never):Receipt<T,E>;
@@ -32,7 +32,7 @@ typedef ReceiptDef<T,E> = DefectDef<E> & {
     return make(null,self.error);
   }
   @:noUsing static public function pure<T,E>(self:T):Receipt<T,E>{
-    return make(self,Iter.unit());
+    return make(self,Refuse.unit());
   }
   @:to public function toError(){
     return this.error.toError();
@@ -48,13 +48,13 @@ class ReceiptLift extends Clazz{
   static public function errate<T,E,EE>(self:ReceiptDef<T,E>,fn:E->EE):Receipt<T,EE>{
     return errata(self,x -> x.errate(fn));
   }
-  static public function errata<T,E,EE>(self:ReceiptDef<T,E>,fn:Error<E>->Error<EE>){
+  static public function errata<T,E,EE>(self:ReceiptDef<T,E>,fn:Refuse<E>->Refuse<EE>){
     return Receipt.make(
       self.value,
       self.error.errata(fn)
     );
   }
-  static public function copy<T,E>(self:ReceiptDef<T,E>,?value:T,?error:Iter<E>){
+  static public function copy<T,E>(self:ReceiptDef<T,E>,?value:T,?error:Refuse<E>){
     return Receipt.make(
       __.option(value).defv(self.value),
       __.option(error).defv(self.error)
@@ -77,7 +77,7 @@ class ReceiptLift extends Clazz{
   }
   static public function toRes<T,E>(self:Receipt<T,E>):Res<T,E>{
     return switch(self.has_errors()){
-      case true   : __.reject(self.toDefect().toError());
+      case true   : __.reject(self.toDefect().toRefuse());
       case false  : __.accept(self.value); 
     }
   }

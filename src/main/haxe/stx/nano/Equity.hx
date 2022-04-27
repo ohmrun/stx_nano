@@ -28,7 +28,7 @@ typedef EquityDef<I,O,E> = ReceiptDef<O,E> & {
   private var self(get,never):Equity<I,O,E>;
   private function get_self():Equity<I,O,E> return lift(this);
 
-  @:noUsing static public function make<I,O,E>(asset:I,value:Null<O>,?error:Iter<E>){
+  @:noUsing static public function make<I,O,E>(asset:I,value:Null<O>,?error:Refuse<E>){
     return lift(new EquityCls(error,value,asset).toEquity());
   }
   @:to public function toError(){
@@ -46,14 +46,14 @@ class EquityLift extends Clazz{
   static public function errate<I,O,E,EE>(self:EquityDef<I,O,E>,fn:E->EE):Equity<I,O,EE>{
     return errata(self,x -> x.errate(fn));
   }
-  static public function errata<I,O,E,EE>(self:EquityDef<I,O,E>,fn:Error<E>->Error<EE>):Equity<I,O,EE>{
+  static public function errata<I,O,E,EE>(self:EquityDef<I,O,E>,fn:Refuse<E>->Refuse<EE>):Equity<I,O,EE>{
     return Equity.make(
       self.asset,
       self.value,
       self.error.errata(fn)
     );
   }
-  static public function copy<I,O,E>(self:EquityDef<I,O,E>,asset:I,?value:O,?error:Iter<E>){
+  static public function copy<I,O,E>(self:EquityDef<I,O,E>,asset:I,?value:O,?error:Refuse<E>){
     return lift(new EquityCls(
       __.option(error).defv(self.error),
       __.option(value).defv(self.value),
@@ -86,7 +86,7 @@ class EquityLift extends Clazz{
   static public function is_ok<I,O,E>(self:EquityDef<I,O,E>){
     return !self.error.is_defined();
   }
-  static public function defect<I,O,E>(self:EquityDef<I,O,E>,error:Iter<E>){
+  static public function defect<I,O,E>(self:EquityDef<I,O,E>,error:Refuse<E>){
     return copy(self,null,null,self.error.concat(error));
   }
   static public function relate<I,O,E>(self:EquityDef<I,O,E>,value:O):Equity<I,O,E>{

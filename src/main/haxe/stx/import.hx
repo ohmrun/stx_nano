@@ -9,6 +9,7 @@ import tink.core.Future;
 import tink.core.Promise;
 
 using stx.Pico;
+using stx.Fail;
 using stx.Nano;
 
 // #if stx_assert
