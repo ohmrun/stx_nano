@@ -56,7 +56,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   public function prj():ReportSum<E>{
     return this;
   }
-  public function value():Option<Refuse<E>>{
+  public function option():Option<Refuse<E>>{
     return _.fold(
       this,
       (err) -> Some(err),

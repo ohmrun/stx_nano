@@ -90,7 +90,7 @@ class SlotLift{
       );
     }
   }
-  static public function value<T>(self:Slot<T>):Option<T>{
+  static public function option<T>(self:Slot<T>):Option<T>{
     return switch(self.ready){
       case true     : Some(self.data);
       default       : None;

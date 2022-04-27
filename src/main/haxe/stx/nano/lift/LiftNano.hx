@@ -194,19 +194,6 @@ class LiftNano{
       r -> r 
     );
   }
-  #if tink_core
-  static public function value<T>(future:tink.core.Future<T>):Option<T>{
-    var result    = None;
-    var cancelled = false;
-    future.handle(
-      (x) -> {
-        cancelled = true;
-        result    = Some(x);
-      }
-    );
-    return result;
-  }
-  #end
   static public inline function crack<E>(wildcard:Wildcard,e:E){
     throw e;
   }

@@ -63,7 +63,7 @@ private class Ft extends Clazz{
     }
     return output;
   }
-  public function value<T>(ft:Future<T>):Option<T>{
+  public function option<T>(ft:Future<T>):Option<T>{
     var output    : Option<T>   = None;
     var finished  : Bool        = false;
     ft.handle(

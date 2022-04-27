@@ -190,7 +190,7 @@ class ChunkLift{
        }
    }
  }
- static public function value<T,E>(chk:Chunk<T,E>):Option<T>{
+ static public function option<T,E>(chk:Chunk<T,E>):Option<T>{
    return switch (chk){
      case Tap      : None;
      case Val(v)   : Some(v);

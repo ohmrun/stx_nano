@@ -272,10 +272,6 @@ enum abstract UNIMPLEMENTED(String){
   var UNIMPLEMENTED;
 }
 class LiftEnumValue{
-  @:deprecated
-  static public function value(self:StdEnumValue):EnumValue{
-    return stx.nano.EnumValue.lift(self);
-  }
   static public function lift(self:StdEnumValue):EnumValue{
     return stx.nano.EnumValue.lift(self);
   }
