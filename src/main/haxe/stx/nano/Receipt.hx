@@ -75,6 +75,9 @@ class ReceiptLift extends Clazz{
   static public function has_errors<T,E>(self:ReceiptDef<T,E>){
     return self.error.is_defined();
   }
+  static public function has_value<T,E>(self:ReceiptDef<T,E>){
+    return self.value != null;
+  }
   static public function toRes<T,E>(self:Receipt<T,E>):Res<T,E>{
     return switch(self.has_errors()){
       case true   : __.reject(self.toDefect().toRefuse());

@@ -83,6 +83,9 @@ class EquityLift extends Clazz{
   static public function has_error<I,O,E>(self:EquityDef<I,O,E>){
     return self.error.is_defined();
   }
+  static public function has_value<I,O,E>(self:EquityDef<I,O,E>){
+    return self.value != null;
+  }
   static public function is_ok<I,O,E>(self:EquityDef<I,O,E>){
     return !self.error.is_defined();
   }
@@ -96,10 +99,30 @@ class EquityLift extends Clazz{
       copy(self,null,value);
     }
   }
-  static public inline function toRes<I,O,E>(self:EquityDef<I,O,E>):Res<O,E>{
-    return switch(self.error.is_defined()){
-      case true   : __.reject(self.error.toError());
-      case false  : __.accept(self.value); 
+  static public function clear<P,Ri,Rii,E>(self:EquityDef<P,Ri,E>):Equity<P,Rii,E>{
+    return Equity.make(self.asset,null,self.error);
+  }
+  static public function refuse<P,R,E>(self:EquityDef<P,R,E>,error:Refuse<E>):Equity<P,R,E>{
+    return Equity.make(self.asset,self.value,self.error.concat(error));
+  }
+  static public function defuse<P,R,E,EE>(self:EquityDef<P,R,E>):Equity<P,R,EE>{
+    return Equity.make(self.asset,self.value,Refuse.unit());
+  }
+
+  static public inline function toChunk<I,O,E>(self:EquityDef<I,O,E>):Chunk<O,E>{
+    return switch(has_value(self)){
+      case true    : Val(self.value); 
+      case false   : switch(has_error(self)){
+        case true   : End(self.error.toError());
+        case false  : Tap;
+      } 
+    }
+  }
+  static public function rebase<P,Oi,Oii,E>(self:EquityDef<P,Oi,E>,chunk:Chunk<Oii,E>):Equity<P,Oii,E>{
+    return switch(chunk){
+      case Val(oII) : relate(clear(self),oII);
+      case End(e)   : refuse(clear(self),e);
+      case Tap      : clear(self);
     }
   }
 }

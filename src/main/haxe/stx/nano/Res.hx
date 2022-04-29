@@ -199,4 +199,12 @@ class ResLift{
       e     -> e.report()
     );
   }
+  static public function toChunk<T,E>(self:ResSum<T,E>):Chunk<T,E>{
+    return switch(self){
+      case Accept(null) : Tap;
+      case Accept(v)    : Val(v);
+      case Reject(e)    : End(e);
+      case null         : Tap; 
+    }
+  }
 }
