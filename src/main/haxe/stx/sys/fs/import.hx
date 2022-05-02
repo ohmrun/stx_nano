@@ -1,6 +1,6 @@
 package stx.sys.fs;
 
-#if (sys || hxnodejs)
+#if (sys || nodejs)
   import sys.FileSystem;
   import sys.io.File;
   using stx.Sys;

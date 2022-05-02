@@ -1,13 +1,13 @@
 package stx;
 
-#if (sys || hxnodejs)
+#if (sys || nodejs)
   import sys.FileSystem;
   import sys.io.File;
 #end
 
-
-typedef Clump<E>      = stx.sys.fs.Clump<E>;
-typedef Catalog<T>    = stx.sys.fs.Catalog<T>;
+#if (sys || nodejs)
+  typedef Clump<E>      = stx.sys.fs.Clump<E>;
+  typedef Catalog<T>    = stx.sys.fs.Catalog<T>;
 
 class Sys{
   static public function sys(wildcard:Wildcard){
@@ -54,3 +54,4 @@ private class Dir extends Clazz{
     FileSystem.createDirectory(path);
   }
 }
+#end
