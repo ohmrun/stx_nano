@@ -86,6 +86,9 @@ class EquityLift extends Clazz{
   static public function has_value<I,O,E>(self:EquityDef<I,O,E>){
     return self.value != null;
   }
+  static public function has_asset<I,O,E>(self:EquityDef<I,O,E>){
+    return self.asset != null;
+  }
   static public function is_ok<I,O,E>(self:EquityDef<I,O,E>){
     return !self.error.is_defined();
   }
