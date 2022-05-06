@@ -128,4 +128,13 @@ class EquityLift extends Clazz{
       case Tap      : clear(self);
     }
   }
+  static public function adjust<P,Oi,Oii,E>(self:EquityDef<P,Oi,E>,fn:Oi->Res<Oii,E>):Equity<P,Oii,E>{
+    return lift(self).has_value().if_else(
+      () -> fn(self.value).fold(
+        ok -> lift(self).clear().relate(ok),
+        er -> lift(self).clear().refuse(er)
+      ),
+      () -> lift(self).clear()
+    );
+  }
 }
