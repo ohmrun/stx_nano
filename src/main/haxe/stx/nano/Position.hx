@@ -73,18 +73,6 @@ package stx.nano;
   }
 }
 class PositionLift {
-  static public function toString(pos:Pos){
-    if (pos == null) return ':pos ()';
-    #if !macro
-      var f   = pos.fileName;
-      var cls = pos.className;
-      var fn  = pos.methodName;
-      var ln  = pos.lineNumber;
-      return ':pos (object :file_name $fn :class_name $cls :method_name $fn  :line_number $ln)';
-    #else
-      return '$pos';
-    #end
-  }
   static public function copy(p:Pos){
     return 
       #if !macro 

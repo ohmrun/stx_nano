@@ -118,6 +118,7 @@ class CharsLift{
 
     return a;
   }
+  static function AlphaUpperAlphaPattern()  return ~/-([a-z])([A-Z])/g;
   /**
     Turns a slugged or underscored string into a camelCase string.
   **/
@@ -127,9 +128,12 @@ class CharsLift{
   /**
     Replaces uppercased letters with prefix `sep` + lowercase.
   **/
-  // public function fromCamelCase(sep: Chars="_",self: Chars): Chars {
+  // public function fromCamelCase_with(self: Chars,sep: Chars="_"): Chars {
   //   return AlphaUpperAlphaPattern.map(self, function(e) { return e.matched(1) + sep + e.matched(2).toLowerCase(); });
   // }
+  static public function PascalcaseToSnakecase(self:Chars){
+    
+  }
   /**
     Split `st` at `sep`.
   **/

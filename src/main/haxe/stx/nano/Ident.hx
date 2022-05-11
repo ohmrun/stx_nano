@@ -52,4 +52,8 @@ typedef IdentDef = {
       case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join("_"));    
     }
   }
+  public function into():Way{
+    final next_path = Chars._.uncapitalize_first_letter(this.name);
+    return this.pack.snoc(next_path);
+  }
 }

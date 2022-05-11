@@ -117,7 +117,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
               case TClass(js.lib.Error) :
                 var er : js.lib.Error = e.data; 
                 __.reject(__.fault(pos).explain(_ -> _.e_js_error(er)));
-              default : 
+              case x : 
                 __.reject(__.fault(pos).explain(_ -> _.e_js_error(new js.lib.Error('${e.data}'))));
             }
         }

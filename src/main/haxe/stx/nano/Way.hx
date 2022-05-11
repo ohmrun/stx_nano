@@ -47,4 +47,7 @@ package stx.nano;
   @:to public function toArray():Array<String>{
     return Std.downcast(this,Array);
   }
+  public function up(){
+    return lift(this.rdropn(1));
+  }
 }

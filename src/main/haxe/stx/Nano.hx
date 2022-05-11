@@ -189,6 +189,7 @@ typedef TimeStampDef            = stx.nano.TimeStamp.TimeStampDef;
 typedef LogicalClock            = stx.nano.LogicalClock;
 typedef Cluster<T>              = stx.nano.Cluster<T>;
 typedef ClusterDef<T>           = stx.nano.Cluster.ClusterDef<T>;
+typedef Clustered<T>            = stx.nano.Clustered<T>;
 typedef Register<T>             = stx.nano.Register<T>;
 typedef Unfold<T,R>             = stx.nano.Unfold<T,R>;
 typedef Counter                 = stx.nano.Counter;

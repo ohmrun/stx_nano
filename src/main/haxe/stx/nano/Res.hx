@@ -106,7 +106,7 @@ class ResLift{
     );
   }
   static public inline function zip<T,TT,E>(self:ResSum<T,E>,that:ResSum<TT,E>):Res<Couple<T,TT>,E>{
-    return zip_with(self,that,__.couple);
+    return zip_with(self,that,Couple.make);
   }
   static public inline function zip_with<T,TT,Z,E>(self:ResSum<T,E>,that:ResSum<TT,E>,with:T->TT->Z):Res<Z,E>{
     return switch([self,that]){

@@ -167,9 +167,6 @@ class LiftNano{
       haxe.Log.trace(d,infos);
     }
   }
-  static public function through<T>(__:Wildcard):T->T{
-    return (v:T) -> v;
-  }
   static public function perform<T>(__:Wildcard,fn:Void->Void):T->T{
     return (v:T) -> {
       fn();
@@ -215,19 +212,6 @@ class LiftNano{
   }
   static public function vblock<T>(wildcard:Wildcard,t:T):VBlock<T>{
     return ()->{};
-  }
-  static public function noop<T>(wildcard:Wildcard):T->T{
-    return (t:T) -> (t:T);
-  }
-  static public function nullify<T>(wildcard:Wildcard):T->Void{
-    return (function(t:T){
-    });
-  }
-  static public function passthrough<T>(wildcard:Wildcard,fn:T->Void):T->T{
-    return (function(t:T):T{
-      fn(t);
-      return t;
-    });
   }
   static public function not(bool:Bool){
     return !bool;
