@@ -242,6 +242,9 @@ class IterLift{
       0
     );
   }
+  static public function last<T>(self:Iter<T>):Option<T>{
+    return lfold1(self,(n,m) -> n);
+  }
   static public function size<T>(self:Iter<T>){
     return count(self,_ -> true);
   }

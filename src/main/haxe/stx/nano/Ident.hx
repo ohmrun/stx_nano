@@ -45,12 +45,15 @@ typedef IdentDef = {
       case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join("."));    
     }
   }
-  public function toString_underscored(){
+  public function toString_with_sep(sep:String){
     return switch(this){
       case { name : n, pack : null }                          : n;
       case { name : n, pack : pack }    if (pack.length == 0) : n;
-      case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join("_"));    
+      case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join(sep));    
     }
+  }
+  public function toString_underscored(){
+    return toString_with_sep("_");
   }
   public function into():Way{
     final next_path = Chars._.uncapitalize_first_letter(this.name);

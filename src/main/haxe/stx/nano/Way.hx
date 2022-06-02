@@ -1,8 +1,9 @@
 package stx.nano;
 
-@:forward(length,join,tail,head,concat) abstract Way(Cluster<String>) from Cluster<String> to Cluster<String>{
+@:forward(length,join,tail,head,concat,is_defined) abstract Way(Cluster<String>) from Cluster<String> to Cluster<String>{
   public function new(self) this = self;
   @:noUsing static public function lift(self:Cluster<String>):Way return new Way(self);
+  @:noUsing static public function make(self:Cluster<String>):Way return new Way(self);
 
   @:op([]) static function array_access(self:Way, idx:Int):String;
   @:noUsing static public function unit():Way{

@@ -1,6 +1,9 @@
 package stx.nano;
 
 class Counter{
+  @:noUsing static public function unit(){
+    return new Counter();
+  }
   private var value : Int;
   public function new(value = 0){
     this.value = value;

@@ -1,6 +1,9 @@
 package stx;
 
 class Nano{
+  static public function stx<T>(wildcard:Wildcard):Stx<T>{
+    return new Stx();
+  }
   static public function digests(wildcard:Wildcard):Digests{
     return wildcard;
   }
@@ -190,7 +193,7 @@ typedef LogicalClock            = stx.nano.LogicalClock;
 typedef Cluster<T>              = stx.nano.Cluster<T>;
 typedef ClusterDef<T>           = stx.nano.Cluster.ClusterDef<T>;
 typedef Clustered<T>            = stx.nano.Clustered<T>;
-typedef Register<T>             = stx.nano.Register<T>;
+typedef Roster<T>             = stx.nano.Roster<T>;
 typedef Unfold<T,R>             = stx.nano.Unfold<T,R>;
 typedef Counter                 = stx.nano.Counter;
 typedef Json                    = stx.nano.Json;
@@ -243,6 +246,9 @@ typedef Timer               = stx.nano.Timer;
 typedef CTRDef<P,R>         = stx.nano.CTR.CTRDef<P,R>;
 typedef CTR<P,R>            = stx.nano.CTR<P,R>;
 
+typedef APPDef<P,R>         = stx.nano.APP.APPDef<P,R>;
+typedef APP<P,R>            = stx.nano.APP<P,R>;
+
 typedef IdentDef            = stx.nano.Ident.IdentDef;
 typedef Ident               = stx.nano.Ident;
 typedef Way                 = stx.nano.Way;
@@ -269,6 +275,14 @@ typedef Nugget<P>           = stx.nano.Nugget<P>;
 typedef Absorbable<P>       = stx.nano.Nugget.Absorbable<P>;
 typedef Producable<P>       = stx.nano.Nugget.Producable<P>;
 
+typedef Register            = stx.nano.Register;
+typedef Knuckle             = stx.nano.Knuckle;
+typedef KnuckleSum          = stx.nano.Knuckle.KnuckleSum;
+
+typedef Junction<T>         = stx.nano.Junction<T>;
+typedef JunctionSum<T>      = stx.nano.Junction.JunctionSum<T>;
+typedef JunctionCtr<T>      = stx.nano.Junction.JunctionCtr<T>;
+
 enum abstract UNIMPLEMENTED(String){
   var UNIMPLEMENTED;
 }
@@ -277,3 +291,4 @@ class LiftEnumValue{
     return stx.nano.EnumValue.lift(self);
   }
 }
+

@@ -13,4 +13,10 @@ typedef CTRDef<P,R> = P -> R;
   @:from static public function fromR<P,R>(r:R):CTR<P,R>{
     return lift((_:P) -> r);
   }
+  public function apply(r:P):R{
+    return this(r);
+  }
+  public function app(p:P):APP<P,R>{
+    return tuple2(this,p);
+  }
 }
