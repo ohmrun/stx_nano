@@ -2,7 +2,7 @@ package stx.nano;
 
 enum KnuckleSum{
   Ordinal(idx:Register);
-  Nominal(str:String);
+  Nominal(str:String,idx:Register);
 }
 @:using(stx.nano.Knuckle.KnuckleLift)
 abstract Knuckle(KnuckleSum) from KnuckleSum to KnuckleSum{
@@ -18,24 +18,25 @@ abstract Knuckle(KnuckleSum) from KnuckleSum to KnuckleSum{
     return lift(Ordinal(self));
   }
   @:from static public function fromString(self:String){
-    return lift(Nominal(self));
+    return lift(Nominal(self,Register.unit()));
   }
   @:from static public function fromNull(self:Null<Dynamic>){
     return lift(Ordinal(Register.unit()));
   }
   public function toString(){
     return switch(this){
-      case Nominal(str) : str;
-      case Ordinal(i)   : '[$i]';
+      case Nominal(str,i) : '.${str}@$i';
+      case Ordinal(i)     : '[$i]';
     }
   }
+  //TODO what's the more general case?
   @:op(A==A)
   public function equals(r:Knuckle):Bool{
     var l = this;
     return switch([l,r]){
-      case [Nominal(l),Nominal(r)]  : l == r;
-      case [Ordinal(l),Ordinal(r)]  : l == r;
-      default                       : false;
+      case [Nominal(l,lI),Nominal(r,rI)]  : l == r && lI == rI;
+      case [Ordinal(l),Ordinal(r)]        : l == r;
+      default                             : false;
     }
   }
 }

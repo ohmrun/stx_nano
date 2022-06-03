@@ -6,11 +6,15 @@ class Nano{
   }
   static public function digests(wildcard:Wildcard):Digests{
     return wildcard;
-  }
-  
+  } 
   static public var _(default,never) = LiftNano;
+  
 }
-
+class PicoNano{
+  // static public function Option(pico:Pico):Stx<stx.pico.Option.Tag>{
+  //   return __.stx();
+  // }
+}
 class LiftArrayToCluster{
   static public inline function toCluster<T>(self:Array<T>):Cluster<T>{
     return Cluster.lift(self);

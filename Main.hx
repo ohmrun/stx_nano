@@ -1,11 +1,12 @@
 
 using tink.CoreApi;
+using stx.Pico;
 using stx.Nano;
-
 
 #if sys
 using stx.Sys;
 #end
+
 
 class Main {
 	static function main() {
@@ -15,6 +16,7 @@ class Main {
 			case ["hello"] : trace("hello");
 			default : 
 		}
+		$type(Pico.Option());
 	}
 	static macro function boot(){
 		trace('boot');
