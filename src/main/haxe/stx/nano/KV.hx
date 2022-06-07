@@ -20,6 +20,12 @@ typedef KVDef<K,V> = {
   @:from static public function fromTup<K,V>(tp:Couple<K,V>):KV<K,V>{
     return new KV({ key : tp.fst(), val : tp.snd()});
   }
+  public function toKeyValue():{key : K, value : V}{
+    return {
+      key   : this.key,
+      value : this.val
+    }
+  }
 }
 class KVLift{
   static public function map<K,V,U>(self:KVDef<K,V>,fn:V->U):KV<K,U>{
@@ -40,4 +46,5 @@ class KVLift{
   static public function decouple<K,V,Z>(self:KVDef<K,V>,fn:K->V->Z):Z{
     return fn(self.key,self.val);
   }
+
 }

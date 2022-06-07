@@ -110,4 +110,10 @@ class AlertLift{
       () -> tink.core.Outcome.Success(Noise)
     );
   }
+  static public function zip<E>(self:AlertDef<E>,that:Alert<E>):Alert<E>{
+    var out = __.nano().Ft().zip(self,that.prj()).map(
+      (tp) -> tp.fst().concat(tp.snd())
+    );
+    return out;
+  }
 }

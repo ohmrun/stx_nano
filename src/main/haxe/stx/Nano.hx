@@ -10,6 +10,14 @@ class Nano{
   static public var _(default,never) = LiftNano;
   
 }
+class Maps{
+  static public function map_into<K,Vi,Vii>(self:Map<K,Vi>,fn:Vi -> Vii,memo:Map<K,Vii>):Map<K,Vii>{
+    for(k => v in self){
+      memo.set(k,fn(v));
+    }
+    return memo;
+  }
+}
 class PicoNano{
   // static public function Option(pico:Pico):Stx<stx.pico.Option.Tag>{
   //   return __.stx();

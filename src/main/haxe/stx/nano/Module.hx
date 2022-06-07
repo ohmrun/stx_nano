@@ -63,6 +63,9 @@ private class Ft extends Clazz{
     }
     return output;
   }
+  public function squeeze<T>(ft:Future<T>):Option<T>{
+    return tryAndThenCancelIfNotAvailable(ft);
+  }
   public function option<T>(ft:Future<T>):Option<T>{
     var output    : Option<T>   = None;
     var finished  : Bool        = false;

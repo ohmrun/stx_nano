@@ -5,7 +5,7 @@ class JunctionCtr<T> extends Clazz{
     return Junction.fromRegister(v);
   }
   public function Of<I>(v:APP<I,T>):Junction<T>{
-    return Junction.fromT(v.reply());
+    return Junction.fromT(v.reply()); 
   }
 }
 enum JunctionSum<T>{

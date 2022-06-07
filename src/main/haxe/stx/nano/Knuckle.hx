@@ -29,7 +29,6 @@ abstract Knuckle(KnuckleSum) from KnuckleSum to KnuckleSum{
       case Ordinal(i)     : '[$i]';
     }
   }
-  //TODO what's the more general case?
   @:op(A==A)
   public function equals(r:Knuckle):Bool{
     var l = this;

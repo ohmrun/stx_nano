@@ -27,6 +27,13 @@ import haxe.Constraints;
       } 
     );
   }
+  @:from static public function fromThunkIterator<T>(self:() ->Iterator<T>):Iter<T>{
+    return lift(
+      {
+        iterator : self
+      } 
+    );
+  }
   @:noUsing static public function make0<T>(self : Void -> Couple<() -> Bool,() -> T> ) : Iter<T>{
     return make({
       hasNext : () -> self().fst()(),
