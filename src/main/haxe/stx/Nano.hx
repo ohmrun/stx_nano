@@ -295,6 +295,7 @@ typedef Junction<T>         = stx.nano.Junction<T>;
 typedef JunctionSum<T>      = stx.nano.Junction.JunctionSum<T>;
 typedef JunctionCtr<T>      = stx.nano.Junction.JunctionCtr<T>;
 
+typedef Generator<T>        = stx.nano.Generator<T>;
 enum abstract UNIMPLEMENTED(String){
   var UNIMPLEMENTED;
 }
