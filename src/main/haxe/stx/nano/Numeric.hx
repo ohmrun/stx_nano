@@ -1,5 +1,6 @@
 package stx.nano;
 
+//TODO uint?
 enum NumericSum{
   NInt(int:Int);
   NInt64(int:Int64);

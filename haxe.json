@@ -62,6 +62,9 @@
           "--js"  : "build/test/node/main.js"
         }
       },
+      "hashlink" : {
+        "--hl"  : "build/test/hashlink/main.js"
+      },
       "cppia" :{
         "-D" : "cppia",
         "--cppia" : "build/test/cppia/main.cppia"

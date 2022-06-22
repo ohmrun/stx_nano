@@ -51,7 +51,7 @@ package stx.nano;
     }
     return o;
   }
-  public function iterator(){
+  public function iterator():Iterator<T>{
     return
     {
       next      : next,
