@@ -11,10 +11,10 @@ abstract Fault(Null<Pos>) from Null<Pos>{
   inline public function decline<E>(self:Decline<E>):Refuse<E>{
     return Refuse.make(Some(self),None,this);
   }
-  inline public function explain<E>(fn:Digests->Digest):Refuse<E>{
+  inline public function explain<E>(fn:CTR<Digests,Digest>):Refuse<E>{
     return Refuse.make(Some(INTERIOR(fn(__.digests()))),None,this);
   }
-  inline public function digest(fn:Digests->Digest):Error<Digest>{
+  inline public function digest(fn:CTR<Digests,Digest>):Error<Digest>{
     return Error.make(Some(fn(__.digests())),None,this);
   }
 }

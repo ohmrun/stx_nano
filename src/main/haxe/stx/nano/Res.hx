@@ -192,6 +192,9 @@ class ResLift{
   static public function toPledge<T,E>(self:ResSum<T,E>):Pledge<T,E>{
     return Pledge.fromRes(self);
   }
+  static public function pledge<T,E>(self:ResSum<T,E>):Pledge<T,E>{
+    return Pledge.fromRes(self);
+  }
   static public function point<T,E>(self:ResSum<T,E>,fn:T->Report<E>):Report<E>{
     return fold(
       self,

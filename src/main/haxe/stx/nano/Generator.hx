@@ -5,8 +5,7 @@ package stx.nano;
   When the function returns None, the iteration is considered complete.
 
   Each successive value is pushed onto a stack.
-
-	**/
+**/
 @:allow(stx.Generator) class Generator<T>{
   @:noUsing public static function pure(fn){
     return make(fn,[]);

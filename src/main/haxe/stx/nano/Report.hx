@@ -1,6 +1,5 @@
 package stx.nano;
 
-
 @:using(stx.nano.Report.ReportLift)
 abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   static public var _(default,never) = ReportLift;

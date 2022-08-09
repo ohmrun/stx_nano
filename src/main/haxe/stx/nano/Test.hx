@@ -9,7 +9,7 @@ using stx.Nano;
   class Test{
     static public function main(){
       __.log().info("test");
-      __.test([
+      __.test().run([
         new EquityTest(),
       ],[]);
     }

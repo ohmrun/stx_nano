@@ -1,0 +1,13 @@
+-cp src/main/haxe
+-lib tink_core
+-lib hx3compat
+-lib stx_pico
+-lib stx_fail
+-D no-deprecation-warnings
+--macro allowPackage('sys')
+--macro include('stx.Nano',true,[])
+--macro include('stx.nano',true,[])
+--macro include('stx.Sys',true,[])
+--macro include('stx.sys',true,[])
+--verbose
+--hl build/unit/hl/main.hl

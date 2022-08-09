@@ -1,5 +1,6 @@
 {
   "build" : {
+    "-D"   : ["no-deprecation-warnings"],
     "-lib" : ["tink_core","hx3compat","stx_pico","stx_fail"],
     "-cp"  : ["src/main/haxe"],
     "unit" : {
@@ -63,7 +64,8 @@
         }
       },
       "hashlink" : {
-        "--hl"  : "build/test/hashlink/main.js"
+        "--verbose" : true,
+        "--hl"  : "build/test/hashlink/main.hl"
       },
       "cppia" :{
         "-D" : "cppia",
@@ -71,6 +73,29 @@
       },
       "interp" : {
         "--interp" : true
+      }
+    },
+    "doc" : {
+      "make" : {
+        "--macro" : [
+          "exclude('',true)",
+          "include('stx.Nano',true,[])",
+          "include('stx.nano',true,[])", 
+          "include('stx.Sys',true,[])",
+          "include('stx.sys',true,[])"
+        ],
+        "--json" : "build/doc/doc.json"
+      },
+      "show" : {
+        "-D" : ["stx.parse.switches.debug=true"],
+        "--resource" : "build/doc/doc.json@doc",
+        "-cp"    : "src/doc",
+        "-lib"    : "stx_parse",
+        "--main"  : "Doc",
+        "build" : {
+          "-lib" : "hxnodejs",
+          "--js" : "build/doc/node/main.js"
+        }
       }
     }
   },

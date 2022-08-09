@@ -50,7 +50,7 @@ class AccrualLift extends Clazz{
   static public function flat_map<T,Ti,E>(self:AccrualDef<T,E>,fn:T->Accrual<Ti,E>):Accrual<Ti,E>{
     return self.flatMap(
       (x:Receipt<T,E>) -> __.option(x.value).fold(
-        ok -> fn(ok).errata(e -> x.error.toError().concat(e)),//TODO ???
+        ok -> fn(ok).errata(e -> x.error.toError().concat(e)),//TODO ??? Ordering
         () -> Accrual.fromReceipt(Receipt.fromDefect(x.toDefect()))
       )
     );
