@@ -2,6 +2,7 @@ package stx.nano;
 
 interface ReceiptApi<T,E> extends DefectApi<E>{
   final value : Null<T>;
+  public function iterator():Iterator<T>;
 }
 class ReceiptCls<T,E> extends DefectCls<E> implements ReceiptApi<T,E>{
   public final value : Null<T>;
@@ -9,9 +10,35 @@ class ReceiptCls<T,E> extends DefectCls<E> implements ReceiptApi<T,E>{
     super(error);
     this.value = value;
   }
+  public function iterator(){
+    var done  = false;
+    final test = () -> {
+      done = true;
+      if(error.is_defined()){
+        error.raise();
+      }else if(value == null){
+        throw 'undefined'; 
+      }
+    }
+    return {
+      next : () -> {
+        test();
+        return value;
+      },
+      hasNext : () -> {
+        if(!done){
+          test();
+          true;
+        }else{
+          false;
+        }
+      }
+    }
+  }
 }
 typedef ReceiptDef<T,E> = DefectDef<E> & {
   final value : Null<T>;
+  public function iterator():Iterator<T>;
 }
 @:using(stx.nano.Receipt.ReceiptLift)
 @:forward abstract Receipt<T,E>(ReceiptDef<T,E>) from ReceiptDef<T,E> to ReceiptDef<T,E>{

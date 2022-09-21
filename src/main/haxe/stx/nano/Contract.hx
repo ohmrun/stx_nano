@@ -19,7 +19,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     return Contract.pure(Tap);
   }
   @:noUsing static public function sync<T,E>(ch:Chunk<T,E>):Contract<T,E>{
-    return lift(Future.sync(ch));
+    return lift(Future.irreversible((cb) -> cb(ch)));
   } 
   @:noUsing static public function pure<T,E>(ch:Chunk<T,E>):Contract<T,E>{
     return Future.irreversible(
@@ -200,7 +200,7 @@ class ContractLift extends Clazz{
     return ft.flatMap(
       function(x:Chunk<T,E>):ContractDef<Ti,E>{
         return switch (x){
-          case Tap      : new Contract(Future.sync(Tap)).prj();
+          case Tap      : new Contract(Future.irreversible((cb) -> cb(Tap))).prj();
           case Val(v)   : fn(v).prj();
           case End(err) : Contract.fromChunk(End(err)).prj();
     }});

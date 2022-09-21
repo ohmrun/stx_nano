@@ -16,10 +16,13 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
       }
     ); 
   }
+  @:noUsing static public function pure<T,E>(self:T):Pledge<T,E>{
+    return make(__.accept(self));
+  }
   @:noUsing static public inline function accept<T,E>(ch:T):Pledge<T,E>         return make(__.accept(ch));
   @:noUsing static public inline function reject<T,E>(e:Error<E>):Pledge<T,E>   return make(__.reject(e.except()));
 
-  @:noUsing static public function bind_fold<T,Ti,E>(it:Cluster<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
+  @:noUsing static public function bind_fold<T,Ti,E>(it:Iter<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
     return new Pledge(__.nano().Ft().bind_fold(
       it,
       function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{
@@ -203,7 +206,7 @@ class PledgeLift{
     return lift(self.prj().map(
       (x) -> x.fold(
         (s) -> __.accept(fn(s)),
-        __.reject
+        e -> __.reject(e)
       )
     ));
   }

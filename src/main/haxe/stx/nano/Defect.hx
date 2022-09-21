@@ -5,11 +5,16 @@ package stx.nano;
   public function get_error():Refuse<E>;
 
   public function toDefect():Defect<E>;
+
+  public function raise():Void;
 }
 @:pure interface DefectApi<E>{
   public var error(get,null):Refuse<E>;
   public function get_error():Refuse<E>;
   public function toDefect():Defect<E>;
+
+
+  public function raise():Void;
 }
 @:pure class DefectCls<E> implements DefectApi<E>{
   public var error(get,null):Refuse<E>;
@@ -21,6 +26,9 @@ package stx.nano;
   }
   public function toDefect():Defect<E>{
     return this;
+  }
+  public function raise():Void{
+    throw this;
   }
 }
 @:using(stx.nano.Defect.DefectLift)

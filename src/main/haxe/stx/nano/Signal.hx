@@ -127,4 +127,24 @@ class SignalLift{
   static public function next<T>(self:Signal<T>):Future<T>{
     return self.prj().nextTime();
   }
+  static public function latest<T>(self:Signal<T>):Future<Cell<T>>{
+    var first         = Future.trigger();
+    var has_triggered = false;
+    var val : T       = null;
+    var cell          = Cell.make(
+      () -> {
+        return val;
+      }
+    );
+    self.handle(
+      (x) -> {
+        val = x;
+        if(!has_triggered){
+          first.trigger(cell);
+          has_triggered = true;
+        }
+      }
+    );
+    return first.asFuture();
+  }
 }

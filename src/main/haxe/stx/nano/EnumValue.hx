@@ -14,11 +14,12 @@ abstract EnumValue(StdEnumValue) from StdEnumValue{
   public function ctr(){
     return StdType.enumConstructor(this);
   }
-  public function index(){
+  public var index(get,never):Int;
+  public function get_index():Int{
     return StdType.enumIndex(this);
   }
   public function alike(that:EnumValue){
-    return ctr() == that.ctr() && index() == that.index();
+    return ctr() == that.ctr() && index == that.index;
   }
   public function prj():StdEnumValue{
     return this;

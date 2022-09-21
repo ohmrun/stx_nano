@@ -5,6 +5,8 @@ typedef EnsembleDef<T> = haxe.DynamicAccess<T>;
 
 @:using(stx.nano.Ensemble.EnsembleLift)
 @:forward abstract Ensemble<T>(EnsembleDef<T>) from EnsembleDef<T> to EnsembleDef<T>{
+
+  @:op([]) static public function array_access<T>(self:Ensemble<T>, idx:String):T;
   
   @:op(A.B) static public function object_access<T>(self:Ensemble<T>, str:String):T{
     return self.prj()[str];

@@ -46,7 +46,7 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
       case Reject(no) : Failure(no);
     }
   }
-  @:noUsing static public function bind_fold<T,E,Z>(arr:Cluster<T>,fn:T->Z->Res<Z,E>,init:Z):Res<Z,E>{
+  @:noUsing static public function bind_fold<T,E,Z>(arr:Iter<T>,fn:T->Z->Res<Z,E>,init:Z):Res<Z,E>{
     return arr.lfold(
       (next:T,memo:Res<Z,E>) -> memo.fold(
         (ok)  -> fn(next,ok),
@@ -71,14 +71,14 @@ abstract Res<T,E>(ResSum<T,E>) from ResSum<T,E> to ResSum<T,E>{
       hasNext : () -> {
         return this.fold(
           ok  -> !done,
-          (_) -> false
+          (e) -> throw e
         );
       },
       next : () -> {
         done = true;
         return this.fold(
           ok  -> ok,
-          _   -> null
+          e   -> throw e
         );
       }
     }

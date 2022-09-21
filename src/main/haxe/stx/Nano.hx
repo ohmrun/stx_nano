@@ -297,6 +297,10 @@ typedef JunctionCtr<T>      = stx.nano.Junction.JunctionCtr<T>;
 
 typedef PrimitiveType       = stx.nano.PrimitiveType;
 typedef PrimitiveTypeSum    = stx.nano.PrimitiveType.PrimitiveTypeSum;
+typedef PrimitiveTypeCtr    = stx.nano.PrimitiveType.PrimitiveTypeCtr;
+
+typedef Record<T>           = stx.nano.Record<T>;
+typedef RecordDef<T>        = stx.nano.Record.RecordDef<T>;
 
 typedef Generator<T>        = stx.nano.Generator<T>;
 enum abstract UNIMPLEMENTED(String){

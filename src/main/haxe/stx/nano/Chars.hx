@@ -255,6 +255,9 @@ class CharsLift{
     var c = self.charCodeAt( pos );
     return (c >= 9 && c <= 13) || c == 32;
   }
+  static public function is_defined(self:Chars):Bool{
+    return (self != '');
+  }
   static public inline function chr(i:Int){
     return String.fromCharCode(i);
   }

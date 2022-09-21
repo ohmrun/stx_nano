@@ -19,12 +19,20 @@ class Module extends Clazz{
 }
 #if tink_core
 private class Ft extends Clazz{
-  public function bind_fold<T,TT>(arr:Cluster<T>,fn:T->TT->Future<TT>,init:TT):Future<TT>{
+  public function bind_fold<T,TT>(arr:Iter<T>,fn:T->TT->Future<TT>,init:TT):Future<TT>{
+    //trace("bind_fold");
     return arr.lfold(
-      (next,memo:Future<TT>) -> memo.flatMap(
-        (tt) -> fn(next,tt)
-      ),
-      Future.sync(init)
+      (next:T,memo:Future<TT>) -> {
+        trace(next);
+        return memo.flatMap(
+          (tt) -> {
+            //trace(tt);
+            final result = fn(next,tt);
+            return result;
+          }
+        );
+      },
+      Future.irreversible((cb) -> cb(__.tracer()(init)))
     );
   }
   public function zip<Ti,Tii>(self:Future<Ti>,that:Future<Tii>):Future<Couple<Ti,Tii>>{
