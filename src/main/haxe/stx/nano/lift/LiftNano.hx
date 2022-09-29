@@ -31,6 +31,7 @@ class LiftNano{
   static public function here(wildcard:Wildcard,?pos:Pos):Pos{
     return pos;
   }
+  #if hx3compat
   static public function test(wildcard:Wildcard,arr:Iterable<haxe.unit.TestCase>){
     var runner = new haxe.unit.TestRunner();
     for(t in arr){
@@ -38,6 +39,7 @@ class LiftNano{
     }
     runner.run();
   }    
+  #end
   /**
 		Returns a unique identifier, each `x` replaced with a hex character.
 	**/

@@ -137,4 +137,9 @@ class EquityLift extends Clazz{
       () -> lift(self).clear()
     );
   }
+  // static public function zip<P,Oi,Oii,E>(self:EquityDef<P,Oi,E>,that:EquityDef<P,Oii,E>):Equity<P,Couple<Oi,Oii>,E>{
+  //   return if(self.has_errors() || that.has_errors()){
+  //     Equity.make()
+  //   }
+  // }
 }

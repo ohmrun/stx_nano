@@ -1,7 +1,7 @@
 {
   "build" : {
     "-D"   : ["no-deprecation-warnings"],
-    "-lib" : ["tink_core","hx3compat","stx_pico","stx_fail"],
+    "-lib" : ["tink_core","stx_pico","stx_fail"],
     "-cp"  : ["src/main/haxe"],
     "unit" : {
       "--macro" : [
