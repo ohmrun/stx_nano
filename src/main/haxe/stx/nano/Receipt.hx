@@ -102,6 +102,9 @@ class ReceiptLift extends Clazz{
   static public function has_errors<T,E>(self:ReceiptDef<T,E>){
     return self.error.is_defined();
   }
+  static public function has_error<T,E>(self:ReceiptDef<T,E>){
+    return self.error.is_defined();
+  }
   static public function has_value<T,E>(self:ReceiptDef<T,E>){
     return self.value != null;
   }

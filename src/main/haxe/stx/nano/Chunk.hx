@@ -54,31 +54,31 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
 	**/
   @:noUsing static public function all<T,E>(arr:Array<Chunk<T,E>>,?TapFail:Refuse<E>):Chunk<Array<T>,E>{
     return arr.lfold(
-        function(next,memo:Chunk<Array<T>,E>){
-          return switch ([memo,next]) {
-            case [Val(memo),Val(next)]  :
-              memo.push(next);
-              Val(memo);
-            case [Val(memo),End(e)]     : End(e);
-            case [Val(v),Tap]           : TapFail == null ? Tap : End(TapFail);
-            case [End(e),End(e0)]       : 
-                var err = 
-                  __.option(e).toArray()
-                    .concat(__.option(e0).toArray())
-                    .lfold(
-                      (nx,mm:Refuse<E>) -> mm.concat(nx),
-                      TapFail
-                    );
-                End(err);
-            case [End(e),Tap]           : 
-                var err = __.option(e).map(e->e.concat(TapFail)).defv(TapFail);
-                End(err);
-            case [End(e),_]             : End(e);
-            case _                      : TapFail == null ? Tap : End(TapFail);
-          }
-        },
-        Val([])
-      );
+      function(next,memo:Chunk<Array<T>,E>){
+        return switch ([memo,next]) {
+          case [Val(memo),Val(next)]  :
+            memo.push(next);
+            Val(memo);
+          case [Val(memo),End(e)]     : End(e);
+          case [Val(v),Tap]           : TapFail == null ? Tap : End(TapFail);
+          case [End(e),End(e0)]       : 
+              var err = 
+                __.option(e).toArray()
+                  .concat(__.option(e0).toArray())
+                  .lfold(
+                    (nx,mm:Refuse<E>) -> mm.concat(nx),
+                    TapFail
+                  );
+              End(err);
+          case [End(e),Tap]           : 
+              var err = __.option(e).map(e->e.concat(TapFail)).defv(TapFail);
+              End(err);
+          case [End(e),_]             : End(e);
+          case _                      : TapFail == null ? Tap : End(TapFail);
+        }
+      },
+      Val([])
+    );
   }
   @:noUsing static public function available<T,E>(rest:Array<Chunk<T,E>>):Chunk<Array<T>,E>{
     return rest.lfold(
@@ -226,7 +226,11 @@ class ChunkLift{
    var done = false;
    return {
      hasNext : function(){
-       return !done && new EnumValue(self).alike(new EnumValue(Val(null)));
+      return switch(self){
+        case Val(_) : !done;
+        case End(e) : if(e!=null) e.raise(); false;
+        case Tap    : __.fault().explain(e -> e.e_undefined()).raise(); false;
+      }
      },
      next    : function(){
        done = true;
@@ -237,11 +241,32 @@ class ChunkLift{
      }
    };
  }
- static public function secure<O,E>(self:Chunk<O,E>):Chunk<O,E>{
-   return self.fold(
-     (v) -> v == null ? Tap : Val(v),
-     End,
-     () -> Tap
-   );
- }
+  static public function secure<O,E>(self:Chunk<O,E>):Chunk<O,E>{
+    return self.fold(
+      (v) -> v == null ? Tap : Val(v),
+      End,
+      () -> Tap
+    );
+  }
+  static public function toRes<O,E>(self:Chunk<O,E>){
+    return self.fold(
+      ok  -> __.accept(ok),
+      (e) -> __.reject(e),
+      () -> __.reject(f -> f.explain(e -> e.e_undefined()))
+    );
+  }
+  static public function toResOpt<O,E>(self:Chunk<O,E>){
+    return self.fold(
+      ok  -> __.accept(Some(ok)),
+      (e) -> __.reject(e),
+      ()  -> __.accept(None)
+    );
+  }
+  static public function toError<O,E>(self:Chunk<O,E>):Option<Refuse<E>>{
+    return switch(self){
+      case End(null) : None;
+      case End(e)    : Some(e);
+      default        : None;
+    }
+  }
 }
