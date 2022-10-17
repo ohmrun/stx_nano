@@ -6,6 +6,7 @@ package stx.nano;
 
 typedef ContractDef<T,E> = Future<Chunk<T,E>>; 
 
+@stx.lang.has('pure','unit','lift')
 @:using(stx.nano.Contract.ContractLift)
 @:expose abstract Contract<T,E>(ContractDef<T,E>) from ContractDef<T,E> to ContractDef<T,E>{
   static public var _(default,never) = ContractLift;

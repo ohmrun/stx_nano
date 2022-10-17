@@ -303,6 +303,14 @@ typedef Record<T>           = stx.nano.Record<T>;
 typedef RecordDef<T>        = stx.nano.Record.RecordDef<T>;
 
 typedef Generator<T>        = stx.nano.Generator<T>;
+
+typedef PartialFunction<P,R>      = stx.nano.PartialFunction<P,R>;
+typedef PartialFunctionApi<P,R>   = stx.nano.PartialFunction.PartialFunctionApi<P,R>;
+typedef PartialFunctionCls<P,R>   = stx.nano.PartialFunction.PartialFunctionCls<P,R>;
+
+typedef PartialFunctions<P,R>     = stx.nano.PartialFunctions<P,R>;
+typedef PartialFunctionsDef<P,R>  = stx.nano.PartialFunctions.PartialFunctionsDef<P,R>;
+
 enum abstract UNIMPLEMENTED(String){
   var UNIMPLEMENTED;
 }
