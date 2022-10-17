@@ -10,7 +10,7 @@ abstract PartialFunctions<P,R>(PartialFunctionsDef<P,R>) from PartialFunctionsDe
   private var self(get,never):PartialFunctions<P,R>;
   private function get_self():PartialFunctions<P,R> return lift(this);
 
-  public function apply(v:P){
+  public function apply(v:P):Option<R>{
     return this.lfold(
       (next:PartialFunction<P,R>,memo:Option<R>) -> {
         switch(memo){
