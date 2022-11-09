@@ -15,7 +15,7 @@
     "dependencies": {
         "tink_core"     : "git:https://github.com/haxetink/tink_core.git",
         "stx_pico"      : "git:https://github.com/ohmrun/stx_pico.git#develop",
-        "stx_fail"      : "git:https://github.com/ohmrun/stx_fail.git"
+        "stx_fail"      : "git:https://github.com/ohmrun/stx_fail.git#develop"
     },
     "classPath": "src/main/haxe"
 }

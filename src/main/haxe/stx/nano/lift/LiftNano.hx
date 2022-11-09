@@ -196,6 +196,9 @@ class LiftNano{
   static public inline function crack<E>(wildcard:Wildcard,e:E){
     throw e;
   }
+  static public inline function raise<E>(wildcard:Wildcard,e:E){
+    throw e;
+  }
   static public inline function report<E>(wildcard:Wildcard,?f:Fault -> Refuse<E>,?pos:Pos):Report<E>{
     return f == null ? Report.unit() : Report.pure(f(__.fault(pos)));
   }

@@ -39,7 +39,7 @@ abstract CompilerTarget(CompilerTargetSum) from CompilerTargetSum to CompilerTar
       case "php"    : Php;
       case "neko"   : Neko;
       case "cpp"    : Cpp;
-      case "Cppia"  : Cppia;
+      case "cppia"  : Cppia;
       case "cs"     : Cs;
       case "java"   : Java;
       case "python" : Python;
@@ -83,6 +83,12 @@ class CompilerTargetLift{
     return switch(self){
       case Swf | Js | Neko | Cppia | Python | Lua | Hl            : true;
       case Php | Cpp | Cs | Java | Interp                         : false;
+    }
+  }
+  static public function threaded(self:CompilerTarget):Bool{
+    return switch(self){
+      case Lua | Cpp | Java | Neko |Interp | Cs | Hl | Python : true;
+      default : false;
     }
   }
   static public function extension(self:CompilerTarget):Option<String>{

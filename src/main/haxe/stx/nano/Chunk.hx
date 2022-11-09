@@ -269,4 +269,14 @@ class ChunkLift{
       default        : None;
     }
   }
+  /**
+	 * Produces `self` if it is `Val(x)`, the result of `thunk` otherwise.
+	**/
+  static public function or<T,E>(self: ChunkSum<T,E>, thunk: Void -> Chunk<T,E>): Chunk<T,E> {
+    return fold(self,
+      Val,
+      e   -> End(e),  
+      ()  -> thunk()
+    );
+  }
 }
