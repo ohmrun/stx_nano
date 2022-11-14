@@ -1,5 +1,7 @@
 package stx.nano;
 
+using stx.lift.ArrayLift;
+
 import tink.core.Outcome in TinkOutcome;
 
 @:using(stx.nano.Chunk.ChunkLift)
