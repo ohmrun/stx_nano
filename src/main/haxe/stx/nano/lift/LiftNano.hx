@@ -247,6 +247,24 @@ class LiftNano{
   static public function toIdent(self:Identifier):Ident{
     return Ident.fromIdentifier(self);
   }
+  @:note('#0b1kn00b: depends upon `until` actually being part of the hierarchy')
+  @:unsafe
+  static public function ancestors<A>(type:Class<A>,?until:Class<Dynamic>):Cluster<Class<Dynamic>>{
+    var o : Cluster<Class<Dynamic>> = [];
+    var t : Class<Dynamic> = type;
+
+    while(t!=null){
+      o = o.snoc(t);
+      t = Type.getSuperClass(t);
+    }
+    if(until!=null){
+      o = o.whilst(
+        (x:Class<Dynamic>) -> definition(__,x).identifier() != definition(__,until).identifier()
+      );
+      o = o.snoc(until);
+    }
+    return o;
+  }
 }
 class StringToIdentifier{
   static public function identifier(wildcard:Wildcard,str:String):Identifier{
