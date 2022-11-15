@@ -3,7 +3,6 @@
 `using stx.Nano;` pulls in: `Couple<L,R>, Err<E>, Digest, Failure<E>, Fault<E>, Pos, adPosition, Primitive, Report, Res, Unique, VBlock, Wildcard, Y`
 
 `Couple<L,R>` is a two-tuple implemented as a function handler.  
-`Err<E>` is a flexible error class, can be accessed through `__.fault()`.  
 `Digest` is an enumeration of fails, can be used in a typed Err<E> without effecting the type.  
 `Failure<E>` allows `Digests` and whatever type `E` is in `Err` to get along.  
 `Fault` is a static extension of `Wildcard` that produces an error api, capturing the position information.  
@@ -34,43 +33,6 @@ class LiftSomething{
 
 ```
 
-## using Err
-
-```haxe
-  enum ErrorVal{
-    E_SomeError;
-    E_SomeOther_Error;
-  }
-  enum SuperErrorVal{
-    E_SuperError;
-    E_SubsytemError(v:ErrorVal);
-  }
-  static function main(){
-    //                v--`haxe.PosInfos` injected here`
-    var e0 = __.fault( ).of(E_SomeError);//Err<ErrorVal>
-    var e1 = __.fault( ).of(E_SomeOtherError);//Err<ErrorVal>
-
-    var e2 = e0.next(e1);//both of these errors now available downstream.
-    var e3 = __.fault().err(Digest.E_ResourceNotFound);//Err<Unknown>;
-
-    var e4 = e2.next(e3);//Type compatible
-
-    var e5 = __.fault().of(E_SuperError);
-
-    var report0 = Report.pure(e4);//Err<ErrorVal>
-    var report1 = Report.pure(e5);//Err<SuperErrorVal>
-
-    var report2 = report0.errata(
-      (err) -> err.map(E_SubsystemError)
-    );//Err<SuperErrorVal>
-
-    var report3 = report1.merge(report2);
-
-    if(!report3.ok()){
-      report3.crunch();//throws if defined
-    }
-  }
-```
 
 ### using Couple
 
