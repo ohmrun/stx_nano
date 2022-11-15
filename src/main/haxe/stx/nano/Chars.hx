@@ -17,6 +17,13 @@ package stx.nano;
   }
 }
 class CharsLift{
+  static public function existishness(str:Null<String>):Bool{
+    return switch(str){
+      case ""     : false;
+      case null   : false;
+      default     : true;
+    }
+  }
   /**
   Returns `true` if `v` is `'true'` or `'1'`, `false` if `'false'` or `'0'` and `d` otherwise.
   **/

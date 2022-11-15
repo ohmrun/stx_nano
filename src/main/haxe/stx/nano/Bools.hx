@@ -1,6 +1,9 @@
 package stx.nano;
 
 class Bools{
+  /**
+
+  **/
   static public function truthiness(str:String){
     return switch(__.option(str).map(StringTools.trim).defv(null)){
       case "true"   : true;
@@ -9,13 +12,6 @@ class Bools{
       case "false"  : false;
       case null     : false;
       default       : true; 
-    }
-  }
-  static public function existishness(str:Null<String>):Bool{
-    return switch(str){
-      case ""     : false;
-      case null   : false;
-      default     : true;
     }
   }
 }
