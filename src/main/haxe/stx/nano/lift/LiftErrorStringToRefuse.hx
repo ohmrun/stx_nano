@@ -2,7 +2,7 @@ package stx.nano.lift;
 
 class LiftErrorStringToRefuse{
   static public function toRefuse<E>(self:Error<String>):Refuse<E>{
-    return Refuse.lift(self.errate(x -> INTERIOR(new ESubsumed(x))));
+    return Refuse.lift(self.errate(x -> INTERNAL(new ESubsumed(x))));
   }
 }
 class ESubsumed extends Digest{

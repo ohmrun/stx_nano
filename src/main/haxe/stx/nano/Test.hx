@@ -17,7 +17,7 @@ using stx.Nano;
   class EquityTest extends TestCase{
     public function test(){
       try{
-        var a = Equity.make(null,null,Refuse.make(Some(EXTERIOR(1)),None,None));  
+        var a = Equity.make(null,null,Refuse.make(Some(EXTERNAL(1)),None,None));  
         var b = a.errate(x -> x+1);
         trace("h");
         trace(b.error);
