@@ -10,6 +10,7 @@ class Module extends Clazz{
   }
   #if tink_core
   public function Ft() return new Ft();
+  public function Future() return new Ft();
   #end
   public function Map() return new Map();
 
