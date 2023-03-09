@@ -1,9 +1,6 @@
 package stx;
 
 class Nano{
-  static public function stx<T>(wildcard:Wildcard):Stx<T>{
-    return new Stx();
-  }
   static public function digests(wildcard:Wildcard):Digests{
     return wildcard;
   } 
