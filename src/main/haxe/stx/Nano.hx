@@ -4,6 +4,9 @@ class Nano{
   static public function digests(wildcard:Wildcard):Digests{
     return wildcard;
   } 
+  static public function stx<T>(wildcard:Wildcard):Stx<T>{
+    return new Stx();
+  }
   static public var _(default,never) = LiftNano;
   
 }
