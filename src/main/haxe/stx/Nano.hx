@@ -1,5 +1,7 @@
 package stx;
 
+using stx.Pico;
+
 class Nano{
   static public function digests(wildcard:Wildcard):Digests{
     return wildcard;

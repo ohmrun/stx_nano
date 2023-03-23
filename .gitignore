@@ -1,5 +1,6 @@
-.vscode
-.history
-bin
-test.hxml
+/.vscode
+/.history
+/bin
+/test.hxml
 /build
+/.env.machine
