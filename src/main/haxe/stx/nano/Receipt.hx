@@ -1,5 +1,8 @@
 package stx.nano;
 
+/**
+ * Part of the ambiguous state type tree. 
+ */
 interface ReceiptApi<T,E> extends DefectApi<E>{
   final value : Null<T>;
   public function iterator():Iterator<T>;
