@@ -3,6 +3,9 @@ package stx.nano;
 import tink.core.Disposable;
 import tink.core.Signal in TinkSignal;
 
+/**
+ * Slim abstract over `haxetink` `Signal` with stx convention functions and a `bind_fold`
+ */
 @:using(stx.nano.Signal.SignalLift)
 @:forward abstract Signal<T>(TinkSignal<T>) from TinkSignal<T> to TinkSignal<T>{
   static public var _(default,never) = SignalLift;

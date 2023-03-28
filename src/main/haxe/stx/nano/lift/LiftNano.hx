@@ -90,7 +90,12 @@ class LiftNano{
     //trace(e);
     return Outcome.failure(e);
   }
-  
+  /**
+   * Wildcard static extension constructor for `stx.nano.Fault`
+   * @param wildcard 
+   * @param pos 
+   * @return Fault
+   */
   static public function fault(wildcard:Wildcard,?pos:Pos):Fault{
     return new Fault(pos);
   }

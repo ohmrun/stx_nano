@@ -1,6 +1,9 @@
 package stx.nano;
+//TODO UInt
 
-//TODO uint?
+/**
+ * Indexed versions of Haxe's numeric values
+ */
 enum NumericSum{
   NInt(int:Int);
   NInt64(int:Int64);

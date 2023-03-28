@@ -1,5 +1,9 @@
 package stx.nano;
 
+/**
+ * Base of the ambigious state object tree.
+ * Returns the unit of Refuse
+ */
 @:pure typedef DefectDef<E> = {
   public var error(get,null):Refuse<E>;
   public function get_error():Refuse<E>;

@@ -5,6 +5,9 @@ package stx.nano;
 #end
 import haxe.Constraints.IMap;
 
+/**
+ * Type representing an immutable `Array`. 
+ */
 typedef ClusterDef<T> = Array<T>;
 
 @:allow(stx)

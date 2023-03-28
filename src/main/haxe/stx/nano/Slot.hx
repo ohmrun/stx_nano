@@ -3,6 +3,11 @@ package stx.nano;
 import tink.core.Lazy;
 import tink.core.Future;
 
+/**
+ * Trying to draw down processing time, but I think `Future` already caches the data.
+ * Experimental, perhaps not needed.
+ */
+@:noCompletion
 class SlotCls<T>{
   public function new(?data:Null<T>,?guard:Null<Future<T>>,?pos:Pos){
     this.data   = data;
@@ -33,6 +38,7 @@ class SlotCls<T>{
     return -1;
   }
 }
+@:noCompletion
 @:using(stx.nano.Slot.SlotLift)
 @:forward abstract Slot<T>(SlotCls<T>) from SlotCls<T> to SlotCls<T>{
   static public var _(default,never) = SlotLift;
@@ -64,6 +70,7 @@ class SlotCls<T>{
     } 
   }
 }
+@:noCompletion
 class SlotLift{
   static public inline function map<T,TT>(self:Slot<T>,fn:T->TT):Slot<TT>{
     return switch(self.ready){

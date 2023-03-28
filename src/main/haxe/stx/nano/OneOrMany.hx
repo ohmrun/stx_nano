@@ -1,8 +1,11 @@
 package stx.nano;
 
+/**
+ * Graceful handing of 
+ */
 enum OneOrManySum<T>{
   OneOf(v:T);
-  ManyOf(arr:Array<T>);
+  ManyOf(arr:Cluster<T>);
 }
 abstract OneOrMany<T>(OneOrManySum<T>) from OneOrManySum<T> to OneOrManySum<T>{
   public function new(self) this = self;
@@ -11,13 +14,16 @@ abstract OneOrMany<T>(OneOrManySum<T>) from OneOrManySum<T> to OneOrManySum<T>{
   @:noUsing @:from static public function fromT<T>(self:T):OneOrMany<T>{
     return lift(OneOf(self));
   }
-  @:noUsing @:from static public function fromArray<T>(self:Array<T>){
+  @:noUsing @:from static public function fromCluster<T>(self:Cluster<T>){
     return lift(ManyOf(self));
+  }
+  @:noUsing @:from static public function fromArray<T>(self:Array<T>){
+    return lift(ManyOf(Cluster.lift(self)));
   }
   @:to public function toArray():Array<T>{
     return switch(this){
       case OneOf(v)     : [v];
-      case ManyOf(arr)  : arr;
+      case ManyOf(arr)  : @:privateAccess arr.prj();
     }
   }
 
