@@ -1,7 +1,13 @@
 package stx.nano;
 
+/**
+ * CTR Def.
+ */
 typedef CTRDef<P,R> = P -> R;
 
+/**
+ * Means to inject constuctors into API to reduce verbosity.
+ */
 @:callable abstract CTR<P,R>(CTRDef<P,R>) from CTRDef<P,R> to CTRDef<P,R>{
   public function new(self) this = self;
   @:noUsing static public function lift<P,R>(self:CTRDef<P,R>):CTR<P,R> return new CTR(self);

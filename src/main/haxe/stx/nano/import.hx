@@ -1,5 +1,6 @@
 package stx;
 
+import haxe.ds.StringMap;
 import haxe.Int64;
 import haxe.io.Bytes;
 
