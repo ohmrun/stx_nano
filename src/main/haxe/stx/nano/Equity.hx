@@ -1,9 +1,15 @@
 package stx.nano;
 
+/**
+ * Api for `stx.nano.Equity`
+ */
 interface EquityApi<I,O,E> extends ReceiptApi<O,E>{
   public final asset : I;
   public function toEquity():EquityDef<I,O,E>;
 }
+/**
+ * Cls for `stx.nano.Equity`
+ */
 class EquityCls<I,O,E> extends ReceiptCls<O,E> implements EquityApi<I,O,E> {
   public final asset : I;
   public function new(error,value:Null<O>,asset:I){
@@ -14,17 +20,39 @@ class EquityCls<I,O,E> extends ReceiptCls<O,E> implements EquityApi<I,O,E> {
     return this;
   }
 }
+/**
+ * Def for `stx.nano.Equity`
+ */
 typedef EquityDef<I,O,E> = ReceiptDef<O,E> & {
   final asset : I;
   public function toEquity():EquityDef<I,O,E>;
 } 
+/**
+ * Represents a value containing some prior value: `asset`, 
+ * some possible computed value: `value` (from `Receipt`), 
+ * and some possible error `error` (from `Defect`)
+ */
 @:using(stx.nano.Equity.EquityLift)
 @:forward abstract Equity<I,O,E>(EquityDef<I,O,E>) from EquityDef<I,O,E> to EquityDef<I,O,E>{
   static public var _(default,never) = EquityLift;
   public function new(self) this = self;
+  /**
+   * @see https://github.com/ohmrun/docs/blob/main/conventions.md#lift
+   * @param self 
+   * @param fn 
+   * @return Equity<I,O,EE>
+   */
   @:noUsing static public function lift<I,O,E>(self:EquityDef<I,O,E>):Equity<I,O,E> return new Equity(self);
 
+  /**
+   * @see https://github.com/ohmrun/docs/blob/main/conventions.md#prj
+   * @return EquityDef<I,O,E> return this
+   */
   public function prj():EquityDef<I,O,E> return this;
+
+  /**
+   * @see https://github.com/ohmrun/docs/blob/main/conventions.md#self
+   */
   private var self(get,never):Equity<I,O,E>;
   private function get_self():Equity<I,O,E> return lift(this);
 
