@@ -1,7 +1,7 @@
 package stx.nano.lift;
 
 class LiftMapToIterKV{
-  static public function toIterKV<K,V>(map:Map<K,V>):IterKV<K,V>{
+  static public inline function toIterKV<K,V>(map:Map<K,V>):IterKV<K,V>{
     return {
       keyValueIterator : function() {
         var source = map.keyValueIterator();

@@ -44,6 +44,25 @@ import haxe.Constraints;
   public function prj():Iterable<T>{
     return this;
   }
+  @:noUsing static public function range(start:Int,finish:Int,?step:Int=1):Iter<Int>{
+    final op    = start < finish ? (x) -> x + step : (x) -> x - step;
+    final comp  = start < finish ? (x) -> x <= finish : (x) -> x >= finish;
+    return {
+      iterator : () -> {
+        var index = start;
+        return {
+          next : () ->{
+            final i = index;
+            index = op(index);
+            return i;
+          },
+          hasNext : () -> {
+            return comp(index);
+          }
+        }
+      }
+    }
+  }
 }
 class IterLift{
   static public function cross<T,Ti>(self:Iterable<T>,that:Iterable<Ti>):Iterable<Couple<T,Ti>>{

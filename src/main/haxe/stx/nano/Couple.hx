@@ -3,6 +3,17 @@ package stx.nano;
 typedef CoupleDef<Ti,Tii> = (Ti -> Tii -> Void) -> Void;
 typedef CoupleCat<Ti,Tii> = Array<Either<Ti,Tii>>;//[Left(tI),Right(tII)]
 
+/**
+ * ```haxe    
+ * using stx.Nano;
+ * function test_couple(){
+ *  final cp = __.couple(1,2);
+ *  final val = __.decouple(
+ *    (l,r) -> l + r
+ *  );
+ * }
+ * ```
+ */
 @:using(stx.nano.Couple.CoupleLift)
 @:callable abstract Couple<Ti,Tii>(CoupleDef<Ti,Tii>) from CoupleDef<Ti,Tii> to CoupleDef<Ti,Tii>{
   static public var _(default,never) = CoupleLift;
@@ -63,7 +74,7 @@ class CoupleLift{
     );
     return out;
   }
-  static public function cat<Ti,Tii>(self:Couple<Ti,Tii>):Array<Either<Ti,Tii>>{
+  static public function cat<Ti,Tii>(self:Couple<Ti,Tii>):Cluster<Either<Ti,Tii>>{
     return decouple(self,(l,r) -> [Left(l),Right(r)]);
   }
   static public function tup<Ti,Tii>(self:Couple<Ti,Tii>):Tup2<Ti,Tii>{

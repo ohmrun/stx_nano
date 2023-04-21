@@ -115,7 +115,7 @@ typedef RecordDef<T> = Cluster<Field<Void -> T>>;
   
 }
 class RecordLift{
-  #if stx_assert
+  #if (stx_assert || stx)
   static public function ord<T>(inner:Ord<T>):Ord<Record<T>>{
     return new stx.assert.ord.term.Record(inner);
   }
