@@ -8,7 +8,7 @@
 `Fault` is a static extension of `Wildcard` that produces an error api, capturing the position information.  
 `Primitive` is an enumeration of Primitive haxe scalars.  
 `Report<E>` is `Option<Err,E>>` with convenience functions.  
-`Res<E>` is like `Outcome<Err<E>>`.  
+`Upshot<E>` is like `Outcome<Err<E>>`.  
 `Unique<T>` allows runtime unique values to be created, using the equality properties of functions under the hood.  
 `VBlock<T>` is a carrier for a virtual type, not connected to a value, but useful for various type foo.  
 `Y<T>`  is an implementation of the y-combinator  

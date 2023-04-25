@@ -87,7 +87,7 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       default       : false;
     }
   }
-  public function promote():Res<Noise,E>{
+  public function promote():Upshot<Noise,E>{
     return _.resolve(this,() -> Noise);
   }
   public function alert():Alert<E>{
@@ -98,7 +98,7 @@ class ReportLift{
   static function lift<T>(self:ReportSum<T>):Report<T>{
     return Report.lift(self);
   }
-  static public function resolve<T,E>(self:ReportSum<E>,fn:Void->T):Res<T,E>{
+  static public function resolve<T,E>(self:ReportSum<E>,fn:Void->T):Upshot<T,E>{
     return fold(
       self,
       (x) -> __.reject(x),
@@ -176,10 +176,10 @@ class ReportLift{
       default                   : fn(None);
     }
   }
-  static public function raise<T>(self:ReportSum<T>):Void{
+  static public function crack<T>(self:ReportSum<T>):Void{
     fold(
       self,
-      e   -> e.raise(),
+      e   -> e.crack(),
       ()  -> {} 
     );
   }

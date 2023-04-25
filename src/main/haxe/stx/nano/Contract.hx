@@ -88,7 +88,7 @@ typedef ContractDef<T,E> = Future<Chunk<T,E>>;
     final val = m.fold((x)->Val(x),()->Tap);
     return fromChunk(val);
   }
-  @:noUsing @:from static public function fromRes<T,E>(self:Res<T,E>):Contract<T,E>{
+  @:noUsing @:from static public function fromUpshot<T,E>(self:Upshot<T,E>):Contract<T,E>{
     return pure(self.fold(
       (ok) -> Val(ok),
       (no) -> End(no)
@@ -147,7 +147,7 @@ class ContractLift extends Clazz{
     return Contract.lift(self);
   }
   #if js
-  static public function toJsPromise<T,E>(self:Contract<T,E>):js.lib.Promise<Res<Option<T>,E>>{
+  static public function toJsPromise<T,E>(self:Contract<T,E>):js.lib.Promise<Upshot<Option<T>,E>>{
     var promise = new js.lib.Promise(
       (resolve,reject) -> {
         try{

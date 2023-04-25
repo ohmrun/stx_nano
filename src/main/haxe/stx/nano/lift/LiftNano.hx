@@ -74,11 +74,11 @@ class LiftNano{
   /**
     
   **/
-  static public function accept<T,E>(wildcard:Wildcard,t:T):Res<T,E>{
-    return Res.accept(t);
+  static public function accept<T,E>(wildcard:Wildcard,t:T):Upshot<T,E>{
+    return Upshot.accept(t);
   }
-  static public function reject<T,E>(wildcard:Wildcard,e:CTR<Fault,Refuse<E>>,?pos:Pos):Res<T,E>{
-    return Res.reject(e.apply(pos));
+  static public function reject<T,E>(wildcard:Wildcard,e:CTR<Fault,Refuse<E>>,?pos:Pos):Upshot<T,E>{
+    return Upshot.reject(e.apply(pos));
   }
   static public function decline<E>(wildcard:Wildcard,except:E):Decline<E>{
     return EXTERNAL(except);
@@ -180,7 +180,7 @@ class LiftNano{
       return v;
     }
   }
-  static public function execute<T,E>(__:Wildcard,fn:Void->Option<Refuse<E>>):T->Res<T,E>{
+  static public function execute<T,E>(__:Wildcard,fn:Void->Option<Refuse<E>>):T->Upshot<T,E>{
     return (v:T) -> switch(fn()){
       case Some(e)  : Reject(e);
       default       : __.accept(v);
@@ -199,9 +199,6 @@ class LiftNano{
     );
   }
   static public inline function crack<E>(wildcard:Wildcard,e:E){
-    throw e;
-  }
-  static public inline function raise<E>(wildcard:Wildcard,e:E){
     throw e;
   }
   static public inline function report<E>(wildcard:Wildcard,?f:Fault -> Refuse<E>,?pos:Pos):Report<E>{

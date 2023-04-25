@@ -10,7 +10,7 @@ package stx.nano;
 
   public function toDefect():Defect<E>;
 
-  public function raise():Void;
+  public function crack():Void;
 }
 @:pure interface DefectApi<E>{
   public var error(get,null):Refuse<E>;
@@ -18,7 +18,7 @@ package stx.nano;
   public function toDefect():Defect<E>;
 
 
-  public function raise():Void;
+  public function crack():Void;
 }
 @:pure class DefectCls<E> implements DefectApi<E>{
   public var error(get,null):Refuse<E>;
@@ -31,7 +31,7 @@ package stx.nano;
   public function toDefect():Defect<E>{
     return this;
   }
-  public function raise():Void{
+  public function crack():Void{
     throw this;
   }
 }
@@ -76,9 +76,9 @@ class DefectLift{
   static public function concat<E>(self:Defect<E>,that:Defect<E>):Defect<E>{
     return Defect.make(self.error.concat(that.error));
   }
-  // static public function errate<E,EE>(self:Defect<E>,fn:E->EE):Defect<EE>{
-  //   return Defect.make(self.error.errata(e -> e.errate(fn)));
-  // }
+  static public function errate<E,EE>(self:Defect<E>,fn:E->EE):Defect<EE>{
+    return Defect.make(self.error.errate(fn));
+  }
   static public function has_error<E>(self:Defect<E>):Bool{
     return self.error.is_defined();
   }

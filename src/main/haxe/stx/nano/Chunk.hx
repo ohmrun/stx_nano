@@ -230,8 +230,8 @@ class ChunkLift{
      hasNext : function(){
       return switch(self){
         case Val(_) : !done;
-        case End(e) : if(e!=null) e.raise(); false;
-        case Tap    : __.fault().explain(e -> e.e_undefined()).raise(); false;
+        case End(e) : if(e!=null) e.crack(); false;
+        case Tap    : __.fault().explain(e -> e.e_undefined()).crack(); false;
       }
      },
      next    : function(){
@@ -250,7 +250,7 @@ class ChunkLift{
       () -> Tap
     );
   }
-  static public function toRes<O,E>(self:Chunk<O,E>){
+  static public function toUpshot<O,E>(self:Chunk<O,E>){
     return self.fold(
       ok  -> __.accept(ok),
       (e) -> __.reject(e),

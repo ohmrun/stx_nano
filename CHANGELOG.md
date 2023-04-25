@@ -242,16 +242,16 @@
 * 	 f4ac57c 2020-09-25  (tag: v0.1.5) supporting classes for stx_ds to avoid pulling in stx_ext at that level
 * 	 d4c6d8b 2020-09-25  (tag: v0.1.4) brought KV from stx_ext
 * 	 475d3a2 2020-09-25  (tag: v0.1.3) dependencies and version update
-* 	 5caaa5c 2020-09-25  resolve<T,E>(opt:Option<T>,err:E,?pos:Pos):Res<R,E>
+* 	 5caaa5c 2020-09-25  resolve<T,E>(opt:Option<T>,err:E,?pos:Pos):Upshot<R,E>
 * 	 9099143 2020-09-25  add position formatter that plays nice with vs_code
 * 	 e7acbec 2020-09-22  fudge throws an error, value always returns an Option
-* 	 4ff9641 2020-09-22  clear distinction between Res and Outcome
+* 	 4ff9641 2020-09-22  clear distinction between Upshot and Outcome
 * 	 f7fc4bf 2020-09-22  more chrome for Res
 * 	 87429c9 2020-09-22  orth
 * 	 7035d46 2020-09-22  build.hxml -> test.hxml and removed from source control so I can tinker
 * 	 2d8580a 2020-09-22  doc
 * 	 0ccf1a0 2020-09-22  standardised accessor syntax for Couple
-* 	 8df3b6a 2020-07-27  Res now uses Accept | Reject
+* 	 8df3b6a 2020-07-27  Upshot now uses Accept | Reject
 * 	 6ea0b8f 2020-07-27  a few issues
 * 	 1b4d083 2020-07-17  Slot based on object now
 * 	 20e95f9 2020-07-07  odds and sods

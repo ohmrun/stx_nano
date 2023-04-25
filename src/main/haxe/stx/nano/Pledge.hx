@@ -1,6 +1,6 @@
 package stx.nano;
 
-typedef PledgeDef<T,E> = Future<Res<T,E>>;
+typedef PledgeDef<T,E> = Future<Upshot<T,E>>;
 
 @:using(stx.nano.Pledge.PledgeLift)
 @:forward abstract Pledge<T,E>(PledgeDef<T,E>) from PledgeDef<T,E> to PledgeDef<T,E>{
@@ -8,7 +8,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   public function new(self) this = self;
   @:noUsing static public function lift<T,E>(self:PledgeDef<T,E>):Pledge<T,E> return new Pledge(self);
 
-  @:noUsing static public function make<T,E>(ch:Res<T,E>):Pledge<T,E>{
+  @:noUsing static public function make<T,E>(ch:Upshot<T,E>):Pledge<T,E>{
     return new Future(
       (f) -> {
         f(ch);
@@ -25,7 +25,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   @:noUsing static public function bind_fold<T,Ti,E>(it:Iter<T>,fm:T->Ti->Pledge<Ti,E>,start:Ti):Pledge<Ti,E>{
     return new Pledge(__.nano().Ft().bind_fold(
       it,
-      function(next:T,memo:Res<Ti,E>):Future<Res<Ti,E>>{
+      function(next:T,memo:Upshot<Ti,E>):Future<Upshot<Ti,E>>{
         return memo.fold(
           (v) -> fm(next,v).prj(),
           (e) -> e.reject()
@@ -51,7 +51,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     ));
   }
   @:noUsing static public function fromLazyError<T,E>(fn:Void->Error<E>):Pledge<T,E>{
-    return fromLazyRes(
+    return fromLazyUpshot(
       () -> __.reject(fn().except())
     );
   }
@@ -70,7 +70,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
     return lift(future.map(__.accept));
   }
   #end
-  @:noUsing static public function fromLazyRes<T,E>(fn:Void->Res<T,E>):Pledge<T,E>{
+  @:noUsing static public function fromLazyUpshot<T,E>(fn:Void->Upshot<T,E>):Pledge<T,E>{
     return Future.irreversible(
       (f) -> f(fn())
     );
@@ -79,7 +79,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   @:noUsing static public function err<T,E>(e:Error<E>):Pledge<T,E>{
     return make(__.reject(e.except()));
   }
-  @:noUsing static public function fromRes<T,E>(chk:Res<T,E>):Pledge<T,E>{
+  @:noUsing static public function fromUpshot<T,E>(chk:Upshot<T,E>):Pledge<T,E>{
     return Future.irreversible(
       (cb) -> cb(
         chk
@@ -88,7 +88,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   }
   @:noUsing static public function fromOption<T,E>(m:Option<T>):Pledge<T,E>{
     final val = m.fold((x)->__.accept(x),()->__.reject(__.fault().explain(_ -> _.e_undefined())));
-    return fromRes(val);
+    return fromUpshot(val);
   } 
   #if stx_arw
     public function toProduce(){
@@ -131,7 +131,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
   
 }
 // @:allow(stx.nano.Pledge) private class PledgeCls<T,E>{
-//   private final forward : Future<Res<T,Error<E>>>;
+//   private final forward : Future<Upshot<T,Error<E>>>;
 
 //   public function new(forward){
 //     this.forward = forward;
@@ -153,7 +153,7 @@ typedef PledgeDef<T,E> = Future<Res<T,E>>;
 // }
 class PledgeLift{
   #if js
-  static public function toJsPromise<T,E>(self:Pledge<T,E>):js.lib.Promise<Res<T,E>>{
+  static public function toJsPromise<T,E>(self:Pledge<T,E>):js.lib.Promise<Upshot<T,E>>{
     var promise = new js.lib.Promise(
       (resolve,reject) -> {
         try{
@@ -192,7 +192,7 @@ class PledgeLift{
     );
   }
   #end
-  static private function lift<T,E>(self:Future<Res<T,E>>):Pledge<T,E>{
+  static private function lift<T,E>(self:Future<Upshot<T,E>>):Pledge<T,E>{
     return Pledge.lift(self);
   }
   static public function zip<Ti,Tii,E>(self:Pledge<Ti,E>,that:Pledge<Tii,E>):Pledge<Couple<Ti,Tii>,E>{
@@ -211,42 +211,42 @@ class PledgeLift{
     ));
   }
   static public function flat_map<T,Ti,E>(self:Pledge<T,E>,fn:T->Pledge<Ti,E>):Pledge<Ti,E>{
-    var ft : Future<Res<T,E>> = self.prj();
+    var ft : Future<Upshot<T,E>> = self.prj();
     return ft.flatMap(
-      function(x:Res<T,E>):PledgeDef<Ti,E>{
+      function(x:Upshot<T,E>):PledgeDef<Ti,E>{
         // /trace(x);
         return x.fold(
           (v)   -> fn(v).prj(),
-          (err) -> Pledge.fromRes(err.reject()).prj()
+          (err) -> Pledge.fromUpshot(err.reject()).prj()
         );
       }
     );
   }
   static public function flat_fold<T,Ti,E>(self:PledgeDef<T,E>,val:T->Future<Ti>,ers:Refuse<E>->Future<Ti>):Future<Ti>{
     return self.flatMap(
-      (res:Res<T,E>) -> res.fold(val,ers)
+      (res:Upshot<T,E>) -> res.fold(val,ers)
     );
   }
   static public function fold<T,Ti,E>(self:Pledge<T,E>,val:T->Ti,ers:Null<Refuse<E>>->Ti):Future<Ti>{
-    return self.prj().map(Res._.fold.bind(_,val,ers));
+    return self.prj().map(Upshot._.fold.bind(_,val,ers));
   }
-  static public function recover<T,E>(self:Pledge<T,E>,fn:Refuse<E>->Res<T,E>):Pledge<T,E>{
+  static public function recover<T,E>(self:Pledge<T,E>,fn:Refuse<E>->Upshot<T,E>):Pledge<T,E>{
     return lift(fold(
       self,
       (x) -> __.accept(x),
       (e) -> fn(e)
     ));
   }
-  static public function adjust<T,Ti,E,U>(self:Pledge<T,E>,fn:T->Res<Ti,E>):Pledge<Ti,E>{
+  static public function adjust<T,Ti,E,U>(self:Pledge<T,E>,fn:T->Upshot<Ti,E>):Pledge<Ti,E>{
     return lift(fold(
       self,
       (x) -> fn(x),
       (v) -> __.reject(v)
     ));
   }
-  static public function rectify<T,Ti,E,U>(self:Pledge<T,E>,fn:Refuse<E>->Res<T,E>):Pledge<T,E>{
+  static public function rectify<T,Ti,E,U>(self:Pledge<T,E>,fn:Refuse<E>->Upshot<T,E>):Pledge<T,E>{
     return lift(self.prj().map(
-      (res:Res<T,E>) -> res.rectify(fn)
+      (res:Upshot<T,E>) -> res.rectify(fn)
     ));
   }
   static public function receive<T,E>(self:Pledge<T,E>,fn:T->Void):Future<Option<Refuse<E>>>{
@@ -260,7 +260,7 @@ class PledgeLift{
       )
     );
   }
-  static public function fudge<T,E>(self:Pledge<T,E>):Res<T,E>{
+  static public function fudge<T,E>(self:Pledge<T,E>):Upshot<T,E>{
     var out = null;
     self.prj().handle(
       (v) -> {
@@ -275,7 +275,7 @@ class PledgeLift{
   static public function point<T,E>(self:PledgeDef<T,E>,fn:T->Report<E>):Alert<E>{
     return Alert.lift(
       self.map(
-        (res:Res<T,E>) -> res.fold(
+        (res:Upshot<T,E>) -> res.fold(
           (x) -> fn(x),
           (e) -> e.report()
       )
@@ -302,9 +302,9 @@ class PledgeLift{
       )
     );
   }
-  static public function tap<T,E>(self:Pledge<T,E>,fn:Res<T,E>->?Pos->Void,?pos:Pos):Pledge<T,E>{
+  static public function tap<T,E>(self:Pledge<T,E>,fn:Upshot<T,E>->?Pos->Void,?pos:Pos):Pledge<T,E>{
     return lift(self.prj().map(
-      (x:Res<T,E>) -> {
+      (x:Upshot<T,E>) -> {
         fn(x,pos);
         return x;
       }
@@ -344,7 +344,7 @@ class PledgeLift{
   }
   #end 
 }
-typedef PledgeTriggerDef<R,E> = FutureTrigger<Res<R,E>>;
+typedef PledgeTriggerDef<R,E> = FutureTrigger<Upshot<R,E>>;
 
 @:forward(trigger) abstract PledgeTrigger<R,E>(PledgeTriggerDef<R,E>) from PledgeTriggerDef<R,E> to PledgeTriggerDef<R,E>{
   public function new() this = new FutureTrigger();

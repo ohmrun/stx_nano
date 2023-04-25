@@ -79,8 +79,8 @@ typedef Twin<T>                 = Couple<T,T>;
 typedef TripleDef<Ti,Tii,Tiii>  = stx.nano.Triple.TripleDef<Ti,Tii,Tiii>;
 typedef Triple<Ti,Tii,Tiii>     = stx.nano.Triple<Ti,Tii,Tiii>;
 
-typedef ResSum<T,E>             = stx.nano.Res.ResSum<T,E>;
-typedef Res<T,E>                = stx.nano.Res<T,E>;
+typedef UpshotSum<T,E>          = stx.nano.Upshot.UpshotSum<T,E>;
+typedef Upshot<T,E>             = stx.nano.Upshot<T,E>;
 
 // typedef DeclineSum<T>       = stx.nano.Decline.DeclineSum<T>;
 //typedef Decline<T>          = stx.nano.Decline<T>;
@@ -116,7 +116,7 @@ class LiftPos{
 }
 typedef LiftErrorStringToRefuse     = stx.nano.lift.LiftErrorStringToRefuse;
 typedef LiftTinkErrorToRefuse       = stx.nano.lift.LiftTinkErrorToRefuse;
-typedef LiftRefuseToRes             = stx.nano.lift.LiftRefuseToRes;
+typedef LiftRefuseToUpshot             = stx.nano.lift.LiftRefuseToRes;
 typedef LiftErrorToReport           = stx.nano.lift.LiftErrorToReport;
 typedef LiftErrorToAlert            = stx.nano.lift.LiftErrorToAlert;
 typedef LiftErrorToRefuse           = stx.nano.lift.LiftErrorToRefuse;

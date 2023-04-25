@@ -1,7 +1,7 @@
 package stx.nano;
 
 class Json{
-  static public function encode(v:Dynamic,replacer: (key:Dynamic, value:Dynamic) -> Dynamic, ?space:String):Res<String,Dynamic>{
+  static public function encode(v:Dynamic,replacer: (key:Dynamic, value:Dynamic) -> Dynamic, ?space:String):Upshot<String,Dynamic>{
     var out = null;
     var err = null;
     try{
@@ -11,7 +11,7 @@ class Json{
     }
     return err == null ? __.accept(out) : __.reject(err);
   }
-  static public function decode(str:String):Res<Dynamic,Dynamic>{
+  static public function decode(str:String):Upshot<Dynamic,Dynamic>{
     var out = null;
     var err = null;
     try{
