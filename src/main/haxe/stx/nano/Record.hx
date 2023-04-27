@@ -1,6 +1,6 @@
 package stx.nano;
 
-#if stx_assert
+#if (stx_assert || stx)
   using stx.Assert;
 #end
 
