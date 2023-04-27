@@ -25,7 +25,7 @@ typedef RecordDef<T> = Cluster<Field<Void -> T>>;
   public function add(that:Field<Void -> T>):Record<T>{
     return this.concat([that]);
   }
-  #if stx_assert
+  #if (stx_assert || stx)
   public function equals(that:Record<T>,with:Eq<T>):Bool{
     return if(this.length != that.size()){
       false;
