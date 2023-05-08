@@ -1,5 +1,10 @@
 package stx;
 
+#if (sys || nodejs)
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 using stx.Pico;
 
 class Nano{
@@ -334,3 +339,34 @@ class LiftEnumValue{
   }
 }
 
+#if (sys || nodejs)
+class SysLift{
+  static public function cwd(self:std.Sys)
+    return {
+       get : ()           -> std.Sys.getCwd(),
+       put : (str:String) -> { std.Sys.setCwd(str); }
+    }
+  static public function fs(self:std.Sys) return new Fs();
+  static public function dir(self:std.Sys) return new Dir();
+
+  public function env(self:std.Sys,key:String):Option<String>{
+    return Option.make(std.Sys.getEnv(key));
+  }
+}
+private class Fs extends Clazz{
+  public function exists(str:String):Bool{
+    return FileSystem.exists(str);
+  }
+  public function get(str:String):String{
+    return File.getContent(str);
+  }
+  public inline function set(key:String,val:String):Void{
+    File.saveContent(key,val);
+  }
+}
+private class Dir extends Clazz{
+  public function put(path:String){
+    FileSystem.createDirectory(path);
+  }
+}
+#end

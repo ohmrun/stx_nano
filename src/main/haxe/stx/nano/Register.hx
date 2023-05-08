@@ -9,7 +9,7 @@ class RegisterCls{
     this.index = index;
     this.count = count;
   }
-  static function make(index,count){
+  @:noUsing static function make(index,count){
     return new RegisterCls(index,count);
   }
   public function equals(that:Register){

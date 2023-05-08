@@ -92,7 +92,7 @@ class IterLift{
       };
     }
   }}
-  static public function zip<L,R>(l:Iterable<L>,r:Iterable<R>):Iterable<Couple<L,R>>{
+  static public function zip<L,R>(l:Iterable<L>,r:Iterable<R>):Iter<Couple<L,R>>{
     return {
       iterator : function():Iterator<Couple<L,R>>{
         var lit = l.iterator();

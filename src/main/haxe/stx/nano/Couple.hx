@@ -80,6 +80,9 @@ class CoupleLift{
   static public function tup<Ti,Tii>(self:Couple<Ti,Tii>):Tup2<Ti,Tii>{
     return decouple(self,tuple2);
   }
+  static public function toTup2<Ti,Tii>(self:Couple<Ti,Tii>):Tup2<Ti,Tii>{
+    return decouple(self,tuple2);
+  }
   static public function toString<Ti,Tii>(self:Couple<Ti,Tii>):String{
     return decouple(self,
       (l,r) -> '($l $r)'

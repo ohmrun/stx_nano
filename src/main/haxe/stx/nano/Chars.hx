@@ -180,11 +180,11 @@ class CharsLift{
     return ns;
   }
   /**
-    Returns an iterator of `value`.
+    Returns an iter of `value`.
   **/
-  static public function iterator(self : Chars) : Iterator<Chars> {
+  static public function toIter(self : Chars) : Iter<Chars> {
     var index = 0;
-    return {
+    return Iter.make({
         hasNext: function() {
             return index < self.length;
         },
@@ -195,7 +195,7 @@ class CharsLift{
               throw __.fault().explain(_ -> _.e_undefined());
             }
         }
-    };
+    });
   }
   /*
   static public function camelCaseToDashes(value : Chars) : Chars {

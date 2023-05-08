@@ -1,4 +1,4 @@
-package stx.sys.fs;
+package sys.stx.fs;
 
 import haxe.Constraints;
 
@@ -14,17 +14,17 @@ abstract class Catalog<V> implements haxe.Constraints.IMap<String,V> {
 	public function get(k:String):Null<V>{
     final a = path.snoc(k).toOsString();
     return exists(k).if_else(
-      () -> decode(__.sys().fs().get(a)),
+      () -> decode(Sys.fs().get(a)),
       () -> null
     );
   }
 	public function set(k:String, v:V):Void{
     final a = path.snoc(k).toOsString();
-    __.sys().fs().set(k,encode(v));
+    Sys.fs().set(k,encode(v));
   }
 	public function exists(k:String):Bool{
     final a = path.snoc(k).toOsString();
-    return __.sys().fs().exists(k);
+    return Sys.fs().exists(k);
   }
 	public function remove(k:String):Bool{
     var result = exists(k);
