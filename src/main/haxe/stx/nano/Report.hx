@@ -87,8 +87,8 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
       default       : false;
     }
   }
-  public function promote():Upshot<Noise,E>{
-    return _.resolve(this,() -> Noise);
+  public function promote():Upshot<Nada,E>{
+    return _.resolve(this,() -> Nada);
   }
   public function alert():Alert<E>{
     return Alert.make(this);

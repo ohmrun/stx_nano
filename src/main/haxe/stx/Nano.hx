@@ -179,7 +179,7 @@ typedef Defect<E>               = stx.nano.Defect<E>;
 typedef DefectDef<E>            = stx.nano.Defect.DefectDef<E>;
 typedef DefectApi<E>            = stx.nano.Defect.DefectApi<E>;
 typedef DefectCls<E>            = stx.nano.Defect.DefectCls<E>;
-typedef Scuttle                 = Defect<tink.core.Noise>;
+typedef Scuttle                 = Defect<Nada>;
 typedef Reaction<T>             = Outcome<T,Scuttle>;
 
 typedef Resource                = stx.nano.Resource;

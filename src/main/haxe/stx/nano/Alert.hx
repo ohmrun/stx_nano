@@ -103,11 +103,11 @@ class AlertLift{
       (report) -> fn(report).prj()
     );
   }
-  static public function toTinkPromise<E>(self:AlertDef<E>):tink.core.Promise<Noise>{
+  static public function toTinkPromise<E>(self:AlertDef<E>):tink.core.Promise<Nada>{
     return fold(
       self,
       er -> tink.core.Outcome.Failure(er.toTinkError()),
-      () -> tink.core.Outcome.Success(Noise)
+      () -> tink.core.Outcome.Success(Nada)
     );
   }
   static public function zip<E>(self:AlertDef<E>,that:Alert<E>):Alert<E>{

@@ -45,7 +45,7 @@ abstract Chunk<T,E>(ChunkSum<T,E>) from ChunkSum<T,E> to ChunkSum<T,E>{
       case None     : Tap; 
     }
   }
-  @:noUsing static public function fromOptionRefuse<E>(opt:Option<Refuse<E>>):Chunk<Noise,E>{
+  @:noUsing static public function fromOptionRefuse<E>(opt:Option<Refuse<E>>):Chunk<Nada,E>{
     return switch(opt){
       case Some(v)  : End(v);
       case None     : Tap; 

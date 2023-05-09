@@ -1,7 +1,5 @@
 package stx.nano;
 
-import tink.core.Noise;
-
 @:using(stx.nano.Upshot.UpshotLift)
 @:using(stx.nano.Upshot.UpshotSumLift)
 enum UpshotSum<T,E>{
@@ -25,10 +23,10 @@ abstract Upshot<T,E>(UpshotSum<T,E>) from UpshotSum<T,E> to UpshotSum<T,E>{
   @:noUsing static public function accept<T,E>(t:T):Upshot<T,E>                    return lift(Accept(t));
   @:noUsing static public function reject<T,E>(e:Refuse<E>):Upshot<T,E>               return lift(Reject(e));
 
-  @:noUsing static public function fromReport<E>(self:Report<E>):Upshot<Noise,E>{
+  @:noUsing static public function fromReport<E>(self:Report<E>):Upshot<Nada,E>{
     return lift(self.fold(
       (ok:Refuse<E>)   -> reject(ok),
-      ()              -> accept(Noise)
+      ()              -> accept(Nada)
     ));
   }
   public function prj():UpshotSum<T,E> return this;
