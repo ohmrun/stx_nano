@@ -1,4 +1,4 @@
-package stx.sys.fs;
+package sys.stx.fs;
 
 class Clump<T>{
 

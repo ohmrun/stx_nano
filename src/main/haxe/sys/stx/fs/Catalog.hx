@@ -56,6 +56,6 @@ abstract class Catalog<V> implements haxe.Constraints.IMap<String,V> {
     }
   }
   static public function Unit(path):Catalog<String>{
-    return new stx.sys.fs.catalog.Unit(path);
+    return new sys.stx.fs.catalog.Unit(path);
   }
 }

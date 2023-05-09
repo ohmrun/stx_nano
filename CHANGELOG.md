@@ -1,4 +1,16 @@
 
+<a name="v0.3.1"></a>
+## [v0.3.1](https://github.com/ohmrun/stx_nano/compare/v0.3.0...v0.3.1) (2023-05-09)
+
+### Fix
+
+* correct hinge for Sys extensions
+
+### Repo
+
+* CHANGELOG related
+
+
 <a name="v0.3.0"></a>
 ## [v0.3.0](https://github.com/ohmrun/stx_nano/compare/0.1.6...v0.3.0) (2023-05-08)
 
