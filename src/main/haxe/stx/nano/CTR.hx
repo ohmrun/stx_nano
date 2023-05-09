@@ -1,7 +1,7 @@
 package stx.nano;
 
 /**
- * CTR Def.
+ * Means to inject constuctors into API to reduce verbosity.
  */
 typedef CTRDef<P,R> = P -> R;
 

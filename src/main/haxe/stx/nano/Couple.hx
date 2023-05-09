@@ -4,13 +4,17 @@ typedef CoupleDef<Ti,Tii> = (Ti -> Tii -> Void) -> Void;
 typedef CoupleCat<Ti,Tii> = Array<Either<Ti,Tii>>;//[Left(tI),Right(tII)]
 
 /**
+ * Lazy 2ary tuple by using a handler. Doesn't currently play to well with `trace`. 
+ * @see stx.Tup2
+ * 
  * ```haxe    
  * using stx.Nano;
  * function test_couple(){
- *  final cp = __.couple(1,2);
- *  final val = __.decouple(
- *    (l,r) -> l + r
- *  );
+ *  final cp  = __.couple(1,2);//Couple<Int,Int>
+ *  final f   = (l,r) -> l + r
+ *  final val = __.decouple(f);//creates a Couple<Int,Int> -> Int from Int->Int->Int
+ *  cp(val);//use Couple as a function
+*   final valI = cp.decouple(f)//apply Int->Int->Int to Couple<Int,Int>
  * }
  * ```
  */
