@@ -10,17 +10,19 @@ typedef CoupleCat<Ti,Tii> = Array<Either<Ti,Tii>>;//[Left(tI),Right(tII)]
  * ```haxe    
  * using stx.Nano;
  * function test_couple(){
- *  final cp  = __.couple(1,2);//Couple<Int,Int>
- *  final f   = (l,r) -> l + r
- *  final val = __.decouple(f);//creates a Couple<Int,Int> -> Int from Int->Int->Int
+ *  final cp    = __.couple(1,2);//Couple<Int,Int>
+ *  final f     = (l,r) -> l + r
+ *  final val   = __.decouple(f);//creates a Couple<Int,Int> -> Int from Int->Int->Int
  *  cp(val);//use Couple as a function
-*   final valI = cp.decouple(f)//apply Int->Int->Int to Couple<Int,Int>
+ *  final valI  = cp.decouple(f)//apply Int->Int->Int to Couple<Int,Int>
  * }
  * ```
  */
 @:using(stx.nano.Couple.CoupleLift)
 @:callable abstract Couple<Ti,Tii>(CoupleDef<Ti,Tii>) from CoupleDef<Ti,Tii> to CoupleDef<Ti,Tii>{
   static public var _(default,never) = CoupleLift;
+  
+  @stx.make
   @:noUsing static public function make<Ti,Tii>(lhs:Ti,rhs:Tii):Couple<Ti,Tii>{
     return (cb) -> cb(lhs,rhs);
   }
