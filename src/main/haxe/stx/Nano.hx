@@ -341,15 +341,15 @@ class LiftEnumValue{
 
 #if (sys || nodejs)
 class SysLift{
-  static public function cwd(self:std.Sys)
+  static public function cwd(self:Class<std.Sys>)
     return {
        get : ()           -> std.Sys.getCwd(),
        put : (str:String) -> { std.Sys.setCwd(str); }
     }
-  static public function fs(self:std.Sys) return new Fs();
-  static public function dir(self:std.Sys) return new Dir();
+  static public function fs(self:Class<std.Sys>) return new Fs();
+  static public function dir(self:Class<std.Sys>) return new Dir();
 
-  public function env(self:std.Sys,key:String):Option<String>{
+  static public function env(self:Class<std.Sys>,key:String):Option<String>{
     return Option.make(std.Sys.getEnv(key));
   }
 }
