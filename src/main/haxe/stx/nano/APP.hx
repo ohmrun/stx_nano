@@ -10,7 +10,7 @@ typedef APPDef<P,R> = Tup2<P -> R,P>;
   private var self(get,never):APP<P,R>;
   private function get_self():APP<P,R> return lift(this);
 
-  @:from static public function fromR<P,R>(r:R):APP<P,R>{
+  @:noUsing @:from static public function fromR<P,R>(r:R):APP<P,R>{
     return lift(tuple2((_:P) -> r,null));
   }
   public function reply():R{

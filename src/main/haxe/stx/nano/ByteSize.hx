@@ -1,6 +1,6 @@
 package stx.nano;
 
-@:enum abstract ByteSize(StdString) from StdString to StdString{
+enum abstract ByteSize(StdString) from StdString to StdString{
   var I8      = 'i8';
 
   var I16BE   = 'i16+';

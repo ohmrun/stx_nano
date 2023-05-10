@@ -16,7 +16,7 @@ typedef CTRDef<P,R> = P -> R;
   private var self(get,never):CTR<P,R>;
   private function get_self():CTR<P,R> return lift(this);
 
-  @:from static public function fromR<P,R>(r:R):CTR<P,R>{
+  @:noUsing @:from static public function fromR<P,R>(r:R):CTR<P,R>{
     return lift((_:P) -> r);
   }
   public function apply(r:P):R{

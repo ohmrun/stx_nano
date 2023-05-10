@@ -22,10 +22,10 @@ abstract Junction<T>(JunctionSum<T>) from JunctionSum<T> to JunctionSum<T>{
   public function prj():JunctionSum<T> return this;
   private var self(get,never):Junction<T>;
   private function get_self():Junction<T> return lift(this);
-  @:from static public inline function fromRegister<T>(r:Register):Junction<T>{
+  @:noUsing @:from static public inline function fromRegister<T>(r:Register):Junction<T>{
     return lift(There(r));
   }
-  @:from static public inline function fromT<T>(r:T):Junction<T>{
+  @:noUsing @:from static public inline function fromT<T>(r:T):Junction<T>{
     return lift(Whole(r));
   }
 }

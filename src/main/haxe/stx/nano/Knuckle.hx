@@ -14,13 +14,13 @@ abstract Knuckle(KnuckleSum) from KnuckleSum to KnuckleSum{
   private var self(get,never):Knuckle;
   private function get_self():Knuckle return lift(this);
 
-  @:from static public function fromRegister(self:Register){
+  @:noUsing @:from static public function fromRegister(self:Register){
     return lift(Ordinal(self));
   }
-  @:from static public function fromString(self:String){
+  @:noUsing @:from static public function fromString(self:String){
     return lift(Nominal(self,Register.unit()));
   }
-  @:from static public function fromNull(self:Null<Dynamic>){
+  @:noUsing @:from static public function fromNull(self:Null<Dynamic>){
     return lift(Ordinal(Register.unit()));
   }
   public function toString(){

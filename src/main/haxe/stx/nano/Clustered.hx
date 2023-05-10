@@ -13,7 +13,7 @@ abstract Clustered<T>(Array<T>) from Array<T> to Array<T>{
  @:to public function toCluster(){
    return Cluster.lift(this);
  }
- @:from static public function fromT<T>(v:T){
+ @:noUsing @:from static public function fromT<T>(v:T){
    return lift(Cluster.pure(v).prj());
  }
 }
