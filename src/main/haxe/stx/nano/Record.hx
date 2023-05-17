@@ -8,13 +8,14 @@ import haxe.DynamicAccess;
 
 typedef RecordDef<T> = Cluster<Field<Void -> T>>;
 
-@:forward(iterator,length) abstract Record<T>(RecordDef<T>) from RecordDef<T>{
+@:forward(iterator,length,search) abstract Record<T>(RecordDef<T>) from RecordDef<T>{
   static public var _(default,never) = RecordLift;
 
-  static public function unit<T>():Record<T>{
+  @:noUsing static public function unit<T>():Record<T>{
     return new Record([].imm());
   }
-  @:noUsing static public function lift<T>(self:RecordDef<T>):Record<T>{
+  @stx.meta.lift
+  @:noUsing static inline public function lift<T>(self:RecordDef<T>):Record<T>{
     return new Record(self);
   }
   public function new(?self:RecordDef<T>) this = self == null ? [] : self;

@@ -48,32 +48,71 @@ enum Tup2<L,R>{
   tuple2(l:L,r:R);
 }
 class Tup2Lift{
-  static public inline function detuple<L,R,Z>(wildcard:Wildcard,fn:L->R->Z):Tup2<L,R> -> Z{
-    return (tp:Tup2<L,R>) -> {
-      return switch(tp){
-          case tuple2(l,r) : fn(l,r);
-      }
+  /**
+   * create a function from `fn` that can be applied to a value of `Tup<L,R>`
+   * @param self 
+   * @return R
+   */
+  static public inline function detuple<L,R,Z>(self:Tup2<L,R>,fn:L->R->Z):Z{
+    return switch(self){
+        case tuple2(l,r) : fn(l,r);
     }
   }
+  /**
+   * consume value by applying `fn` on it.
+   * @param self 
+   * @param fn 
+   * @return Tup2<L,RR>
+   */
   static public inline function reduce<L,R,Z>(self:Tup2<L,R>,fn:L->R->Z):Z{
     return switch(self){
       case tuple2(l,r) : fn(l,r);
     }
   }
+  /**
+   * produce left hand value
+   * @param self 
+   * @param fn 
+   * @return Tup2<L,RR>
+   */
   static public inline function fst<L,R>(self:Tup2<L,R>):L{
     return reduce(self,(l,_) -> l);
   }
+  /**
+   * produce right hand value
+   * @param self 
+   * @param fn 
+   * @return Tup2<L,RR>
+   */
   static public inline function snd<L,R>(self:Tup2<L,R>):R{
     return reduce(self,(_,r) -> r);
   }
+  /**
+   * apply `fn` to `fst`
+   * @param self 
+   * @param fn 
+   * @return Tup2<L,RR>
+   */
   static public inline function mapl<L,LL,R>(self:Tup2<L,R>,fn:L->LL):Tup2<LL,R>{
     return reduce(self,(l,r) -> tuple2(fn(l),r));
+  }
+  /**
+   * apply `fn` to `snd`
+   * @param self 
+   * @param fn 
+   * @return Tup2<L,RR>
+   */
+  static public inline function mapr<L,R,RR>(self:Tup2<L,R>,fn:R->RR):Tup2<L,RR>{
+    return reduce(self,(l,r) -> tuple2(l,fn(r)));
+  }
+  static public inline function toKV<L,R>(self:Tup2<L,R>):KV<L,R>{
+    return reduce(self,KV.make);
   }
 }
 enum Tup3<Ti,Tii,Tiii>{
   tuple3(tI:Ti,tII:Tii,tIII:Tiii);
 }
-typedef StdType                 = std.Type;
+
 typedef StdMath                 = std.Math;
 
 typedef CoupleDef<Ti,Tii>       = stx.nano.Couple.CoupleDef<Ti,Tii>;
@@ -179,6 +218,9 @@ typedef Defect<E>               = stx.nano.Defect<E>;
 typedef DefectDef<E>            = stx.nano.Defect.DefectDef<E>;
 typedef DefectApi<E>            = stx.nano.Defect.DefectApi<E>;
 typedef DefectCls<E>            = stx.nano.Defect.DefectCls<E>;
+/**
+ * `Defect` type error with no associated information.
+ */
 typedef Scuttle                 = Defect<Nada>;
 typedef Reaction<T>             = Outcome<T,Scuttle>;
 
@@ -334,7 +376,7 @@ enum abstract UNIMPLEMENTED(String){
   var UNIMPLEMENTED;
 }
 class LiftEnumValue{
-  static public function lift(self:StdEnumValue):EnumValue{
+  @:noUsing static public function lift(self:stx.alias.StdEnumValue):EnumValue{
     return stx.nano.EnumValue.lift(self);
   }
 }

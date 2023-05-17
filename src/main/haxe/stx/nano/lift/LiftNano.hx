@@ -65,7 +65,7 @@ class LiftNano{
   /**
     Most used wildcard, creates an option, often used like: `__.option(value).defv(fallback)`
   **/
-  static public function option<T>(wildcard:Wildcard,v:Null<T>):Option<T>{
+  static public function option<T>(wildcard:Wildcard,?v:Null<T>):Option<T>{
     return switch(v){
       case null : None;
       default   : Some(v);
@@ -110,8 +110,20 @@ class LiftNano{
   static public function decouple<Ti,Tii,Tiii>(wildcard:Wildcard,fn:Ti->Tii->Tiii):Couple<Ti,Tii> -> Tiii{
     return (tp:Couple<Ti,Tii>) -> {
       tp.decouple(fn);
-    }
+    } 
   }
+  /**
+    * create a function from `fn` that can be applied to a value of `Tup<L,R>`
+    * @param self 
+    * @return R
+    */
+   static public inline function detuple<L,R,Z>(wildcard:Wildcard,fn:L->R->Z):Tup2<L,R> -> Z{
+     return (tp:Tup2<L,R>) -> {
+       return switch(tp){
+           case tuple2(l,r) : fn(l,r);
+       }
+     }
+   }
   static public function triple<Ti,Tii,Tiii>(wildcard:Wildcard,tI:Ti,tII:Tii,tIII:Tiii):Triple<Ti,Tii,Tiii>{
     return (fn:Ti->Tii->Tiii->Void) -> {
       fn(tI,tII,tIII);

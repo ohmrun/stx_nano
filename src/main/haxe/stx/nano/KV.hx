@@ -46,5 +46,7 @@ class KVLift{
   static public function decouple<K,V,Z>(self:KVDef<K,V>,fn:K->V->Z):Z{
     return fn(self.key,self.val);
   }
-
+  static public inline function toField<V>(self:KV<String,V>):Field<V>{
+    return Field.lift(self);
+  }
 }

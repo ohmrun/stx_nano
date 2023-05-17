@@ -5,7 +5,13 @@ package stx.nano;
  * Returns the unit of Refuse
  */
 @:pure typedef DefectDef<E> = {
+  /**
+   * Possible error related to this object.
+   */
   public var error(get,null):Refuse<E>;
+  /**
+   * accessor for `error`
+   */
   public function get_error():Refuse<E>;
 
   public function toDefect():Defect<E>;

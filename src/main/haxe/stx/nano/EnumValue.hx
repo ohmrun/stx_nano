@@ -1,5 +1,6 @@
 package stx.nano;
 
+import stx.alias.StdEnumValue;
 /**
  * Thin shim over `std.EnumValue`
  */
@@ -18,8 +19,9 @@ abstract EnumValue(StdEnumValue) from StdEnumValue to StdEnumValue{
   public function new(self:StdEnumValue) this = self;
   /**
    * Returns enum parameters
+   * @return stx.nano.Cluster<Dynamic>
    */
-  public function params(){
+  public function params():stx.nano.Cluster<Dynamic>{
     return StdType.enumParameters(this);
   }
   /**
