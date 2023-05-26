@@ -169,6 +169,9 @@ class LiftNano{
     var future  = trigger.asFuture();
     return __.couple(trigger,future);
   }
+  static public function squeeze<T>(self:Future<T>):Option<T>{
+    return new stx.nano.Module().Future().tryAndThenCancelIfNotAvailable(self);
+  }
   #end
   static public inline function tracer<T>(v:Wildcard,?pos:haxe.PosInfos):T->T{
     return function(t:T):T{
@@ -278,6 +281,9 @@ class LiftNano{
       o = o.snoc(until);
     }
     return o;
+  }
+  static public inline function toChars(self:String):Chars{
+    return self;
   }
 }
 class StringToIdentifier{

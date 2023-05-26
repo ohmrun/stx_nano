@@ -16,12 +16,12 @@ class LiftOptionNano{
    */
   //TODO (09-05-2023) use CTR
   @stx.fudge
-  static public inline function fudge<T,E>(self:Null<Option<T>>,?err:Error<E>):T{
-    final exception = Option.make(err.except()).defv(__.fault().explain(_ -> _.e_undefined()));
+  static public inline function fudge<T,E>(self:Null<Option<T>>,?err:CTR<Fault,Refuse<E>>,?pos:Pos):T{
+    final exception = Option.make(err).defv(__.fault().explain(_ -> _.e_undefined()));
     return switch(self){
       case Some(v)  : v;
-      case None     : throw exception;
-      case null     : throw exception;
+      case None     : exception.apply(pos).crack(); null;
+      case null     : exception.apply(pos).crack(); null;
     }
   }
   /**
