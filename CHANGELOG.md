@@ -1,4 +1,20 @@
 
+<a name="v0.3.2"></a>
+## [v0.3.2](https://github.com/ohmrun/stx_nano/compare/v0.3.1...v0.3.2) (2023-05-30)
+
+### Doc
+
+* Couple, Option, Upshot helpers
+
+### Feat
+
+* Future._.squeeze(), String.toChars
+
+### Fix
+
+* remove stdlib stati extensions by moving std.Type out of Nano, option optional input reinstated, KV._.toField, added @:noUsing
+
+
 <a name="v0.3.1"></a>
 ## [v0.3.1](https://github.com/ohmrun/stx_nano/compare/v0.3.0...v0.3.1) (2023-05-09)
 
