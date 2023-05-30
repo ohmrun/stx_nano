@@ -1,12 +1,12 @@
 package stx.nano;
 
-enum PrimitiveDef{
+enum PrimitiveSum{
   PNull;
   PBool(b:Bool);
   PSprig(sprig:Sprig);
 }
 
-abstract Primitive(PrimitiveDef) from PrimitiveDef to PrimitiveDef{
+abstract Primitive(PrimitiveSum) from PrimitiveSum to PrimitiveSum{
   @:from @:noUsing static public function fromInt(i:Int):Primitive{
     return PSprig(Byteal(NInt(i)));
   }
@@ -39,7 +39,7 @@ abstract Primitive(PrimitiveDef) from PrimitiveDef to PrimitiveDef{
       case PNull                      : 'null';
     }
   }
-  public function prj():PrimitiveDef{
+  public function prj():PrimitiveSum{
     return this;
   }
   static public function lt(l:Primitive,r:Primitive){
