@@ -288,6 +288,9 @@ typedef EquityDef<I,O,E>        = stx.nano.Equity.EquityDef<I,O,E>;
 typedef EquityCls<I,O,E>        = stx.nano.Equity.EquityCls<I,O,E>;
 typedef EquityApi<I,O,E>        = stx.nano.Equity.EquityApi<I,O,E>;
 
+typedef Coord                   = stx.nano.Coord;
+typedef CoordSum                = stx.nano.Coord.CoordSum;
+
 typedef Retry                   = stx.nano.Retry;
 class LiftFutureToSlot{
   static public inline function toSlot<T>(ft:tink.core.Future<T>,?pos:Pos):Slot<T>{
