@@ -1,4 +1,16 @@
 
+<a name="v0.4.0"></a>
+## [v0.4.0](https://github.com/ohmrun/stx_nano/compare/v0.3.2...v0.4.0) (2023-05-31)
+
+### Doc
+
+* CHANGELOG.md
+
+### Feat
+
+* added stx.nano.Coord
+
+
 <a name="v0.3.2"></a>
 ## [v0.3.2](https://github.com/ohmrun/stx_nano/compare/v0.3.1...v0.3.2) (2023-05-30)
 

@@ -16,6 +16,12 @@ abstract Coord(CoordSum) from CoordSum to CoordSum{
   public inline function new(self:CoordSum) this = self;
   @:noUsing static inline public function lift(self:CoordSum):Coord return new Coord(self);
 
+  @:from static public function fromInt(self:Int){
+    return make(null,self);
+  }
+  @:from static public function fromString(self:Int){
+    return make(self);
+  }
   static public function make(?key:String,?idx=0){
     return lift(switch(key){
       case null : CoIndex(idx);
@@ -38,6 +44,23 @@ abstract Coord(CoordSum) from CoordSum to CoordSum{
     return switch(this){
       case CoField(str,_) : __.option(str);
       default             : __.option();
+    }
+  }
+  @:op(A == B)
+  public function equals(that:Coord){
+    return switch([this,that]){
+      case [CoField(strI,null),CoField(strII,null)]  : strI == strII;
+      case [CoField(strI,idxI),CoField(strII,idxII)] : strI == strII && idxI == idxII;
+      case [CoIndex(idxI),CoIndex(idxII)]            : idxI == idxII;
+      default                                        : false;
+    }
+  }
+  public function equals_loose(that:Coord){
+    return switch([this,that]){
+      case [CoField(strI,null),CoField(strII,null)]  : strI == strII;
+      case [CoField(strI,idxI),CoField(strII,idxII)] : strI == strII;
+      case [CoIndex(idxI),CoIndex(idxII)]            : idxI == idxII;
+      default                                        : false;
     }
   }
 }

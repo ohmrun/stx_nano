@@ -3,8 +3,11 @@ package stx.nano;
 using stx.Nano;
 
 #if stx_test
+  using stx.Pico;
+  using stx.Nano;
   using stx.Log;
   using stx.Test;
+  using stx.Fail;
 
   class Test{
     static public function main(){

@@ -45,8 +45,12 @@ import haxe.Constraints;
     return this;
   }
   @:noUsing static public function range(start:Int,finish:Int,?step:Int=1):Iter<Int>{
-    final op    = start < finish ? (x) -> x + step : (x) -> x - step;
-    final comp  = start < finish ? (x) -> x <= finish : (x) -> x >= finish;
+    if(step > 0 && finish < start){
+      finish = start;
+    }
+    final op    = start <= finish ? (x) -> x + step : (x) -> x - step;
+    final comp  = start <= finish ? (x) -> x < finish : (x) -> x > finish;
+    
     return {
       iterator : () -> {
         var index = start;
@@ -57,7 +61,9 @@ import haxe.Constraints;
             return i;
           },
           hasNext : () -> {
-            return comp(index);
+            final has = comp(index);
+            //trace('start: $start finish: $finish index: $index $has');
+            return has;
           }
         }
       }

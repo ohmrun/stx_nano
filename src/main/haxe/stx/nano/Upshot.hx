@@ -208,4 +208,12 @@ class UpshotLift{
       case null         : Tap; 
     }
   }
+  @:stx.effect
+  static public function value<T,E>(self:UpshotSum<T,E>):T{
+    return fold(
+     self,
+      (ok) -> ok,
+      (no) -> { no.crack(); return null;}
+    );
+  }
 }

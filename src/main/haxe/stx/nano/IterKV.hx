@@ -71,4 +71,11 @@ class IterKVLift{
       }
     });
   }
+  static public function toCluster<K,V>(self:IterKV<K,V>):Cluster<{key : K, value : V}>{
+    final out = [];
+    for(key => val in self){
+      out.push({key : key, value : val});
+    }
+    return out;
+  }
 }

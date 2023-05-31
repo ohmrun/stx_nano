@@ -99,8 +99,9 @@ class ClusterLift{
   static public function search<T>(self:Cluster<T>,fn:T->Bool):Option<T>                                                  return accs(self,_.search.bind(_,fn));
   static public function all<T>(self:Cluster<T>,fn:T->Bool):Bool                                                          return accs(self,_.all.bind(_,fn));
   static public function any<T>(self:Cluster<T>,fn:T->Bool): Bool                                                         return accs(self,_.any.bind(_,fn));
-  static public function zip_with<T,Ti,TT>(self:Cluster<T>,that:Array<Ti>,fn:T->Ti->TT):Cluster<TT>                       return fmap(self,_.zip_with.bind(_,that,fn));
-  static public function cross_with<T,Ti,TT>(self :Array<T>, that :Array<Ti>,fn : T -> Ti -> TT):Cluster<TT>              return fmap(self,_.cross_with.bind(_,that,fn));
+  static public function zip_with<T,Ti,TT>(self:Cluster<T>,that:Cluster<Ti>,fn:T->Ti->TT):Cluster<TT>                     return fmap(self,_.zip_with.bind(_,that.prj(),fn));
+  static public function zip<T,Ti>(self:Cluster<T>,that:Cluster<Ti>):Cluster<Couple<T,Ti>>                                return fmap(self,_.zip_with.bind(_,that.prj(),__.couple));
+  static public function cross_with<T,Ti,TT>(self :Array<T>, that:Array<Ti>,fn : T -> Ti -> TT):Cluster<TT>               return fmap(self,_.cross_with.bind(_,that,fn));
   static public function difference_with<T>(self:Cluster<T>, that:Array<T>,eq:T->T->Bool)                                 return fmap(self,_.difference_with.bind(_,that,eq));
   static public inline function union_with<T>(self:Cluster<T>, that:Array<T>,eq:T->T->Bool)                               return fmap(self,_.union_with.bind(_,that,eq));
   static public function unique_with<T>(self:Cluster<T>,eq:T->T->Bool):Cluster<T>                                         return fmap(self,_.unique_with.bind(_,eq));
@@ -124,5 +125,4 @@ class ClusterLift{
   static public function iterator<T>(self:Cluster<T>):Iterator<T>                                                         return accs(self,_.iterator);
   static public function elide<T>(self:Cluster<T>):Cluster<Dynamic>                                                       return map(self,(v) -> (v:Dynamic));
   static public function range<T>(self:Cluster<T>,l:Int,?r:Int):Cluster<T>                                                return fmap(self,_.range.bind(_,l,r));
-  
 }
