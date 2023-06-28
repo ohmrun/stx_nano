@@ -1,4 +1,8 @@
 
+<a name="v0.5.0"></a>
+## [v0.5.0](https://github.com/ohmrun/stx_nano/compare/v0.4.0...v0.5.0) (2023-05-31)
+
+
 <a name="v0.4.0"></a>
 ## [v0.4.0](https://github.com/ohmrun/stx_nano/compare/v0.3.2...v0.4.0) (2023-05-31)
 
