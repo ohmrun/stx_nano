@@ -280,4 +280,14 @@ class IterLift{
   static public function size<T>(self:Iter<T>){
     return count(self,_ -> true);
   }
+  static public function any<T>(self:Iter<T>,fn:T->Bool):Bool{
+    return foldr(
+      self,
+      (next:T,memo:Bool) -> memo.if_else(
+        () -> true,
+        () -> fn(next),
+      ),
+      false
+    );
+  }
 }

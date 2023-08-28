@@ -4,7 +4,7 @@ package stx.nano;
  * `Extended Set Theory` type coordinate.
  */
 enum CoordSum{
-  CoField(key:String,?idx:Int);
+  CoField(key:String,?idx:Null<Int>);
   CoIndex(idx:Int);
 }
 /**
@@ -22,7 +22,7 @@ abstract Coord(CoordSum) from CoordSum to CoordSum{
   @:from static public function fromString(self:Int){
     return make(self);
   }
-  static public function make(?key:String,?idx=0){
+  static public function make(?key:String,?idx=null){
     return lift(switch(key){
       case null : CoIndex(idx);
       case x    : CoField(key,idx);
@@ -50,15 +50,9 @@ abstract Coord(CoordSum) from CoordSum to CoordSum{
   public function equals(that:Coord){
     return switch([this,that]){
       case [CoField(strI,null),CoField(strII,null)]  : strI == strII;
+      case [CoField(strI,null),CoField(strII,idxII)] : strI == strII;
+      case [CoField(strI,idxI),CoField(strII,null)]  : strI == strII;
       case [CoField(strI,idxI),CoField(strII,idxII)] : strI == strII && idxI == idxII;
-      case [CoIndex(idxI),CoIndex(idxII)]            : idxI == idxII;
-      default                                        : false;
-    }
-  }
-  public function equals_loose(that:Coord){
-    return switch([this,that]){
-      case [CoField(strI,null),CoField(strII,null)]  : strI == strII;
-      case [CoField(strI,idxI),CoField(strII,idxII)] : strI == strII;
       case [CoIndex(idxI),CoIndex(idxII)]            : idxI == idxII;
       default                                        : false;
     }
@@ -67,5 +61,11 @@ abstract Coord(CoordSum) from CoordSum to CoordSum{
 class CoordLift{
   static public inline function lift(self:CoordSum):Coord{
     return Coord.lift(self);
+  }
+  static public function is_field(self:CoordSum):Bool{
+    return switch(self){
+      case CoField(_,_) : true;
+      default           : false;
+    }
   }
 }
