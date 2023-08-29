@@ -226,7 +226,6 @@ typedef Reaction<T>             = Outcome<T,Scuttle>;
 
 typedef Resource                = stx.nano.Resource;
 typedef LiftStringToResource    = stx.nano.lift.LiftStringToResource;
-typedef Embed<T>                = stx.nano.Embed<T>;
 
 typedef ChunkSum<T,E>           = stx.nano.Chunk.ChunkSum<T,E>;
 typedef Chunk<T,E>              = stx.nano.Chunk<T,E>;

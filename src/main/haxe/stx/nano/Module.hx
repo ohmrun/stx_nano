@@ -6,7 +6,7 @@ import tink.core.Future;
 #end
 class Module extends Clazz{
   public function embed(){
-    return new stx.nano.Embed();
+    return new stx.pico.Embed();
   }
   #if tink_core
   public function Ft() return new Ft();
