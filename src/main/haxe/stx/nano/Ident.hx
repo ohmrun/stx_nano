@@ -52,6 +52,9 @@ typedef IdentDef = {
       case { name : n, pack : p    }                          : Identifier.lift(p.snoc(n).join(sep));    
     }
   }
+  public function canonical(){
+    return toString_with_sep(".");
+  }
   public function toString_underscored(){
     return toString_with_sep("_");
   }

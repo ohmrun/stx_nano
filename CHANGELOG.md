@@ -1,4 +1,12 @@
 
+<a name="v0.6.0"></a>
+## [v0.6.0](https://github.com/ohmrun/stx_nano/compare/v0.5.0...v0.6.0) (2023-08-29)
+
+### Fix
+
+* moved Embed to Pico
+
+
 <a name="v0.5.0"></a>
 ## [v0.5.0](https://github.com/ohmrun/stx_nano/compare/v0.4.0...v0.5.0) (2023-05-31)
 

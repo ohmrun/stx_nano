@@ -285,7 +285,7 @@ class IterLift{
       self,
       (next:T,memo:Bool) -> memo.if_else(
         () -> true,
-        () -> fn(next),
+        () -> fn(next)
       ),
       false
     );

@@ -48,7 +48,13 @@ package stx.nano;
   @:to public function toArray():Array<String>{
     return Std.downcast(this,Array);
   }
+  @:to public function toCluster():Cluster<String>{
+    return Cluster.lift(Std.downcast(this,Array));
+  }
   public function up(){
     return lift(this.rdropn(1));
+  }
+  public function canonical(){
+    return this.join(".");
   }
 }

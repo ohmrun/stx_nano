@@ -1,6 +1,7 @@
 
 package stx.nano.lift;
 
+import stx.pico.Identifier;
 import stx.alias.StdType;
 
 class LiftNano{
@@ -253,6 +254,9 @@ class LiftNano{
   static public function toIdentifier(pos:Pos):Identifier{
     return Identifier.lift(Position.lift(pos).className);
   }
+  static public function toIdent(self:Identifier){
+    return Ident.fromIdentifier(self);
+  }
   static public function toAlert<E>(ft:Future<Report<E>>):Alert<E>{
     return Alert.lift(ft);
   }
@@ -260,9 +264,6 @@ class LiftNano{
     var id = toIdentifier(pos);
     var fn = pos.toPosition().methodName;
     return '${id}.${fn}';
-  }
-  static public function toIdent(self:Identifier):Ident{
-    return Ident.fromIdentifier(self);
   }
   @:note('#0b1kn00b: depends upon `until` actually being part of the hierarchy')
   @:unsafe
