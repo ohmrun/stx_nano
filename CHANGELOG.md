@@ -1,4 +1,16 @@
 
+<a name="v0.6.1"></a>
+## [v0.6.1](https://github.com/ohmrun/stx_nano/compare/v0.6.0...v0.6.1) (2023-10-02)
+
+### Feat
+
+* Iter.fromIterator
+
+### Fix
+
+* moved Embed to Pico
+
+
 <a name="v0.6.0"></a>
 ## [v0.6.0](https://github.com/ohmrun/stx_nano/compare/v0.5.0...v0.6.0) (2023-08-29)
 

@@ -27,6 +27,9 @@ import haxe.Constraints;
       } 
     );
   }
+  @:from static public function fromIterator<T>(self:Iterator<T>):Iter<T>{
+    return make(self);
+  }
   @:from static public function fromThunkIterator<T>(self:() ->Iterator<T>):Iter<T>{
     return lift(
       {
