@@ -7,7 +7,7 @@ class LogicalClock{
   static var lifetime   : Int = 0;
   static var previous   : Null<Float>;
   static var counter    : Int = 0;
-
+  static public inline function unit():TimeStamp return get();
   static public function get():TimeStamp{
     var st = TimeStamp.pure;
     return if(previous == null){

@@ -5,7 +5,7 @@ typedef TimeStampDef = {
   final realm : Float;
   final index : Int;
 }
-@:forward abstract TimeStamp(TimeStampDef){
+@:forward abstract TimeStamp(TimeStampDef) from TimeStampDef to TimeStampDef{
   private function new(self) this = self;
   @:allow(stx.nano.LogicalClock) static private function pure(v:TimeStampDef){
     return new TimeStamp(v);
@@ -19,5 +19,8 @@ typedef TimeStampDef = {
     }else{
       -1;
     }
+  }
+  public function prj():TimeStampDef{
+    return this;
   }
 }

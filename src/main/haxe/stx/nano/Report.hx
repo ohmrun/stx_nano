@@ -21,6 +21,9 @@ abstract Report<E>(ReportSum<E>) from ReportSum<E> to ReportSum<E>{
   @:noUsing static public function pure<E>(e:Refuse<E>):Report<E>{
     return lift(Reported(e));
   }
+  public function iterator(){
+    return option().iterator();
+  }
   public function effects(success:Void->Void,failure:Void->Void):Report<E>{
     return _.fold(
       this,
