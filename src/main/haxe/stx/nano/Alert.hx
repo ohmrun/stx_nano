@@ -4,6 +4,9 @@ typedef AlertDef<E> = Future<Report<E>>;
 
 @:using(stx.nano.Alert.AlertLift)
 @:forward abstract Alert<E>(AlertDef<E>) from AlertDef<E> to AlertDef<E>{
+  @:noUsing static public function trigger() {
+    return new AlertTrigger();
+  }
   static public var _(default,never) = AlertLift;
   static public function unit<E>():Alert<E>{
     return Future.irreversible((cb) -> cb(Report.unit()));
@@ -116,4 +119,9 @@ class AlertLift{
     );
     return out;
   }
+}
+@:forward abstract AlertTrigger<E>(FutureTrigger<Report<E>>) from FutureTrigger<Report<E>> to FutureTrigger<Report<E>>{
+  public function new(){
+    this = Future.trigger();
+  }  
 }
